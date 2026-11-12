@@ -1,0 +1,12 @@
+{
+  "formats": [{
+    "name": "cadvisor",
+    "syntax": "logfmt",
+    "require": "cName=",
+    "fields": {
+      "time": ["timestamp"],
+      "container.id": ["cName"]
+    },
+    "drop": ["host", "cpu_cumulative_usage", "cpu_usage_per_cpu", "perf_stat", "resctrl", "hugetlb", "memory_failure", "referenced_memory", "/"]
+  }]
+}

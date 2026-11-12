@@ -1,0 +1,32 @@
+{
+  "data": {
+    "breakdown": [
+      {
+        "key": "db-3-0",
+        "lines": 12002,
+        "pct": 58.41810659527866
+      },
+      {
+        "key": "analytics-export-0",
+        "lines": 8543,
+        "pct": 41.58189340472134
+      }
+    ],
+    "anomalous": true,
+    "kl": 0,
+    "mi": 0,
+    "note": "no baseline activity — this split appeared where none existed; groups resolved from the placement stream; incident vs baseline split compared"
+  },
+  "meta": {
+    "snapshot": "e370.s0",
+    "coverage": 1,
+    "approx": false,
+    "cost": {
+      "gets": 335,
+      "bytes_read": 1685,
+      "footers_decoded": 322,
+      "segments": 333
+    },
+    "token_estimate": 80
+  }
+}

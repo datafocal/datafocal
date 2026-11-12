@@ -1,0 +1,21 @@
+{
+  "name": "@datafocal/view-trace",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@datafocal/api": "workspace:*",
+    "@datafocal/query": "workspace:*",
+    "@datafocal/render-core": "workspace:*",
+    "@datafocal/render-timeline": "workspace:*",
+    "@datafocal/render-waterfall": "workspace:*",
+    "@datafocal/shell": "workspace:*",
+    "@datafocal/ui": "workspace:*",
+    "react": "19.3.1"
+  },
+  "devDependencies": {
+    "react-dom": "19.3.1"
+  }
+}

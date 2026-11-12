@@ -1,0 +1,13 @@
+# The bucket's one rewriter: never run beside the kind compactor.
+[Unit]
+Description=DataFocal compactor
+After=network-online.target
+
+[Service]
+EnvironmentFile=%h/.config/datafocal/datafocal.env
+ExecStart=%h/.local/bin/datafocal-compactor
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target

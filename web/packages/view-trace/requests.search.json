@@ -1,0 +1,629 @@
+[
+  {
+    "tool": "rank_fields",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:00:00Z",
+          "to": "2026-07-18T14:10:00Z"
+        }
+      }
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:00:00Z",
+          "to": "2026-07-18T14:10:00Z"
+        }
+      },
+      "measure": "count",
+      "group_by": "service",
+      "bins": "all"
+    }
+  },
+  {
+    "tool": "get_trace",
+    "req": {
+      "value": "user-02576",
+      "time": {
+        "from": "2026-07-18T14:05:05.285Z",
+        "to": "2026-07-18T14:59:59.634Z"
+      },
+      "limit": 10000,
+      "field": "user_id"
+    }
+  },
+  {
+    "tool": "get_trace",
+    "req": {
+      "value": "user-02758",
+      "time": {
+        "from": "2026-07-18T14:00:02.000Z",
+        "to": "2026-07-18T14:59:36.029Z"
+      },
+      "limit": 10000,
+      "field": "user_id"
+    }
+  },
+  {
+    "tool": "search_logs",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:00:01.973Z",
+          "to": "2026-07-18T14:59:36.029Z"
+        },
+        "where": [
+          {
+            "field": "user_id",
+            "op": "eq",
+            "value": "user-02758"
+          }
+        ]
+      },
+      "limit": 151
+    }
+  },
+  {
+    "tool": "search_logs",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:05:05.166Z",
+          "to": "2026-07-18T14:59:59.634Z"
+        },
+        "where": [
+          {
+            "field": "user_id",
+            "op": "eq",
+            "value": "user-02576"
+          }
+        ]
+      },
+      "limit": 166
+    }
+  },
+  {
+    "tool": "get_trace",
+    "req": {
+      "value": "user-00058",
+      "time": {
+        "from": "2026-07-18T14:00:33.384Z",
+        "to": "2026-07-18T14:59:55.615Z"
+      },
+      "limit": 10000,
+      "field": "user_id"
+    }
+  },
+  {
+    "tool": "search_logs",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:00:33.363Z",
+          "to": "2026-07-18T14:59:55.615Z"
+        },
+        "where": [
+          {
+            "field": "user_id",
+            "op": "eq",
+            "value": "user-00058"
+          }
+        ]
+      },
+      "limit": 141
+    }
+  },
+  {
+    "tool": "get_trace",
+    "req": {
+      "value": "user-02576",
+      "time": {
+        "from": "2026-07-18T14:00:00Z",
+        "to": "2026-07-18T14:10:00Z"
+      },
+      "limit": 10000,
+      "field": "user_id"
+    }
+  },
+  {
+    "tool": "get_trace",
+    "req": {
+      "value": "user-02758",
+      "time": {
+        "from": "2026-07-18T14:00:00Z",
+        "to": "2026-07-18T14:10:00Z"
+      },
+      "limit": 10000,
+      "field": "user_id"
+    }
+  },
+  {
+    "tool": "get_trace",
+    "req": {
+      "value": "user-00058",
+      "time": {
+        "from": "2026-07-18T14:00:00Z",
+        "to": "2026-07-18T14:10:00Z"
+      },
+      "limit": 10000,
+      "field": "user_id"
+    }
+  },
+  {
+    "tool": "search_logs",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:00:33.363Z",
+          "to": "2026-07-18T14:09:49.340Z"
+        },
+        "where": [
+          {
+            "field": "user_id",
+            "op": "eq",
+            "value": "user-00058"
+          }
+        ]
+      },
+      "limit": 36
+    }
+  },
+  {
+    "tool": "get_trace",
+    "req": {
+      "value": "user-02576",
+      "limit": 10000,
+      "field": "user_id"
+    }
+  },
+  {
+    "tool": "get_trace",
+    "req": {
+      "value": "user-02758",
+      "limit": 10000,
+      "field": "user_id"
+    }
+  },
+  {
+    "tool": "search_logs",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:05:05.166Z",
+          "to": "2026-07-18T14:09:56.643Z"
+        },
+        "where": [
+          {
+            "field": "user_id",
+            "op": "eq",
+            "value": "user-02576"
+          }
+        ]
+      },
+      "limit": 22
+    }
+  },
+  {
+    "tool": "resource_usage",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:04:05.166Z",
+          "to": "2026-07-18T15:00:59.633Z"
+        },
+        "where": [
+          {
+            "field": "service",
+            "op": "eq",
+            "value": "checkout"
+          }
+        ]
+      },
+      "group_by": "service",
+      "summary_only": true
+    }
+  },
+  {
+    "tool": "resource_usage",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:04:05.166Z",
+          "to": "2026-07-18T14:10:56.642Z"
+        },
+        "where": [
+          {
+            "field": "service",
+            "op": "eq",
+            "value": "checkout"
+          }
+        ]
+      },
+      "group_by": "service",
+      "summary_only": true
+    }
+  },
+  {
+    "tool": "resource_usage",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T13:59:33.363Z",
+          "to": "2026-07-18T14:10:49.339Z"
+        },
+        "where": [
+          {
+            "field": "service",
+            "op": "eq",
+            "value": "gateway"
+          }
+        ]
+      },
+      "group_by": "service",
+      "summary_only": true
+    }
+  },
+  {
+    "tool": "resource_usage",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T13:59:01.973Z",
+          "to": "2026-07-18T15:00:36.028Z"
+        },
+        "where": [
+          {
+            "field": "service",
+            "op": "eq",
+            "value": "gateway"
+          }
+        ]
+      },
+      "group_by": "service",
+      "summary_only": true
+    }
+  },
+  {
+    "tool": "trace_shape",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:00:00Z",
+          "to": "2026-07-18T14:10:00Z"
+        }
+      },
+      "root": [
+        {
+          "field": "service",
+          "op": "eq",
+          "value": "checkout"
+        }
+      ],
+      "field": "user_id",
+      "compare": "user-02576"
+    }
+  },
+  {
+    "tool": "get_trace",
+    "req": {
+      "value": "user-02112",
+      "time": {
+        "from": "2026-07-18T14:00:00Z",
+        "to": "2026-07-18T14:10:00Z"
+      },
+      "limit": 10000,
+      "field": "user_id"
+    }
+  },
+  {
+    "tool": "search_logs",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:06:57.416Z",
+          "to": "2026-07-18T14:09:44.322Z"
+        },
+        "where": [
+          {
+            "field": "user_id",
+            "op": "eq",
+            "value": "user-02112"
+          }
+        ]
+      },
+      "limit": 10
+    }
+  },
+  {
+    "tool": "resource_usage",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:05:57.416Z",
+          "to": "2026-07-18T14:10:44.321Z"
+        },
+        "where": [
+          {
+            "field": "service",
+            "op": "eq",
+            "value": "gateway"
+          }
+        ]
+      },
+      "group_by": "service",
+      "summary_only": true
+    }
+  },
+  {
+    "tool": "trace_shape",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:00:00Z",
+          "to": "2026-07-18T14:10:00Z"
+        }
+      },
+      "root": [
+        {
+          "field": "service",
+          "op": "eq",
+          "value": "gateway"
+        }
+      ],
+      "field": "user_id",
+      "compare": "user-02112"
+    }
+  },
+  {
+    "tool": "get_trace",
+    "req": {
+      "value": "user-02893",
+      "time": {
+        "from": "2026-07-18T14:00:00Z",
+        "to": "2026-07-18T14:10:00Z"
+      },
+      "limit": 10000,
+      "field": "user_id"
+    }
+  },
+  {
+    "tool": "search_logs",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:06:46.814Z",
+          "to": "2026-07-18T14:08:33.143Z"
+        },
+        "where": [
+          {
+            "field": "user_id",
+            "op": "eq",
+            "value": "user-02893"
+          }
+        ]
+      },
+      "limit": 3
+    }
+  },
+  {
+    "tool": "resource_usage",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:05:46.814Z",
+          "to": "2026-07-18T14:09:33.142Z"
+        },
+        "where": [
+          {
+            "field": "service",
+            "op": "eq",
+            "value": "checkout"
+          }
+        ]
+      },
+      "group_by": "service",
+      "summary_only": true
+    }
+  },
+  {
+    "tool": "resource_usage",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:05:46.814Z",
+          "to": "2026-07-18T14:09:33.142Z"
+        },
+        "where": [
+          {
+            "field": "service",
+            "op": "eq",
+            "value": "gateway"
+          }
+        ]
+      },
+      "group_by": "service",
+      "summary_only": true
+    }
+  },
+  {
+    "tool": "get_trace",
+    "req": {
+      "value": "user-00464",
+      "time": {
+        "from": "2026-07-18T14:00:00Z",
+        "to": "2026-07-18T14:10:00Z"
+      },
+      "limit": 10000,
+      "field": "user_id"
+    }
+  },
+  {
+    "tool": "search_logs",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:03:55.778Z",
+          "to": "2026-07-18T14:09:49.304Z"
+        },
+        "where": [
+          {
+            "field": "user_id",
+            "op": "eq",
+            "value": "user-00464"
+          }
+        ]
+      },
+      "limit": 11
+    }
+  },
+  {
+    "tool": "resource_usage",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:02:55.778Z",
+          "to": "2026-07-18T14:10:49.303Z"
+        },
+        "where": [
+          {
+            "field": "service",
+            "op": "eq",
+            "value": "gateway"
+          }
+        ]
+      },
+      "group_by": "service",
+      "summary_only": true
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:00:00Z",
+          "to": "2026-07-18T14:10:00Z"
+        },
+        "where": []
+      },
+      "measure": "",
+      "group_by": "trace_id",
+      "bins": "all",
+      "measures": [
+        {
+          "measure": "min:ts"
+        },
+        {
+          "measure": "max:ts"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "level",
+              "op": "eq",
+              "value": "error"
+            }
+          ]
+        },
+        {
+          "measure": "count"
+        },
+        {
+          "measure": "distinct:service"
+        },
+        {
+          "measure": "span:ts"
+        },
+        {
+          "measure": "first:service"
+        },
+        {
+          "measure": "last:service"
+        },
+        {
+          "measure": "last:duration_ms"
+        },
+        {
+          "measure": "last:op"
+        }
+      ],
+      "having": [
+        {
+          "index": 3,
+          "op": "gt",
+          "value": 1
+        }
+      ],
+      "sort": "0:desc",
+      "limit": 100
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:00:00Z",
+          "to": "2026-07-18T14:10:00Z"
+        },
+        "where": []
+      },
+      "measure": "",
+      "group_by": "user_id",
+      "bins": "all",
+      "measures": [
+        {
+          "measure": "min:ts"
+        },
+        {
+          "measure": "max:ts"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "level",
+              "op": "eq",
+              "value": "error"
+            }
+          ]
+        },
+        {
+          "measure": "count"
+        },
+        {
+          "measure": "distinct:service"
+        },
+        {
+          "measure": "span:ts"
+        },
+        {
+          "measure": "first:service"
+        },
+        {
+          "measure": "last:service"
+        },
+        {
+          "measure": "last:duration_ms"
+        },
+        {
+          "measure": "last:op"
+        }
+      ],
+      "having": [
+        {
+          "index": 3,
+          "op": "gt",
+          "value": 1
+        }
+      ],
+      "sort": "0:desc",
+      "limit": 100
+    }
+  }
+]

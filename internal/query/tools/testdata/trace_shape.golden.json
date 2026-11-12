@@ -1,0 +1,40 @@
+{
+  "data": {
+    "traces": 20,
+    "nodes": [
+      {
+        "service": "gateway",
+        "name": "POST /users \u003c*\u003e \u003c*\u003e ms",
+        "parent": -1,
+        "presence": 1,
+        "p50_ms": 12,
+        "p95_ms": 39,
+        "error_share": 0,
+        "count": 20
+      },
+      {
+        "service": "checkout",
+        "name": "POST /users \u003c*\u003e \u003c*\u003e ms",
+        "parent": 0,
+        "presence": 0.3,
+        "p50_ms": 10,
+        "p95_ms": 16,
+        "error_share": 0,
+        "count": 6
+      }
+    ]
+  },
+  "meta": {
+    "snapshot": "e370.s0",
+    "cursor": "eyJzbmFwIjoiZTM3MC5zMCIsInNvcnQiOiIiLCJzZWwiOiJGZ3V3endrNm4wQSIsIm9mZiI6MjB9",
+    "coverage": 1,
+    "approx": true,
+    "cost": {
+      "gets": 775,
+      "bytes_read": 947514,
+      "footers_decoded": 322,
+      "segments": 3957
+    },
+    "token_estimate": 81
+  }
+}

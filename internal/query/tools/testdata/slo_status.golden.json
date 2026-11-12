@@ -1,0 +1,148 @@
+{
+  "data": {
+    "slo": {
+      "name": "gateway",
+      "service": "gateway",
+      "state": "ok",
+      "objective": 0.99,
+      "sli": 0.9997222222222222,
+      "budget_remaining": 0.9722222222222222,
+      "burn_rate_1h": 0.027777777777777752,
+      "burn_rate_6h": 0.027777777777777752,
+      "coverage": 1,
+      "window_start": "2026-07-17T14:00:00Z",
+      "conditions": [
+        {
+          "policy": "burn",
+          "name": "fast",
+          "severity": "page",
+          "state": "ok",
+          "threshold": 14.4,
+          "lookback": "1h",
+          "short_window": "5m",
+          "burn_rate": 0.027777777777777752,
+          "short_burn_rate": 0.027777777777777752
+        }
+      ],
+      "forecast": {
+        "horizon": "1h",
+        "lookback": "2h",
+        "burn_rate": 0.027777777777777752,
+        "budget_remaining": 0.9710648148148148,
+        "exhausted_at": "2026-08-22T14:02:00.000000003Z"
+      },
+      "groups": [
+        {
+          "name": "gateway",
+          "service": "gateway",
+          "group": "/health",
+          "state": "ok",
+          "objective": 0.99,
+          "sli": 1,
+          "budget_remaining": 1,
+          "burn_rate_1h": 0,
+          "burn_rate_6h": 0,
+          "coverage": 1,
+          "window_start": "2026-07-17T14:00:00Z",
+          "conditions": [
+            {
+              "policy": "burn",
+              "name": "fast",
+              "severity": "page",
+              "state": "ok",
+              "threshold": 14.4,
+              "lookback": "1h",
+              "short_window": "5m",
+              "burn_rate": 0,
+              "short_burn_rate": 0
+            }
+          ],
+          "forecast": {
+            "horizon": "1h",
+            "lookback": "2h",
+            "burn_rate": 0,
+            "budget_remaining": 1
+          }
+        },
+        {
+          "name": "gateway",
+          "service": "gateway",
+          "group": "/users",
+          "state": "ok",
+          "objective": 0.99,
+          "sli": 0.9995009980039921,
+          "budget_remaining": 0.9500998003992016,
+          "burn_rate_1h": 0.049900199600798355,
+          "burn_rate_6h": 0.049900199600798355,
+          "coverage": 1,
+          "window_start": "2026-07-17T14:00:00Z",
+          "conditions": [
+            {
+              "policy": "burn",
+              "name": "fast",
+              "severity": "page",
+              "state": "ok",
+              "threshold": 14.4,
+              "lookback": "1h",
+              "short_window": "5m",
+              "burn_rate": 0.049900199600798355,
+              "short_burn_rate": 0.049900199600798355
+            }
+          ],
+          "forecast": {
+            "horizon": "1h",
+            "lookback": "2h",
+            "burn_rate": 0.049900199600798355,
+            "budget_remaining": 0.948020625415835,
+            "exhausted_at": "2026-08-06T14:59:36.000000001Z"
+          }
+        }
+      ],
+      "points": [
+        {
+          "at": "2026-07-18T14:01:00Z",
+          "good": 1799,
+          "valid": 1800,
+          "sli": 0.9994444444444445,
+          "budget_remaining": 0.9444444444444445,
+          "burn_rates": [
+            0.055555555555555504
+          ]
+        },
+        {
+          "at": "2026-07-18T14:02:00Z",
+          "good": 1800,
+          "valid": 1800,
+          "sli": 0.9997222222222222,
+          "budget_remaining": 0.9722222222222222,
+          "burn_rates": [
+            0.027777777777777752
+          ]
+        }
+      ],
+      "bad_events": [
+        {
+          "field": "service",
+          "op": "eq",
+          "value": "gateway"
+        },
+        {
+          "field": "status",
+          "op": "ge",
+          "value": "500"
+        }
+      ]
+    }
+  },
+  "meta": {
+    "snapshot": "e370.s0",
+    "coverage": 1,
+    "approx": false,
+    "cost": {
+      "gets": 0,
+      "bytes_read": 0
+    },
+    "token_estimate": 537,
+    "definitions": "3cd86f40ca2803cd"
+  }
+}

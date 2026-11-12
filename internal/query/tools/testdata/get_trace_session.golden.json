@@ -1,0 +1,614 @@
+{
+  "field": "session_id",
+  "value": "s-1",
+  "spans": [
+    {
+      "name": "user prompt",
+      "service": "agent",
+      "start_ms": 1784383200000,
+      "dur_ms": 245900,
+      "error": false,
+      "parent": -1,
+      "id": "svc:agent",
+      "parent_method": "",
+      "duration_method": "observed",
+      "lines": 300,
+      "where": [
+        {
+          "field": "service",
+          "op": "eq",
+          "value": "agent"
+        },
+        {
+          "any": [
+            {
+              "field": "session_id",
+              "op": "eq",
+              "value": "s-1"
+            },
+            {
+              "field": "session",
+              "op": "eq",
+              "value": "s-1"
+            }
+          ]
+        }
+      ],
+      "self_ms": 0,
+      "critical": true,
+      "critical_inferred": false,
+      "sums": {
+        "tokens": 6225
+      }
+    },
+    {
+      "name": "user prompt",
+      "service": "agent",
+      "start_ms": 1784383200000,
+      "dur_ms": 245000,
+      "error": false,
+      "parent": 0,
+      "id": "group:step:agent:0",
+      "parent_method": "contained",
+      "duration_method": "observed",
+      "lines": 50,
+      "where": [
+        {
+          "field": "pattern_id",
+          "op": "eq",
+          "value": "a92fd681208baf18"
+        },
+        {
+          "field": "service",
+          "op": "eq",
+          "value": "agent"
+        },
+        {
+          "any": [
+            {
+              "field": "session_id",
+              "op": "eq",
+              "value": "s-1"
+            },
+            {
+              "field": "session",
+              "op": "eq",
+              "value": "s-1"
+            }
+          ]
+        }
+      ],
+      "self_ms": 245000,
+      "critical": false,
+      "critical_inferred": false,
+      "group": {
+        "count": 50,
+        "p50_ms": 0,
+        "p95_ms": 0,
+        "max_ms": 0,
+        "errors": 0
+      }
+    },
+    {
+      "name": "user prompt",
+      "service": "agent",
+      "start_ms": 1784383200000,
+      "dur_ms": 0,
+      "error": false,
+      "parent": 1,
+      "id": "step:agent:0",
+      "parent_method": "contained",
+      "duration_method": "observed",
+      "lines": 1,
+      "where": [
+        {
+          "field": "pattern_id",
+          "op": "eq",
+          "value": "a92fd681208baf18"
+        },
+        {
+          "field": "service",
+          "op": "eq",
+          "value": "agent"
+        },
+        {
+          "any": [
+            {
+              "field": "session_id",
+              "op": "eq",
+              "value": "s-1"
+            },
+            {
+              "field": "session",
+              "op": "eq",
+              "value": "s-1"
+            }
+          ]
+        }
+      ],
+      "self_ms": 0,
+      "critical": false,
+      "critical_inferred": false
+    },
+    {
+      "name": "usage recorded",
+      "service": "gateway",
+      "start_ms": 1784383200050,
+      "dur_ms": 99950,
+      "error": false,
+      "parent": 0,
+      "id": "svc:gateway",
+      "parent_method": "contained",
+      "duration_method": "observed",
+      "lines": 2,
+      "where": [
+        {
+          "field": "service",
+          "op": "eq",
+          "value": "gateway"
+        },
+        {
+          "any": [
+            {
+              "field": "session_id",
+              "op": "eq",
+              "value": "s-1"
+            },
+            {
+              "field": "session",
+              "op": "eq",
+              "value": "s-1"
+            }
+          ]
+        }
+      ],
+      "self_ms": 99950,
+      "critical": false,
+      "critical_inferred": false,
+      "sums": {
+        "cost": 1.75
+      }
+    },
+    {
+      "name": "tool call Bash",
+      "service": "agent",
+      "start_ms": 1784383200100,
+      "dur_ms": 245030,
+      "error": false,
+      "parent": 0,
+      "id": "group:step:agent:1",
+      "parent_method": "contained",
+      "duration_method": "observed",
+      "lines": 200,
+      "where": [
+        {
+          "field": "pattern_id",
+          "op": "eq",
+          "value": "35bdd80e0a85a340"
+        },
+        {
+          "field": "service",
+          "op": "eq",
+          "value": "agent"
+        },
+        {
+          "any": [
+            {
+              "field": "session_id",
+              "op": "eq",
+              "value": "s-1"
+            },
+            {
+              "field": "session",
+              "op": "eq",
+              "value": "s-1"
+            }
+          ]
+        }
+      ],
+      "self_ms": 244940,
+      "critical": false,
+      "critical_inferred": false,
+      "group": {
+        "count": 50,
+        "p50_ms": 30,
+        "p95_ms": 30,
+        "max_ms": 30,
+        "errors": 0
+      }
+    },
+    {
+      "name": "tool call Bash",
+      "service": "agent",
+      "start_ms": 1784383200100,
+      "dur_ms": 30,
+      "error": false,
+      "parent": 4,
+      "id": "step:agent:1",
+      "parent_method": "contained",
+      "duration_method": "observed",
+      "lines": 4,
+      "where": [
+        {
+          "field": "pattern_id",
+          "op": "eq",
+          "value": "35bdd80e0a85a340"
+        },
+        {
+          "field": "service",
+          "op": "eq",
+          "value": "agent"
+        },
+        {
+          "any": [
+            {
+              "field": "session_id",
+              "op": "eq",
+              "value": "s-1"
+            },
+            {
+              "field": "session",
+              "op": "eq",
+              "value": "s-1"
+            }
+          ]
+        }
+      ],
+      "self_ms": 30,
+      "critical": false,
+      "critical_inferred": false
+    },
+    {
+      "name": "model answered",
+      "service": "agent",
+      "start_ms": 1784383200900,
+      "dur_ms": 245000,
+      "error": false,
+      "parent": 0,
+      "id": "group:step:agent:2",
+      "parent_method": "contained",
+      "duration_method": "observed",
+      "lines": 50,
+      "where": [
+        {
+          "field": "pattern_id",
+          "op": "eq",
+          "value": "9ffc80194145497d"
+        },
+        {
+          "field": "service",
+          "op": "eq",
+          "value": "agent"
+        },
+        {
+          "any": [
+            {
+              "field": "session_id",
+              "op": "eq",
+              "value": "s-1"
+            },
+            {
+              "field": "session",
+              "op": "eq",
+              "value": "s-1"
+            }
+          ]
+        }
+      ],
+      "self_ms": 245000,
+      "critical": true,
+      "critical_inferred": true,
+      "group": {
+        "count": 50,
+        "p50_ms": 0,
+        "p95_ms": 0,
+        "max_ms": 0,
+        "errors": 0
+      },
+      "sums": {
+        "tokens": 6225
+      }
+    },
+    {
+      "name": "model answered",
+      "service": "agent",
+      "start_ms": 1784383200900,
+      "dur_ms": 0,
+      "error": false,
+      "parent": 6,
+      "id": "step:agent:2",
+      "parent_method": "contained",
+      "duration_method": "observed",
+      "lines": 1,
+      "where": [
+        {
+          "field": "pattern_id",
+          "op": "eq",
+          "value": "9ffc80194145497d"
+        },
+        {
+          "field": "service",
+          "op": "eq",
+          "value": "agent"
+        },
+        {
+          "any": [
+            {
+              "field": "session_id",
+              "op": "eq",
+              "value": "s-1"
+            },
+            {
+              "field": "session",
+              "op": "eq",
+              "value": "s-1"
+            }
+          ]
+        }
+      ],
+      "self_ms": 0,
+      "critical": true,
+      "critical_inferred": true,
+      "sums": {
+        "tokens": 100
+      }
+    },
+    {
+      "name": "user prompt",
+      "service": "agent",
+      "start_ms": 1784383205000,
+      "dur_ms": 0,
+      "error": false,
+      "parent": 1,
+      "id": "step:agent:3",
+      "parent_method": "contained",
+      "duration_method": "observed",
+      "lines": 1,
+      "where": [
+        {
+          "field": "pattern_id",
+          "op": "eq",
+          "value": "a92fd681208baf18"
+        },
+        {
+          "field": "service",
+          "op": "eq",
+          "value": "agent"
+        },
+        {
+          "any": [
+            {
+              "field": "session_id",
+              "op": "eq",
+              "value": "s-1"
+            },
+            {
+              "field": "session",
+              "op": "eq",
+              "value": "s-1"
+            }
+          ]
+        }
+      ],
+      "self_ms": 0,
+      "critical": false,
+      "critical_inferred": false
+    },
+    {
+      "name": "tool call Bash",
+      "service": "agent",
+      "start_ms": 1784383205100,
+      "dur_ms": 30,
+      "error": false,
+      "parent": 4,
+      "id": "step:agent:4",
+      "parent_method": "contained",
+      "duration_method": "observed",
+      "lines": 4,
+      "where": [
+        {
+          "field": "pattern_id",
+          "op": "eq",
+          "value": "35bdd80e0a85a340"
+        },
+        {
+          "field": "service",
+          "op": "eq",
+          "value": "agent"
+        },
+        {
+          "any": [
+            {
+              "field": "session_id",
+              "op": "eq",
+              "value": "s-1"
+            },
+            {
+              "field": "session",
+              "op": "eq",
+              "value": "s-1"
+            }
+          ]
+        }
+      ],
+      "self_ms": 30,
+      "critical": false,
+      "critical_inferred": false
+    },
+    {
+      "name": "model answered",
+      "service": "agent",
+      "start_ms": 1784383205900,
+      "dur_ms": 0,
+      "error": false,
+      "parent": 6,
+      "id": "step:agent:5",
+      "parent_method": "contained",
+      "duration_method": "observed",
+      "lines": 1,
+      "where": [
+        {
+          "field": "pattern_id",
+          "op": "eq",
+          "value": "9ffc80194145497d"
+        },
+        {
+          "field": "service",
+          "op": "eq",
+          "value": "agent"
+        },
+        {
+          "any": [
+            {
+              "field": "session_id",
+              "op": "eq",
+              "value": "s-1"
+            },
+            {
+              "field": "session",
+              "op": "eq",
+              "value": "s-1"
+            }
+          ]
+        }
+      ],
+      "self_ms": 0,
+      "critical": true,
+      "critical_inferred": true,
+      "sums": {
+        "tokens": 101
+      }
+    },
+    {
+      "name": "user prompt",
+      "service": "agent",
+      "start_ms": 1784383210000,
+      "dur_ms": 0,
+      "error": false,
+      "parent": 1,
+      "id": "step:agent:6",
+      "parent_method": "contained",
+      "duration_method": "observed",
+      "lines": 1,
+      "where": [
+        {
+          "field": "pattern_id",
+          "op": "eq",
+          "value": "a92fd681208baf18"
+        },
+        {
+          "field": "service",
+          "op": "eq",
+          "value": "agent"
+        },
+        {
+          "any": [
+            {
+              "field": "session_id",
+              "op": "eq",
+              "value": "s-1"
+            },
+            {
+              "field": "session",
+              "op": "eq",
+              "value": "s-1"
+            }
+          ]
+        }
+      ],
+      "self_ms": 0,
+      "critical": false,
+      "critical_inferred": false
+    },
+    {
+      "name": "tool call Bash",
+      "service": "agent",
+      "start_ms": 1784383210100,
+      "dur_ms": 30,
+      "error": false,
+      "parent": 4,
+      "id": "step:agent:7",
+      "parent_method": "contained",
+      "duration_method": "observed",
+      "lines": 4,
+      "where": [
+        {
+          "field": "pattern_id",
+          "op": "eq",
+          "value": "35bdd80e0a85a340"
+        },
+        {
+          "field": "service",
+          "op": "eq",
+          "value": "agent"
+        },
+        {
+          "any": [
+            {
+              "field": "session_id",
+              "op": "eq",
+              "value": "s-1"
+            },
+            {
+              "field": "session",
+              "op": "eq",
+              "value": "s-1"
+            }
+          ]
+        }
+      ],
+      "self_ms": 30,
+      "critical": false,
+      "critical_inferred": false
+    },
+    {
+      "name": "model answered",
+      "service": "agent",
+      "start_ms": 1784383210900,
+      "dur_ms": 0,
+      "error": false,
+      "parent": 6,
+      "id": "step:agent:8",
+      "parent_method": "contained",
+      "duration_method": "observed",
+      "lines": 1,
+      "where": [
+        {
+          "field": "pattern_id",
+          "op": "eq",
+          "value": "9ffc80194145497d"
+        },
+        {
+          "field": "service",
+          "op": "eq",
+          "value": "agent"
+        },
+        {
+          "any": [
+            {
+              "field": "session_id",
+              "op": "eq",
+              "value": "s-1"
+            },
+            {
+              "field": "session",
+              "op": "eq",
+              "value": "s-1"
+            }
+          ]
+        }
+      ],
+      "self_ms": 0,
+      "critical": true,
+      "critical_inferred": true,
+      "sums": {
+        "tokens": 102
+      }
+    }
+  ],
+  "total": 14,
+  "fields": [
+    "session_id",
+    "session"
+  ]
+}

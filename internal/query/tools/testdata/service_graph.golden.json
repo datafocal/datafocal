@@ -1,0 +1,200 @@
+{
+  "data": {
+    "nodes": [
+      {
+        "id": "host-2",
+        "kind": "resource"
+      },
+      {
+        "id": "host-4",
+        "kind": "resource"
+      },
+      {
+        "id": "host-5",
+        "kind": "resource"
+      },
+      {
+        "id": "host-6",
+        "kind": "resource"
+      },
+      {
+        "id": "host-7",
+        "kind": "resource"
+      },
+      {
+        "id": "host-8",
+        "kind": "resource"
+      },
+      {
+        "id": "analytics-export",
+        "kind": "workload",
+        "rate": 14.236666666666666
+      },
+      {
+        "id": "analytics-export-0",
+        "kind": "workload"
+      },
+      {
+        "id": "checkout",
+        "kind": "workload",
+        "rate": 25,
+        "error_ratio": 0.0402,
+        "p95_ms": 36.96865302647507
+      },
+      {
+        "id": "checkout-0",
+        "kind": "workload"
+      },
+      {
+        "id": "db",
+        "kind": "workload",
+        "rate": 32,
+        "p95_ms": 1043.3392628236143
+      },
+      {
+        "id": "db-1-0",
+        "kind": "workload"
+      },
+      {
+        "id": "db-3-0",
+        "kind": "workload"
+      },
+      {
+        "id": "gateway",
+        "kind": "workload",
+        "rate": 42,
+        "error_ratio": 0.026349206349206348,
+        "p95_ms": 32.78812272646339
+      },
+      {
+        "id": "gateway-0",
+        "kind": "workload"
+      },
+      {
+        "id": "host",
+        "kind": "workload",
+        "rate": 2.4,
+        "p95_ms": 194.44039714993377
+      },
+      {
+        "id": "jobs",
+        "kind": "workload",
+        "rate": 16.785
+      },
+      {
+        "id": "jobs-0",
+        "kind": "workload"
+      },
+      {
+        "id": "recommendations",
+        "kind": "workload"
+      },
+      {
+        "id": "recommendations-0",
+        "kind": "workload"
+      },
+      {
+        "id": "scheduler",
+        "kind": "workload",
+        "rate": 0.013333333333333334
+      }
+    ],
+    "edges": [
+      {
+        "from": "gateway",
+        "to": "recommendations",
+        "method": "co-occurrence",
+        "weight": 2983,
+        "confidence": 1
+      },
+      {
+        "from": "checkout",
+        "to": "recommendations",
+        "method": "co-occurrence",
+        "weight": 2961,
+        "confidence": 1
+      },
+      {
+        "from": "gateway",
+        "to": "checkout",
+        "method": "call",
+        "weight": 388,
+        "confidence": 1,
+        "calls": 388,
+        "p50_ms": 14,
+        "p95_ms": 58281
+      },
+      {
+        "from": "checkout",
+        "to": "gateway",
+        "method": "call",
+        "weight": 89,
+        "confidence": 1,
+        "calls": 89,
+        "p50_ms": 736,
+        "p95_ms": 46085
+      },
+      {
+        "from": "analytics-export-0",
+        "to": "host-7",
+        "method": "topology",
+        "weight": 1,
+        "confidence": 1
+      },
+      {
+        "from": "checkout-0",
+        "to": "host-5",
+        "method": "topology",
+        "weight": 1,
+        "confidence": 1
+      },
+      {
+        "from": "db-1-0",
+        "to": "host-2",
+        "method": "topology",
+        "weight": 1,
+        "confidence": 1
+      },
+      {
+        "from": "db-3-0",
+        "to": "host-7",
+        "method": "topology",
+        "weight": 1,
+        "confidence": 1
+      },
+      {
+        "from": "gateway-0",
+        "to": "host-4",
+        "method": "topology",
+        "weight": 1,
+        "confidence": 1
+      },
+      {
+        "from": "jobs-0",
+        "to": "host-6",
+        "method": "topology",
+        "weight": 1,
+        "confidence": 1
+      },
+      {
+        "from": "recommendations-0",
+        "to": "host-8",
+        "method": "topology",
+        "weight": 1,
+        "confidence": 1
+      }
+    ]
+  },
+  "meta": {
+    "snapshot": "e370.s0",
+    "coverage": 1,
+    "approx": true,
+    "cost": {
+      "gets": 837,
+      "bytes_read": 263719,
+      "footers_decoded": 370,
+      "segments": 5120
+    },
+    "token_estimate": 516
+  }
+}

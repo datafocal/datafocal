@@ -1,0 +1,27 @@
+{
+  "formats": [{
+    "name": "journal",
+    "syntax": "json",
+    "require": "\"__CURSOR\"",
+    "bytes": true,
+    "fields": {
+      "time": ["__REALTIME_TIMESTAMP"],
+      "severity": ["PRIORITY"],
+      "body": ["MESSAGE"],
+      "host": ["_HOSTNAME"],
+      "pid": ["_PID"],
+      "service": ["_SYSTEMD_UNIT~.service", "SYSLOG_IDENTIFIER", "_COMM"]
+    },
+    "levels": {"0": "fatal", "1": "fatal", "2": "fatal", "3": "error", "4": "warn", "5": "info", "6": "info", "7": "debug"},
+    "drop": ["__"]
+  }],
+  "sources": [{
+    "kind": "command",
+    "command": ["journalctl", "--follow", "--output=json", "--all"],
+    "resume": "--after-cursor={cursor}",
+    "cursor": "__CURSOR",
+    "detect": "journalctl",
+    "parse": {"format": "journal"},
+    "replaces": ["syslog", "messages", "auth.log", "kern.log", "daemon.log", "user.log", "secure", "maillog"]
+  }]
+}

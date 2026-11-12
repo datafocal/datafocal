@@ -1,0 +1,2 @@
+# Copied from models.dev by scripts/model-prices.sh, so review collapses it.
+internal/querier/prices.tsv linguist-generated=true

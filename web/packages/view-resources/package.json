@@ -1,0 +1,17 @@
+{
+  "name": "@datafocal/view-resources",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@datafocal/api": "workspace:*",
+    "@datafocal/shell": "workspace:*",
+    "@datafocal/ui": "workspace:*",
+    "react": "19.3.1"
+  },
+  "devDependencies": {
+    "react-dom": "19.3.1"
+  }
+}

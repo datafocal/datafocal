@@ -1,0 +1,880 @@
+/* The trace view: the traces under a span filter beside the trace, which a summary heads,
+   its spans named in a column beside their bars under a time ruler, beside the selected
+   span's panel. A colour set as --c is a service's or a step's, from the palette. */
+.tr {
+  --nw: 300px;
+  height: 100%;
+  display: grid;
+  grid-template-columns: var(--list, 300px) auto minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr);
+}
+.tr[data-list-collapsed] > .tr-list {
+  visibility: hidden;
+}
+.tr > .chip {
+  grid-column: 1 / -1;
+  justify-self: start;
+  margin: 8px 16px 0;
+}
+.tr > .tr-list,
+.tr > .split,
+.tr > .tr-trace,
+.tr > .tr-none,
+.tr > [role="status"],
+.tr > [role="alert"] {
+  grid-row: 2;
+}
+.tr-none {
+  margin: 20px;
+  color: var(--ink-2);
+}
+.tr-sq {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  background: var(--c, var(--ink-3));
+}
+
+/* The traces: the span filter, how many and how gathered, then a card a trace. */
+.tr-list {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden auto;
+  background: var(--panel);
+}
+.tr-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px 14px 12px;
+  border-bottom: 1px solid var(--line);
+}
+.tr-filters h2 {
+  margin: 0;
+  font: 600 11px var(--sans);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.tr-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.tr-chips:empty {
+  display: none;
+}
+.tr-chips li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 26px;
+  padding: 0 4px 0 9px;
+  font: 12px var(--mono);
+  color: var(--ink);
+  background: var(--panel-2);
+  border: 1px solid var(--line-2);
+  border-radius: 6px;
+}
+.tr-chips li span {
+  color: var(--ink-3);
+}
+.tr-chips li b {
+  font-weight: 400;
+  color: var(--accent);
+}
+.tr-chips button {
+  width: 18px;
+  height: 18px;
+  color: var(--ink-3);
+  border-radius: 4px;
+}
+.tr-chips button:hover {
+  color: var(--ink);
+  background: var(--raise);
+}
+.tr-add {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) auto minmax(0, 1fr) auto;
+  gap: 4px;
+}
+.tr-add input,
+.tr-add select,
+.tr-gather select,
+.tr-find {
+  box-sizing: border-box;
+  min-width: 0;
+  height: 28px;
+  padding: 0 8px;
+  font: 12px var(--mono);
+  color: var(--ink);
+  background: var(--bg);
+  border: 1px solid var(--line-2);
+  border-radius: 6px;
+}
+.tr-add input:focus,
+.tr-find:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.tr-add input::placeholder,
+.tr-find::placeholder {
+  font-family: var(--sans);
+  color: var(--ink-3);
+}
+.tr-add .tbtn {
+  color: var(--ink);
+}
+.tr-gather {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px;
+  font-size: 12px;
+  color: var(--ink-3);
+  border-bottom: 1px solid var(--line);
+}
+.tr-gather select:first-of-type {
+  flex: 1;
+}
+.tr-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px;
+}
+.tr-cards > button {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 9px 10px;
+  text-align: left;
+  border: 1px solid transparent;
+  border-radius: 7px;
+}
+.tr-cards > button:hover {
+  background: var(--raise);
+}
+.tr-cards > button[aria-current="true"] {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+.tr-e {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.tr-root {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  font-weight: 600;
+  color: var(--ink);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.tr-dur {
+  flex: none;
+  font: 12px var(--mono);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+.tr-lbar {
+  display: block;
+  height: 3px;
+  margin-left: 16px;
+  border-radius: 2px;
+  background: var(--line);
+}
+.tr-lbar span {
+  display: block;
+  height: 100%;
+  border-radius: 2px;
+  background: var(--ink-3);
+}
+[aria-current="true"] .tr-lbar span {
+  background: var(--accent);
+}
+.tr-key,
+.tr-meta {
+  margin-left: 16px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.tr-key {
+  font: 11px var(--mono);
+  color: var(--ink-3);
+}
+.tr-meta {
+  font-size: 11.5px;
+  color: var(--ink-3);
+}
+.tr-meta b {
+  margin-left: 6px;
+  font-weight: 500;
+  color: var(--ink-2);
+}
+.tr-list > p {
+  margin: 14px;
+  color: var(--ink-2);
+}
+
+/* The trace: its summary and toolbar over the plot, beside the selected span's panel until it
+   closes. */
+.tr-trace {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  grid-template-rows: auto auto minmax(0, 1fr);
+}
+.tr-trace:not(:has(> .insp)) {
+  grid-template-columns: minmax(0, 1fr);
+}
+.tr-trace > .tr-sum,
+.tr-trace > .tr-bar {
+  grid-column: 1 / -1;
+}
+.tr-trace > .tr-plot,
+.tr-trace > .tr-shape {
+  grid-row: 3;
+  grid-column: 1;
+  min-height: 0;
+}
+.tr-trace > .insp {
+  grid-row: 3;
+  grid-column: 2;
+  min-height: 0;
+  overflow: auto;
+}
+
+/* The summary: what the trace is, whether it erred, its id, its numbers and its services. */
+.tr-sum {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px 20px 14px;
+  border-bottom: 1px solid var(--line);
+}
+.tr-sum-h {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+.tr-sum-h h1 {
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  font-size: 19px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.tr-id {
+  margin-left: auto;
+  overflow: hidden;
+  max-width: 40%;
+  font: 11.5px var(--mono);
+  color: var(--ink-3);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.tr-sum-h .tbtn {
+  height: 26px;
+  font-size: 12px;
+}
+.tr-pill {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  height: 20px;
+  padding: 0 8px;
+  font: 600 11.5px var(--sans);
+  border-radius: 999px;
+}
+.tr-pill.ok {
+  color: var(--ok);
+  background: var(--insight-soft);
+}
+.tr-pill.bad {
+  color: var(--err);
+  background: var(--err-soft);
+}
+.tr-pill.talk {
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+.tr-sum-sub {
+  margin: -8px 0 0;
+  font-size: 12px;
+  color: var(--ink-3);
+}
+.tr-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 28px;
+  margin: 0;
+}
+.tr-stats div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.tr-stats dt {
+  font-size: 11px;
+  color: var(--ink-3);
+}
+.tr-stats dd {
+  margin: 0;
+  font: 600 15px var(--mono);
+  color: var(--ink);
+}
+.tr-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.tr-strip {
+  display: flex;
+  gap: 2px;
+  height: 6px;
+  overflow: hidden;
+  border-radius: 3px;
+}
+.tr-strip span {
+  flex: 1 1 0;
+  background: var(--c);
+}
+.tr-legend ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 11.5px;
+  color: var(--ink-2);
+}
+.tr-legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.tr-legend li > span:last-child {
+  color: var(--ink-3);
+}
+
+/* The toolbar: the modes as one control, a find over the spans, then what acts on them. */
+.tr-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 20px;
+  border-bottom: 1px solid var(--line);
+}
+.tr-seg {
+  display: inline-flex;
+  gap: 2px;
+  padding: 2px;
+  background: var(--panel-2);
+  border-radius: 7px;
+}
+.tr-seg button {
+  height: 26px;
+  padding: 0 12px;
+  color: var(--ink-2);
+  border-radius: 5px;
+}
+.tr-seg button:hover {
+  color: var(--ink);
+}
+.tr-seg button[aria-pressed="true"] {
+  font-weight: 500;
+  color: var(--ink);
+  background: var(--raise);
+}
+.tr-find {
+  flex: 0 1 260px;
+}
+.tr-bar > span {
+  font-size: 11.5px;
+  color: var(--ink-3);
+}
+.tr-acts {
+  display: flex;
+  gap: 6px;
+  margin-left: auto;
+}
+.tr-bar .tbtn:hover {
+  color: var(--ink);
+}
+
+/* The plot: a ruler over rows of names beside their bars, the ruler's ticks drawn down
+   through them. */
+.tr-plot {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.tr-ruler {
+  display: flex;
+  flex: none;
+  height: 28px;
+  overflow: hidden;
+  scrollbar-gutter: stable;
+  background: var(--panel);
+  border-bottom: 1px solid var(--line);
+}
+.tr-nh {
+  flex: none;
+  width: var(--nw);
+  padding: 0 12px 0 20px;
+  font: 600 10.5px / 28px var(--sans);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  border-right: 1px solid var(--line);
+}
+.tr-axis {
+  position: relative;
+  flex: 1;
+  margin-right: 56px;
+}
+.tr-axis span {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  padding: 0 0 0 6px;
+  font: 11px / 28px var(--mono);
+  color: var(--ink-3);
+  white-space: nowrap;
+  border-left: 1px solid var(--line);
+}
+.tr-axis span.end {
+  padding: 0 6px 0 0;
+  border-left: 0;
+  border-right: 1px solid var(--line);
+  transform: translateX(-100%);
+}
+.tr-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  scrollbar-gutter: stable;
+}
+.tr-tall {
+  position: relative;
+}
+.tr-tall canvas {
+  position: sticky;
+  top: 0;
+  display: block;
+  width: calc(100% - 56px);
+}
+.named .tr-tall canvas {
+  width: calc(100% - var(--nw) - 56px);
+  margin-left: var(--nw);
+}
+.tr-grid {
+  position: absolute;
+  inset: 0 56px 0 0;
+  pointer-events: none;
+}
+.named .tr-grid {
+  left: var(--nw);
+}
+.tr-grid span {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-left: 1px solid var(--line);
+  opacity: 0.6;
+}
+.tr-names {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: var(--nw);
+  border-right: 1px solid var(--line);
+}
+.tr-n {
+  position: absolute;
+  inset-inline: 0;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  height: 26px;
+  padding-right: 10px;
+  font-size: 12.5px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.tr-n:hover {
+  background: var(--raise);
+}
+.tr-chev {
+  flex: none;
+  width: 14px;
+  height: 18px;
+  padding: 0;
+  font-size: 10px;
+  color: var(--ink-3);
+  border-radius: 4px;
+}
+button.tr-chev:hover {
+  color: var(--ink);
+  background: var(--line);
+}
+.tr-badge {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 17px;
+  height: 17px;
+  font: 600 10px var(--mono);
+  color: var(--bg);
+  background: var(--c);
+  border-radius: 5px;
+}
+.tr-call {
+  flex: none;
+  fill: none;
+  stroke: var(--ink-3);
+  stroke-width: 2;
+}
+.tr-nm {
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--ink);
+}
+.tr-n.call .tr-nm {
+  color: var(--ink-2);
+}
+.tr-n.err .tr-nm {
+  color: var(--err);
+}
+/* What a row's span did, or its service where it changes, gives way to its name. */
+.tr-sv {
+  flex: 0 10 auto;
+  min-width: 0;
+  margin-left: auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 11.5px;
+  color: var(--ink-3);
+}
+.tr-row {
+  position: absolute;
+  inset-inline: 0;
+  height: 26px;
+  background: var(--accent-soft);
+  box-shadow: inset 2px 0 var(--accent);
+  pointer-events: none;
+}
+.tr-menu:popover-open {
+  position: fixed;
+  inset: auto;
+  margin: 0;
+}
+
+/* The span's panel: a line on what it served, the time its spans took, what it said. */
+.tr-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.insp-meta code {
+  font: 11.5px var(--mono);
+}
+.tr-kids {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.tr-kids li {
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr) 60px;
+  align-items: center;
+  gap: 10px;
+  font-size: 12.5px;
+}
+.tr-kids li > span:first-child {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.tr-kids li > span:last-child {
+  font: 12px var(--mono);
+  text-align: right;
+  color: var(--ink-2);
+}
+.tr-kbar {
+  position: relative;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--line);
+}
+.tr-kbar span {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-radius: 3px;
+  background: var(--c);
+}
+.tr-said {
+  margin: 0;
+  max-height: 240px;
+  overflow: auto;
+  padding: 10px 12px;
+  font: 12px / 1.5 var(--mono);
+  color: var(--ink);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 7px;
+}
+
+/* Compare: the merged tree of similar traces, this trace's operations first, over a table. */
+.tr-shape {
+  overflow: auto;
+  padding: 14px 20px;
+  font-variant-numeric: tabular-nums;
+}
+.tr-shape-h {
+  max-width: 72ch;
+  margin: 0 0 12px;
+  color: var(--ink-2);
+}
+.tr-shape-h b {
+  font-family: var(--mono);
+  color: var(--ink);
+}
+.tr-shape table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.tr-shape th {
+  position: sticky;
+  top: -14px;
+  padding: 6px 10px;
+  font: 600 10.5px var(--sans);
+  letter-spacing: 0.07em;
+  text-align: right;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  background: var(--bg);
+  border-bottom: 1px solid var(--line-2);
+}
+.tr-shape td {
+  padding: 6px 10px;
+  font-family: var(--mono);
+  text-align: right;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--line);
+}
+.tr-shape th:first-child,
+.tr-shape td:first-child {
+  text-align: left;
+}
+.tr-shape tbody tr:hover {
+  background: var(--raise);
+}
+.tr-op {
+  max-width: 0;
+  width: 46%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--ink);
+}
+.tr-op-s {
+  color: var(--ink-3);
+}
+.tr-meter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+}
+.tr-meter b {
+  width: 48px;
+  height: 5px;
+  background: var(--line);
+  border-radius: 3px;
+}
+.tr-meter i {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  border-radius: 3px;
+}
+.tr-meter.bad i {
+  background: var(--err);
+}
+.tr-meter span {
+  min-width: 5ch;
+}
+.tr-diff {
+  padding: 1px 7px;
+  font: 10.5px var(--mono);
+  color: var(--warn);
+  border: 1px solid var(--warn);
+  border-radius: 999px;
+}
+.d-missing .tr-op {
+  color: var(--ink-3);
+  text-decoration: line-through;
+}
+.d-missing .tr-diff {
+  color: var(--ink-3);
+  border-color: var(--line-2);
+}
+.d-extra .tr-diff {
+  color: var(--insight);
+  border-color: var(--insight);
+}
+.tr-here {
+  font: 10.5px var(--mono);
+  color: var(--ink-2);
+}
+.d-here .tr-op {
+  font-weight: 600;
+}
+.tr-shape > div > .tbtn {
+  margin-top: 12px;
+}
+
+/* A span's lines, one a row as Logs lists them, each opening there, and its attributes: those
+   all its lines share, then those that vary. */
+.tr-lines {
+  display: flex;
+  flex-direction: column;
+  margin: -4px -18px 0;
+  font: 11.5px var(--mono);
+}
+.tr-lines > button {
+  display: grid;
+  grid-template-columns: 12ch minmax(0, 0.5fr) minmax(0, 2fr);
+  gap: 10px;
+  padding: 5px 18px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+}
+.tr-lines > button:hover {
+  background: var(--raise);
+}
+.tr-lines > button.err {
+  box-shadow: inset 2px 0 var(--err);
+}
+.tr-lines > button > * {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.tr-lines time,
+.tr-lines span:nth-child(2) {
+  color: var(--ink-3);
+}
+.tr-lines > .tbtn {
+  display: block;
+  margin: 10px 18px;
+  color: var(--ink);
+}
+.tr-attrs {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+.tr-attrs tr {
+  border-bottom: 1px solid var(--line);
+}
+.tr-attrs th,
+.tr-attrs td {
+  padding: 7px 0;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+}
+.tr-attrs th {
+  width: 40%;
+  padding-right: 10px;
+  text-align: left;
+  font-weight: normal;
+  color: var(--ink-3);
+}
+.tr-attrs .tr-ah {
+  padding: 14px 0 4px;
+  font: 600 11px var(--sans);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.tr-attrs code {
+  font: 12px var(--mono);
+  color: var(--ink);
+}
+.tr-attrs small {
+  display: block;
+  margin-top: 2px;
+  font-size: 11px;
+  color: var(--ink-3);
+}
+.tr-aacts {
+  display: none;
+  gap: 4px;
+  margin-top: 4px;
+}
+.tr-attrs tr:hover .tr-aacts,
+.tr-aacts:focus-within {
+  display: flex;
+}
+.tr-aacts .tbtn {
+  height: 22px;
+  padding: 0 7px;
+  font-size: 11px;
+}
+.tr-empty {
+  margin: 0;
+  color: var(--ink-3);
+}
+
+/* Narrow windows stack the selected span under the plot, then drop the list. */
+@media (max-width: 1100px) {
+  .tr-trace {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto minmax(0, 1fr) auto;
+  }
+  .tr-trace > .insp {
+    grid-row: 4;
+    grid-column: 1;
+    max-height: 40vh;
+    border-top: 1px solid var(--line);
+    border-left: 0;
+  }
+}
+@media (max-width: 800px) {
+  .tr {
+    --nw: 160px;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .tr > .split,
+  .tr > .tr-list {
+    display: none;
+  }
+  .tr > .tr-trace {
+    grid-column: 1;
+  }
+}

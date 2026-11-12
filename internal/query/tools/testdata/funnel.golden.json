@@ -1,0 +1,33 @@
+{
+  "data": {
+    "entities": 57000,
+    "steps": [
+      {
+        "reached": 15000,
+        "median_from_prev_ms": 0,
+        "stopped_here": [
+          "req-0004339e3f1fa31a",
+          "req-000e8c490483fc6f",
+          "req-000ffb8608384cc2"
+        ]
+      },
+      {
+        "reached": 2400,
+        "median_from_prev_ms": 1,
+        "stopped_here": []
+      }
+    ]
+  },
+  "meta": {
+    "snapshot": "e370.s0",
+    "coverage": 1,
+    "approx": false,
+    "cost": {
+      "gets": 642,
+      "bytes_read": 547055,
+      "footers_decoded": 322,
+      "segments": 322
+    },
+    "token_estimate": 54
+  }
+}

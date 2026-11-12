@@ -1,0 +1,996 @@
+[
+  {
+    "tool": "list_slos",
+    "req": {
+      "limit": 60,
+      "trend": true
+    }
+  },
+  {
+    "tool": "list_slos",
+    "req": {
+      "state": "firing",
+      "limit": 1
+    }
+  },
+  {
+    "tool": "query",
+    "req": {
+      "q": "sum by (service) (count_over_time({} [1h]))",
+      "time": {
+        "from": "2026-07-17T14:10:00.000Z",
+        "to": "2026-07-18T14:10:00Z"
+      }
+    }
+  },
+  {
+    "tool": "import_definitions",
+    "req": {
+      "content": "{\"apiVersion\":\"openslo/v1\",\"kind\":\"SLO\",\"metadata\":{\"name\":\"\"},\"spec\":{\"service\":\"gateway\",\"timeWindow\":[{\"duration\":\"28d\",\"isRolling\":true}],\"budgetingMethod\":\"Occurrences\",\"objectives\":[{\"target\":0.999}],\"indicator\":{\"spec\":{\"ratioMetric\":{\"total\":{\"metricSource\":{\"type\":\"DataFocal\",\"spec\":{\"query\":\"{service=\\\"gateway\\\"}\"}}},\"good\":{\"metricSource\":{\"type\":\"DataFocal\",\"spec\":{\"query\":\"{service=\\\"gateway\\\"} | status < 500\"}}}}}}}}",
+      "dry_run": true
+    }
+  },
+  {
+    "tool": "list_slos",
+    "req": {}
+  },
+  {
+    "tool": "query",
+    "req": {
+      "q": "sum(count_over_time({service=\"gateway\"} [1h]))",
+      "time": {
+        "from": "2026-07-17T14:10:00.000Z",
+        "to": "2026-07-18T14:10:00Z"
+      }
+    }
+  },
+  {
+    "tool": "query",
+    "req": {
+      "q": "sum(count_over_time({service=\"gateway\"} | status < 500 [1h]))",
+      "time": {
+        "from": "2026-07-17T14:10:00.000Z",
+        "to": "2026-07-18T14:10:00Z"
+      }
+    }
+  },
+  {
+    "tool": "import_definitions",
+    "req": {
+      "content": "{\"apiVersion\":\"openslo/v1\",\"kind\":\"SLO\",\"metadata\":{\"name\":\"gateway-5xx\"},\"spec\":{\"service\":\"gateway\",\"timeWindow\":[{\"duration\":\"28d\",\"isRolling\":true}],\"budgetingMethod\":\"Occurrences\",\"objectives\":[{\"target\":0.999}],\"indicator\":{\"spec\":{\"ratioMetric\":{\"total\":{\"metricSource\":{\"type\":\"DataFocal\",\"spec\":{\"query\":\"{service=\\\"gateway\\\"}\"}}},\"good\":{\"metricSource\":{\"type\":\"DataFocal\",\"spec\":{\"query\":\"{service=\\\"gateway\\\"} | status < 500\"}}}}}}}}",
+      "dry_run": true
+    }
+  },
+  {
+    "tool": "export_definitions",
+    "req": {
+      "names": ["gateway"],
+      "format": "json"
+    }
+  },
+  {
+    "tool": "slo_status",
+    "req": {
+      "name": "gateway",
+      "time_range": {
+        "from": "2026-07-18T14:00:00Z",
+        "to": "2026-07-18T14:10:00Z"
+      }
+    }
+  },
+  {
+    "tool": "slo_status",
+    "req": {
+      "name": "gateway-clean",
+      "time_range": {
+        "from": "2026-07-18T14:00:00Z",
+        "to": "2026-07-18T14:10:00Z"
+      }
+    }
+  },
+  {
+    "tool": "export_definitions",
+    "req": {
+      "names": ["gateway-clean"],
+      "format": "json"
+    }
+  },
+  {
+    "tool": "slo_status",
+    "req": {
+      "name": "gateway",
+      "time_range": {
+        "from": "2026-07-16T14:10:00Z",
+        "to": "2026-07-18T14:10:00Z"
+      }
+    }
+  },
+  {
+    "tool": "rank_fields",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-17T14:10:00.000Z",
+          "to": "2026-07-18T14:10:00Z"
+        },
+        "where": [
+          {
+            "field": "service",
+            "op": "eq",
+            "value": "gateway"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "tool": "import_definitions",
+    "req": {
+      "content": "{\"apiVersion\":\"openslo/v1\",\"kind\":\"SLO\",\"metadata\":{\"annotations\":{\"datafocal/group-by\":\"endpoint\"},\"name\":\"gateway\"},\"spec\":{\"alertPolicies\":[{\"kind\":\"AlertPolicy\",\"metadata\":{\"name\":\"burn\"},\"spec\":{\"conditions\":[{\"kind\":\"AlertCondition\",\"metadata\":{\"annotations\":{\"datafocal/short-window\":\"5m\"},\"name\":\"fast\"},\"spec\":{\"condition\":{\"kind\":\"burnrate\",\"lookbackWindow\":\"1h\",\"op\":\"gte\",\"threshold\":14.4},\"severity\":\"page\"}}]}}],\"budgetingMethod\":\"Occurrences\",\"indicator\":{\"spec\":{\"ratioMetric\":{\"good\":{\"metricSource\":{\"spec\":{\"query\":\"{service=\\\"gateway\\\"} | status<500\"},\"type\":\"DataFocal\"}},\"total\":{\"metricSource\":{\"spec\":{\"query\":\"{service=\\\"gateway\\\"}\"},\"type\":\"DataFocal\"}}}}},\"objectives\":[{\"target\":0.99}],\"service\":\"gateway\",\"timeWindow\":[{\"duration\":\"1d\",\"isRolling\":true}]}}",
+      "dry_run": true
+    }
+  },
+  {
+    "tool": "query",
+    "req": {
+      "q": "sum(count_over_time({service=\"gateway\"} | status<500 [1h]))",
+      "time": {
+        "from": "2026-07-17T14:10:00.000Z",
+        "to": "2026-07-18T14:10:00Z"
+      }
+    }
+  },
+  {
+    "tool": "resource_usage",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:00:00Z",
+          "to": "2026-07-18T14:10:00Z"
+        },
+        "where": [
+          {
+            "field": "service",
+            "op": "eq",
+            "value": "gateway"
+          }
+        ]
+      },
+      "group_by": "pod",
+      "bins": "auto"
+    }
+  },
+  {
+    "tool": "query",
+    "req": {
+      "q": "{service=\"gateway\"}",
+      "time": {
+        "from": "2026-07-18T14:00:00Z",
+        "to": "2026-07-18T14:10:00Z"
+      },
+      "limit": 1
+    }
+  },
+  {
+    "tool": "query",
+    "req": {
+      "q": "count_over_time({service=\"gateway\"} | status>=500 [1m])",
+      "time": {
+        "from": "2026-07-18T14:00:00Z",
+        "to": "2026-07-18T14:10:00Z"
+      },
+      "limit": 1
+    }
+  },
+  {
+    "tool": "query",
+    "req": {
+      "q": "{service=\"gateway\"}",
+      "time": {
+        "from": "2026-07-17T14:10:00.000Z",
+        "to": "2026-07-18T14:10:00Z"
+      },
+      "limit": 1
+    }
+  },
+  {
+    "tool": "export_definitions",
+    "req": {
+      "names": ["gateway"]
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:00:00Z",
+          "to": "2026-07-18T14:10:00Z"
+        },
+        "where": [
+          {
+            "field": "service",
+            "op": "eq",
+            "value": "gateway"
+          }
+        ]
+      },
+      "measure": "distinct:status",
+      "group_by": "none",
+      "bins": "all"
+    }
+  },
+  {
+    "tool": "explain_spike",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:00:00Z",
+          "to": "2026-07-18T14:10:00Z"
+        },
+        "where": [
+          {
+            "field": "service",
+            "op": "eq",
+            "value": "gateway"
+          }
+        ]
+      },
+      "slice": [
+        {
+          "field": "service",
+          "op": "eq",
+          "value": "gateway"
+        },
+        {
+          "field": "status",
+          "op": "ge",
+          "value": "500"
+        }
+      ]
+    }
+  },
+  {
+    "tool": "search_logs",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:00:00Z",
+          "to": "2026-07-18T14:10:00Z"
+        },
+        "where": [
+          {
+            "field": "service",
+            "op": "eq",
+            "value": "gateway"
+          },
+          {
+            "field": "status",
+            "op": "ge",
+            "value": "500"
+          }
+        ]
+      },
+      "limit": 20
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:00:00Z",
+          "to": "2026-07-18T14:10:00Z"
+        },
+        "where": [
+          {
+            "field": "service",
+            "op": "eq",
+            "value": "gateway"
+          },
+          {
+            "field": "status",
+            "op": "ge",
+            "value": "500"
+          }
+        ]
+      },
+      "measure": "count",
+      "group_by": "none",
+      "bins": "1m"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:00:00Z",
+          "to": "2026-07-18T14:10:00Z"
+        },
+        "where": []
+      },
+      "measure": "count",
+      "group_by": "none",
+      "bins": "1m"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:00:00Z",
+          "to": "2026-07-18T14:10:00Z"
+        },
+        "where": [
+          {
+            "field": "service",
+            "op": "eq",
+            "value": "gateway"
+          },
+          {
+            "field": "endpoint",
+            "op": "eq",
+            "value": "/users"
+          }
+        ]
+      },
+      "measure": "distinct:status",
+      "group_by": "none",
+      "bins": "all"
+    }
+  },
+  {
+    "tool": "explain_spike",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:00:00Z",
+          "to": "2026-07-18T14:10:00Z"
+        },
+        "where": [
+          {
+            "field": "service",
+            "op": "eq",
+            "value": "gateway"
+          },
+          {
+            "field": "endpoint",
+            "op": "eq",
+            "value": "/users"
+          }
+        ]
+      },
+      "slice": [
+        {
+          "field": "service",
+          "op": "eq",
+          "value": "gateway"
+        },
+        {
+          "field": "status",
+          "op": "ge",
+          "value": "500"
+        },
+        {
+          "field": "endpoint",
+          "op": "eq",
+          "value": "/users"
+        }
+      ]
+    }
+  },
+  {
+    "tool": "search_logs",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:00:00Z",
+          "to": "2026-07-18T14:10:00Z"
+        },
+        "where": [
+          {
+            "field": "service",
+            "op": "eq",
+            "value": "gateway"
+          },
+          {
+            "field": "status",
+            "op": "ge",
+            "value": "500"
+          },
+          {
+            "field": "endpoint",
+            "op": "eq",
+            "value": "/users"
+          }
+        ]
+      },
+      "limit": 20
+    }
+  },
+  {
+    "tool": "rank_fields",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T13:50:00.000Z",
+          "to": "2026-07-18T14:10:00Z"
+        },
+        "where": [
+          {
+            "field": "service",
+            "op": "eq",
+            "value": "gateway"
+          },
+          {
+            "field": "status",
+            "op": "ge",
+            "value": "500"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "tool": "slo_status",
+    "req": {
+      "name": "gateway-clean",
+      "time_range": {
+        "from": "2026-07-18T14:09:00.000Z",
+        "to": "2026-07-18T14:10:00.000Z"
+      }
+    }
+  },
+  {
+    "tool": "resource_usage",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:04:58.875Z",
+          "to": "2026-07-18T14:14:58.875Z"
+        },
+        "where": [
+          {
+            "field": "pod",
+            "op": "eq",
+            "value": "gateway-0"
+          }
+        ]
+      },
+      "group_by": "pod",
+      "bins": "auto"
+    }
+  },
+  {
+    "tool": "search_logs",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:08:58.450Z",
+          "to": "2026-07-18T14:10:58.875Z"
+        },
+        "where": [
+          {
+            "field": "trace_id",
+            "op": "eq",
+            "value": "gateway-37234478de8e3f30"
+          }
+        ]
+      },
+      "limit": 200
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:00:00Z",
+          "to": "2026-07-18T14:10:00Z"
+        },
+        "where": [
+          {
+            "field": "service",
+            "op": "eq",
+            "value": "gateway"
+          },
+          {
+            "field": "status",
+            "op": "ge",
+            "value": "500"
+          }
+        ]
+      },
+      "measure": "count",
+      "group_by": "endpoint",
+      "bins": "all"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T13:50:00.000Z",
+          "to": "2026-07-18T14:00:00.000Z"
+        },
+        "where": [
+          {
+            "field": "service",
+            "op": "eq",
+            "value": "gateway"
+          },
+          {
+            "field": "status",
+            "op": "ge",
+            "value": "500"
+          }
+        ]
+      },
+      "measure": "count",
+      "group_by": "endpoint",
+      "bins": "all"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:00:00Z",
+          "to": "2026-07-18T14:10:00Z"
+        },
+        "where": [
+          {
+            "field": "service",
+            "op": "eq",
+            "value": "gateway"
+          },
+          {
+            "field": "status",
+            "op": "ge",
+            "value": "500"
+          }
+        ]
+      },
+      "measure": "count",
+      "group_by": "instance",
+      "bins": "all"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T13:50:00.000Z",
+          "to": "2026-07-18T14:00:00.000Z"
+        },
+        "where": [
+          {
+            "field": "service",
+            "op": "eq",
+            "value": "gateway"
+          },
+          {
+            "field": "status",
+            "op": "ge",
+            "value": "500"
+          }
+        ]
+      },
+      "measure": "count",
+      "group_by": "instance",
+      "bins": "all"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:00:00Z",
+          "to": "2026-07-18T14:10:00Z"
+        },
+        "where": [
+          {
+            "field": "service",
+            "op": "eq",
+            "value": "gateway"
+          },
+          {
+            "field": "status",
+            "op": "ge",
+            "value": "500"
+          }
+        ]
+      },
+      "measure": "count",
+      "group_by": "level",
+      "bins": "all"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T13:50:00.000Z",
+          "to": "2026-07-18T14:00:00.000Z"
+        },
+        "where": [
+          {
+            "field": "service",
+            "op": "eq",
+            "value": "gateway"
+          },
+          {
+            "field": "status",
+            "op": "ge",
+            "value": "500"
+          }
+        ]
+      },
+      "measure": "count",
+      "group_by": "level",
+      "bins": "all"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:00:00Z",
+          "to": "2026-07-18T14:10:00Z"
+        },
+        "where": [
+          {
+            "field": "service",
+            "op": "eq",
+            "value": "gateway"
+          },
+          {
+            "field": "status",
+            "op": "ge",
+            "value": "500"
+          }
+        ]
+      },
+      "measure": "count",
+      "group_by": "pod",
+      "bins": "all"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T13:50:00.000Z",
+          "to": "2026-07-18T14:00:00.000Z"
+        },
+        "where": [
+          {
+            "field": "service",
+            "op": "eq",
+            "value": "gateway"
+          },
+          {
+            "field": "status",
+            "op": "ge",
+            "value": "500"
+          }
+        ]
+      },
+      "measure": "count",
+      "group_by": "pod",
+      "bins": "all"
+    }
+  },
+  {
+    "tool": "resource_usage",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:09:00.000Z",
+          "to": "2026-07-18T14:10:00.000Z"
+        },
+        "where": [
+          {
+            "field": "service",
+            "op": "eq",
+            "value": "gateway"
+          }
+        ]
+      },
+      "group_by": "pod",
+      "bins": "auto"
+    }
+  },
+  {
+    "tool": "query",
+    "req": {
+      "q": "count_over_time({service=\"gateway\"} | status>=500 [1m])",
+      "time": {
+        "from": "2026-07-18T14:09:00.000Z",
+        "to": "2026-07-18T14:10:00.000Z"
+      },
+      "limit": 1
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:09:00.000Z",
+          "to": "2026-07-18T14:10:00.000Z"
+        },
+        "where": [
+          {
+            "field": "service",
+            "op": "eq",
+            "value": "gateway"
+          },
+          {
+            "field": "status",
+            "op": "ge",
+            "value": "500"
+          }
+        ]
+      },
+      "measure": "count",
+      "group_by": "none",
+      "bins": "1m"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:09:00.000Z",
+          "to": "2026-07-18T14:10:00.000Z"
+        },
+        "where": []
+      },
+      "measure": "count",
+      "group_by": "none",
+      "bins": "1m"
+    }
+  },
+  {
+    "tool": "rank_fields",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:08:00.000Z",
+          "to": "2026-07-18T14:10:00.000Z"
+        },
+        "where": [
+          {
+            "field": "service",
+            "op": "eq",
+            "value": "gateway"
+          },
+          {
+            "field": "status",
+            "op": "ge",
+            "value": "500"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:09:00.000Z",
+          "to": "2026-07-18T14:10:00.000Z"
+        },
+        "where": [
+          {
+            "field": "service",
+            "op": "eq",
+            "value": "gateway"
+          },
+          {
+            "field": "status",
+            "op": "ge",
+            "value": "500"
+          }
+        ]
+      },
+      "measure": "count",
+      "group_by": "endpoint",
+      "bins": "all"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:08:00.000Z",
+          "to": "2026-07-18T14:09:00.000Z"
+        },
+        "where": [
+          {
+            "field": "service",
+            "op": "eq",
+            "value": "gateway"
+          },
+          {
+            "field": "status",
+            "op": "ge",
+            "value": "500"
+          }
+        ]
+      },
+      "measure": "count",
+      "group_by": "endpoint",
+      "bins": "all"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:09:00.000Z",
+          "to": "2026-07-18T14:10:00.000Z"
+        },
+        "where": [
+          {
+            "field": "service",
+            "op": "eq",
+            "value": "gateway"
+          },
+          {
+            "field": "status",
+            "op": "ge",
+            "value": "500"
+          }
+        ]
+      },
+      "measure": "count",
+      "group_by": "instance",
+      "bins": "all"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:08:00.000Z",
+          "to": "2026-07-18T14:09:00.000Z"
+        },
+        "where": [
+          {
+            "field": "service",
+            "op": "eq",
+            "value": "gateway"
+          },
+          {
+            "field": "status",
+            "op": "ge",
+            "value": "500"
+          }
+        ]
+      },
+      "measure": "count",
+      "group_by": "instance",
+      "bins": "all"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:09:00.000Z",
+          "to": "2026-07-18T14:10:00.000Z"
+        },
+        "where": [
+          {
+            "field": "service",
+            "op": "eq",
+            "value": "gateway"
+          },
+          {
+            "field": "status",
+            "op": "ge",
+            "value": "500"
+          }
+        ]
+      },
+      "measure": "count",
+      "group_by": "level",
+      "bins": "all"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:08:00.000Z",
+          "to": "2026-07-18T14:09:00.000Z"
+        },
+        "where": [
+          {
+            "field": "service",
+            "op": "eq",
+            "value": "gateway"
+          },
+          {
+            "field": "status",
+            "op": "ge",
+            "value": "500"
+          }
+        ]
+      },
+      "measure": "count",
+      "group_by": "level",
+      "bins": "all"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:09:00.000Z",
+          "to": "2026-07-18T14:10:00.000Z"
+        },
+        "where": [
+          {
+            "field": "service",
+            "op": "eq",
+            "value": "gateway"
+          },
+          {
+            "field": "status",
+            "op": "ge",
+            "value": "500"
+          }
+        ]
+      },
+      "measure": "count",
+      "group_by": "pod",
+      "bins": "all"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:08:00.000Z",
+          "to": "2026-07-18T14:09:00.000Z"
+        },
+        "where": [
+          {
+            "field": "service",
+            "op": "eq",
+            "value": "gateway"
+          },
+          {
+            "field": "status",
+            "op": "ge",
+            "value": "500"
+          }
+        ]
+      },
+      "measure": "count",
+      "group_by": "pod",
+      "bins": "all"
+    }
+  }
+]

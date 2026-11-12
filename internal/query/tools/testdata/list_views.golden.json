@@ -1,0 +1,23 @@
+{
+  "data": {
+    "views": [
+      {
+        "name": "gateway",
+        "title": "Gateway",
+        "panels": 2
+      }
+    ],
+    "writable": true
+  },
+  "meta": {
+    "snapshot": "e370.s0",
+    "coverage": 1,
+    "approx": false,
+    "cost": {
+      "gets": 0,
+      "bytes_read": 0
+    },
+    "token_estimate": 19,
+    "definitions": "3cd86f40ca2803cd"
+  }
+}

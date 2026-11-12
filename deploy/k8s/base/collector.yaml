@@ -1,0 +1,79 @@
+# One collector per node, shipping every container's log. Its saved offsets live on the
+# node, so a replaced pod resumes where the last one flushed.
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: collector
+spec:
+  selector:
+    matchLabels:
+      app: collector
+  template:
+    metadata:
+      labels:
+        app: collector
+    spec:
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          effect: NoSchedule
+      containers:
+        - name: collector
+          image: datafocal-collector:dev
+          env:
+            - name: DATAFOCAL_INGEST_HOST
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+          envFrom:
+            - configMapRef:
+                name: datafocal
+            - secretRef:
+                name: datafocal-s3
+          # Memory sized from the stack benchmark: peak RSS reached 2.3 GB catching up on
+          # 20 hours of logs, one batch sealing while the next fills.
+          resources:
+            requests:
+              cpu: 50m
+              memory: 1Gi
+            limits:
+              cpu: 500m
+              memory: 3Gi
+          securityContext:
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: [ALL]
+          volumeMounts:
+            - name: config
+              mountPath: /etc/config
+              readOnly: true
+            - name: containers
+              mountPath: /var/log/containers
+              readOnly: true
+            - name: pods
+              mountPath: /var/log/pods
+              readOnly: true
+            - name: state
+              mountPath: /var/lib/datafocal/state
+            # A pod's sandbox writes no log, so only the cgroup tree names the pod its
+            # network use belongs to.
+            - name: cgroup
+              mountPath: /sys/fs/cgroup
+              readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: collector
+        - name: containers
+          hostPath:
+            path: /var/log/containers
+        - name: pods
+          hostPath:
+            path: /var/log/pods
+        - name: state
+          hostPath:
+            path: /var/lib/datafocal/state
+            type: DirectoryOrCreate
+        - name: cgroup
+          hostPath:
+            path: /sys/fs/cgroup

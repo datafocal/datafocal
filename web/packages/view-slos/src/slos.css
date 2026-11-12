@@ -1,0 +1,340 @@
+/* The SLOs view: the list, an SLO's page of charts and tables, and the builder. */
+.slos {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 12px 20px 24px;
+}
+.slos > header {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.slos h2 {
+  font: 600 19px / 1.25 var(--sans);
+}
+.slos > header input[type="search"] {
+  width: 260px;
+}
+.slo-more {
+  text-align: center;
+}
+.slo-more .slo-link {
+  color: var(--accent);
+}
+.slo-actions {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+.tbtn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+/* The list: a card per SLO. */
+.slo-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(372px, 1fr));
+  gap: 14px;
+}
+/* An SLO's groups: a table of the same values, the budget as a bar. */
+.slo-table {
+  border-collapse: collapse;
+}
+.slo-table th {
+  padding: 6px 12px;
+  text-align: left;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--line-2);
+}
+.slo-table th .slo-link {
+  font-weight: 600;
+  color: var(--ink-3);
+}
+.slo-table td {
+  padding: 8px 12px;
+  vertical-align: top;
+  border-bottom: 1px solid var(--line);
+}
+.slo-table td .slo-num {
+  font-size: 13px;
+}
+.slo-bar {
+  display: block;
+  width: 120px;
+  height: 6px;
+  margin: 6px 0 4px;
+  appearance: none;
+  background: var(--raise);
+  border: 0;
+  border-radius: 3px;
+}
+.slo-bar::-webkit-meter-bar {
+  height: 6px;
+  background: var(--raise);
+  border: 0;
+  border-radius: 3px;
+}
+.slo-bar::-webkit-meter-optimum-value {
+  background: var(--tone);
+  border-radius: 3px;
+}
+.slo-bar::-moz-meter-bar {
+  background: var(--tone);
+  border-radius: 3px;
+}
+.slo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  gap: 14px;
+  align-items: start;
+}
+.slo-panel,
+.slo-builder pre {
+  padding: 12px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+}
+
+/* The builder: titled sections of label-and-input rows, hints aligned under the inputs. */
+.slo-builder form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.slo-builder fieldset {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 12px 14px 14px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+}
+.slo-builder legend {
+  float: left;
+  width: 100%;
+  margin-bottom: 4px;
+  padding: 0;
+  font: 600 11px var(--sans);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.slo-builder label {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+}
+.slo-builder label > span {
+  color: var(--ink-2);
+}
+.slo-builder label > input,
+.slo-builder label > select {
+  width: 100%;
+  min-width: 0;
+}
+.slo-builder input[type="number"] {
+  box-sizing: border-box;
+  height: 28px;
+  padding: 0 9px;
+  font: 12.5px var(--sans);
+  color: var(--ink);
+  background: var(--panel);
+  border: 1px solid var(--line-2);
+  border-radius: 7px;
+}
+.slo-builder input[type="number"]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+.slo-builder input.slo-query {
+  font: 12px var(--mono);
+}
+.slo-hint {
+  margin: 0 0 0 162px;
+  font-size: 12px;
+  color: var(--ink-3);
+}
+/* The classification, the action and the YAML, kept in view while the form scrolls. */
+.slo-builder .slo-grid > div {
+  position: sticky;
+  top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+}
+.slo-builder .slo-grid > div ul {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--ink-2);
+}
+.slo-builder pre {
+  box-sizing: border-box;
+  width: 100%;
+  max-height: 70vh;
+  margin: 0;
+  overflow: auto;
+  font: 12px / 1.5 var(--mono);
+  color: var(--ink-2);
+}
+
+/* An SLO's page: its stat strip, then the likely cause of its bad events, then its charts. */
+.slo-strip {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  padding: 14px 16px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+}
+.slo-strip .slo-num {
+  font-size: 16px;
+}
+.slo-span {
+  margin: -4px 0;
+}
+.slo-span .slo-link {
+  font-weight: 400;
+  color: var(--accent);
+}
+.slo-acts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.slo-acts .tbtn {
+  height: 24px;
+  padding: 0 8px;
+  font-size: 12px;
+}
+.slo-cause {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-left: 3px solid var(--insight);
+}
+.slo-cause > header {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+.slo-cause h3 {
+  margin: 0;
+  font: 600 13px var(--sans);
+}
+.slo-cause code {
+  font: 12px var(--mono);
+  color: var(--ink);
+}
+
+/* The drill-down: its sections, and the chosen request's inspector beside them. */
+.slo-drill {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.slo-drill-main > .g2,
+.slo-drill-main > .g3,
+.slo-drill-main > .slo-acts {
+  margin-block: 14px;
+}
+/* The chosen request's inspector overlays the page's right edge, so nothing reflows. */
+.slo-drill > .insp {
+  position: fixed;
+  top: 56px;
+  right: 12px;
+  bottom: 12px;
+  z-index: 5;
+  width: min(600px, 46vw);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r);
+  box-shadow: var(--shadow);
+}
+.slo-requests tbody tr {
+  cursor: pointer;
+}
+.panel .slo-requests th,
+.panel .slo-requests td {
+  text-align: left;
+}
+.slo-requests tbody tr[aria-selected="true"] td {
+  background: var(--raise);
+}
+.slo-requests td .meter {
+  justify-content: flex-start;
+}
+.slo-drill-main {
+  min-width: 0;
+}
+.slo-drill-main .panel {
+  overflow: hidden;
+}
+.slo-drill .insp table[aria-label] {
+  width: 100%;
+  border-collapse: collapse;
+  font: 12px var(--mono);
+  font-variant-numeric: tabular-nums;
+}
+.slo-drill .insp table[aria-label] th {
+  padding: 6px 8px;
+  font: 600 10.5px var(--sans);
+  letter-spacing: 0.06em;
+  text-align: left;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  border-bottom: 1px solid var(--line);
+}
+.slo-drill .insp table[aria-label] td {
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--line);
+}
+.slo-drill .insp td .meter {
+  justify-content: flex-start;
+}
+
+/* In the inspector the tiles are compact, and charts stack. */
+.slo-drill .insp .kpis {
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+}
+.slo-drill .insp .kpi {
+  min-height: 0;
+}
+.slo-drill .insp .g2 {
+  grid-template-columns: minmax(0, 1fr);
+}
+.slo-drill .insp .panel {
+  overflow: hidden;
+}
+.slo-chart h4 {
+  margin: 0 0 4px;
+  font: 600 10.5px var(--sans);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+/* The analysis window, where it is shorter than the range. */
+.slo-window {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  margin-block: 14px 4px;
+}
+.slo-window small {
+  font: 600 10.5px var(--sans);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.slo-window b {
+  font: 500 12.5px var(--mono);
+}

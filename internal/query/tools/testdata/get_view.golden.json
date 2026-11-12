@@ -1,0 +1,97 @@
+{
+  "data": {
+    "document": {
+      "apiVersion": "datafocal/v1",
+      "kind": "View",
+      "metadata": {
+        "displayName": "Gateway",
+        "name": "gateway"
+      },
+      "spec": {
+        "panels": [
+          {
+            "grid": {
+              "h": 4,
+              "w": 8,
+              "x": 0,
+              "y": 0
+            },
+            "kind": "timeseries",
+            "query": "sum by (status) (count_over_time({service=\"gateway\", endpoint=\"$endpoint\"} [1m]))"
+          },
+          {
+            "grid": {
+              "h": 4,
+              "w": 4,
+              "x": 8,
+              "y": 0
+            },
+            "kind": "slo",
+            "slo": "gateway"
+          }
+        ],
+        "time": {
+          "from": "now-1h",
+          "to": "now"
+        },
+        "variables": [
+          {
+            "allowAll": true,
+            "column": "endpoint",
+            "name": "endpoint"
+          }
+        ]
+      }
+    },
+    "view": {
+      "name": "gateway",
+      "title": "Gateway",
+      "time": {
+        "from": "now-1h",
+        "to": "now"
+      },
+      "variables": [
+        {
+          "name": "endpoint",
+          "column": "endpoint",
+          "allowAll": true
+        }
+      ],
+      "panels": [
+        {
+          "title": "sum by (status) (count_over_time({service=\"gateway\", endpoint=\"$endpoint\"} [1m]))",
+          "kind": "timeseries",
+          "query": "sum by (status) (count_over_time({service=\"gateway\", endpoint=\"$endpoint\"} [1m]))",
+          "grid": {
+            "x": 0,
+            "y": 0,
+            "w": 8,
+            "h": 4
+          }
+        },
+        {
+          "title": "gateway",
+          "kind": "slo",
+          "slo": "gateway",
+          "grid": {
+            "x": 8,
+            "y": 0,
+            "w": 4,
+            "h": 4
+          }
+        }
+      ]
+    }
+  },
+  "meta": {
+    "snapshot": "e370.s0",
+    "coverage": 1,
+    "approx": false,
+    "cost": {
+      "gets": 0,
+      "bytes_read": 0
+    },
+    "token_estimate": 236,
+    "definitions": "3cd86f40ca2803cd"
+  }
+}

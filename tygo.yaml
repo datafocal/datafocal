@@ -1,0 +1,68 @@
+# make web-types generates the TS types @datafocal/api serves from the Go request and
+# response structs.
+packages:
+  - path: github.com/datafocal/datafocal/internal/query
+    output_path: web/packages/api/src/generated/query.ts
+    include_files: [envelope.go, errors.go]
+    preserve_comments: none
+  - path: github.com/datafocal/datafocal/internal/selector
+    output_path: web/packages/api/src/generated/selector.ts
+    include_files: [selector.go]
+    preserve_comments: none
+    type_mappings:
+      regexp.Regexp: unknown
+  - path: github.com/datafocal/datafocal/internal/stats
+    output_path: web/packages/api/src/generated/stats.ts
+    include_files: [breakdown.go]
+    preserve_comments: none
+  - path: github.com/datafocal/datafocal/internal/slo
+    output_path: web/packages/api/src/generated/slo.ts
+    include_files: [status.go]
+    preserve_comments: none
+    type_mappings:
+      time.Time: string
+      selector.Predicate: selector.Predicate
+    frontmatter: |
+      import type * as selector from "./selector";
+  - path: github.com/datafocal/datafocal/internal/definitions
+    output_path: web/packages/api/src/generated/definitions.ts
+    include_files: [view.go]
+    preserve_comments: none
+    type_mappings:
+      selector.TimeSpec: selector.TimeSpec
+    frontmatter: |
+      import type * as selector from "./selector";
+  - path: github.com/datafocal/datafocal/internal/query/tools
+    output_path: web/packages/api/src/generated/tools.ts
+    exclude_files: [cursor.go, execution.go, fake.go, fields_cache.go, tools.go]
+    preserve_comments: none
+    type_mappings:
+      time.Time: string
+      json.RawMessage: unknown
+      selector.Selector: selector.Selector
+      selector.Predicate: selector.Predicate
+      selector.MeasureSpec: selector.MeasureSpec
+      selector.HavingClause: selector.HavingClause
+      selector.Rollup: selector.Rollup
+      selector.TimeSpec: selector.TimeSpec
+      stats.Share: stats.Share
+      slo.Status: slo.Status
+      slo.Detail: slo.Detail
+      slo.Imported: slo.Imported
+      definitions.View: definitions.View
+    frontmatter: |
+      import type * as definitions from "./definitions";
+      import type * as selector from "./selector";
+      import type * as slo from "./slo";
+      import type * as stats from "./stats";
+  - path: github.com/datafocal/datafocal/internal/api
+    output_path: web/packages/api/src/generated/batch.ts
+    include_files: [batch.go]
+    preserve_comments: none
+    type_mappings:
+      json.RawMessage: unknown
+      query.APIError: query.APIError
+      tools.ToolCall: tools.ToolCall
+    frontmatter: |
+      import type * as query from "./query";
+      import type * as tools from "./tools";

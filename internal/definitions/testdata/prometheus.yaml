@@ -1,0 +1,29 @@
+apiVersion: openslo/v1
+kind: SLO
+metadata:
+  displayName: API latency
+  name: api-latency-prometheus
+spec:
+  budgetingMethod: Occurrences
+  indicator:
+    metadata:
+      name: api-fast
+    spec:
+      ratioMetric:
+        counter: true
+        good:
+          metricSource:
+            spec:
+              query: sum(rate(http_request_duration_seconds_bucket{le="0.3"}[5m]))
+            type: Prometheus
+        total:
+          metricSource:
+            spec:
+              query: sum(rate(http_request_duration_seconds_count[5m]))
+            type: Prometheus
+  objectives:
+  - target: 0.99
+  service: api
+  timeWindow:
+  - duration: 28d
+    isRolling: true

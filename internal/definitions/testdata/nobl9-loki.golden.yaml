@@ -1,0 +1,34 @@
+apiVersion: openslo/v1
+kind: SLO
+metadata:
+  displayName: API Server SLO
+  name: api-server-slo
+spec:
+  budgetingMethod: Occurrences
+  description: Example Grafana Loki SLO
+  indicator:
+    metadata:
+      name: api-server-good-responses
+    spec:
+      ratioMetric:
+        good:
+          metricSource:
+            spec:
+              query: '{component="api-server"} | http_status_code>=200 | http_status_code<300
+                | http_status_code>0'
+            type: DataFocal
+        total:
+          metricSource:
+            spec:
+              query: '{component="api-server"} | http_status_code>0'
+            type: DataFocal
+  objectives:
+  - displayName: Good response (200)
+    target: 0.95
+  service: api-server
+  timeWindow:
+  - calendar:
+      startTime: "2022-12-01 00:00:00"
+      timeZone: UTC
+    duration: 1M
+    isRolling: false

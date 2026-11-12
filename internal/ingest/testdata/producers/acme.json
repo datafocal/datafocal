@@ -1,0 +1,8 @@
+{
+  "formats": [{
+    "name": "acme",
+    "match": "^(?P<time>[^|]+)\\|(?P<level>[A-Z])\\|(?P<service>[^|]+)\\|(?P<message>.*)$",
+    "levels": {"W": "warn", "E": "error"}
+  }],
+  "sources": [{"path": "acme/current", "parse": {"format": "acme"}}]
+}

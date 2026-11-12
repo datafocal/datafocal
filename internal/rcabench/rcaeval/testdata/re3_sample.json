@@ -1,0 +1,17 @@
+{
+  "suite": "RE3",
+  "cases": [
+    {
+      "id": "re3-001",
+      "root_cause_service": "inventory-service",
+      "fault_type": "memory",
+      "candidates": ["inventory-service", "catalog-service"]
+    },
+    {
+      "id": "re3-002",
+      "root_cause_service": "notification-service",
+      "fault_type": "latency",
+      "candidates": ["email-service", "notification-service", "queue-worker"]
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "data": {
+    "patterns": [
+      {
+        "pattern_id": "6fd6b784ab06ef59",
+        "pattern": "cache lookup \u003c*\u003e ms result miss",
+        "service": "recommendations",
+        "count": 11228,
+        "rate": 15.594444444444445,
+        "signal": 0.6851481481481482,
+        "status": "new"
+      },
+      {
+        "pattern_id": "2d34dd792f1fbe1b",
+        "pattern": "cache lookup \u003c*\u003e ms result hit",
+        "service": "recommendations",
+        "count": 11394,
+        "rate": 15.825,
+        "signal": 0.6849285714285714,
+        "status": "new"
+      },
+      {
+        "pattern_id": "b01d80bd163e2287",
+        "pattern": "scored \u003c*\u003e candidates in \u003c*\u003e ms model ranker",
+        "service": "recommendations",
+        "count": 12568,
+        "rate": 17.455555555555556,
+        "signal": 0.6833756613756614,
+        "status": "new"
+      },
+      {
+        "pattern_id": "9ea54abb7621ad2",
+        "pattern": "scored \u003c*\u003e candidates in \u003c*\u003e ms model blend",
+        "service": "recommendations",
+        "count": 12594,
+        "rate": 17.491666666666667,
+        "signal": 0.6833412698412699,
+        "status": "new"
+      },
+      {
+        "pattern_id": "7ac051269cd5339f",
+        "pattern": "scored \u003c*\u003e candidates in \u003c*\u003e ms model popularity",
+        "service": "recommendations",
+        "count": 12740,
+        "rate": 17.694444444444443,
+        "signal": 0.6831481481481482,
+        "status": "new"
+      },
+      {
+        "pattern_id": "c6f0833d253bf4a",
+        "pattern": "served \u003c*\u003e recommendations in \u003c*\u003e ms",
+        "service": "recommendations",
+        "count": 90676,
+        "rate": 125.93888888888888,
+        "signal": 0.580058201058201,
+        "status": "new"
+      }
+    ],
+    "total": 6
+  },
+  "meta": {
+    "snapshot": "e370.s0",
+    "coverage": 1,
+    "approx": false,
+    "cost": {
+      "gets": 49,
+      "bytes_read": 194,
+      "footers_decoded": 48,
+      "segments": 97
+    },
+    "token_estimate": 323
+  }
+}

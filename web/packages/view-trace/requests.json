@@ -1,0 +1,1577 @@
+[
+  {
+    "tool": "rank_fields",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        }
+      }
+    }
+  },
+  {
+    "tool": "get_trace",
+    "req": {
+      "value": "842e33af-9917-f20e-e46e-5bec950ddc23",
+      "time": {
+        "from": "2026-07-27T00:00:00Z",
+        "to": "2026-07-28T00:00:00Z"
+      },
+      "field": "sessionId",
+      "limit": 10000
+    }
+  },
+  {
+    "tool": "get_trace",
+    "req": {
+      "value": "842e33af-9917-f20e-e46e-5bec950ddc23",
+      "time": {
+        "from": "2026-07-27T00:00:00Z",
+        "to": "2026-07-28T00:00:00Z"
+      },
+      "limit": 10000
+    }
+  },
+  {
+    "tool": "get_trace",
+    "req": {
+      "value": "t-790fde371b70",
+      "time": {
+        "from": "2026-07-27T00:00:00Z",
+        "to": "2026-07-28T00:00:00Z"
+      },
+      "limit": 10000,
+      "field": "task"
+    }
+  },
+  {
+    "tool": "search_logs",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T23:16:40.000Z",
+          "to": "2026-07-27T23:18:34.320Z"
+        },
+        "where": [
+          {
+            "field": "task",
+            "op": "eq",
+            "value": "t-790fde371b70"
+          }
+        ]
+      },
+      "limit": 8
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        }
+      },
+      "measure": "count",
+      "group_by": "service",
+      "bins": "all"
+    }
+  },
+  {
+    "tool": "search_logs",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T19:04:53.000Z",
+          "to": "2026-07-27T19:08:12.685Z"
+        },
+        "where": [
+          {
+            "any": [
+              {
+                "field": "sessionId",
+                "op": "eq",
+                "value": "842e33af-9917-f20e-e46e-5bec950ddc23"
+              },
+              {
+                "field": "run_id",
+                "op": "eq",
+                "value": "842e33af-9917-f20e-e46e-5bec950ddc23"
+              },
+              {
+                "field": "session",
+                "op": "eq",
+                "value": "842e33af-9917-f20e-e46e-5bec950ddc23"
+              }
+            ]
+          }
+        ]
+      },
+      "limit": 107
+    }
+  },
+  {
+    "tool": "trace_shape",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        }
+      },
+      "root": [
+        {
+          "field": "service",
+          "op": "eq",
+          "value": "orchestrator"
+        }
+      ],
+      "field": "sessionId",
+      "compare": "842e33af-9917-f20e-e46e-5bec950ddc23"
+    }
+  },
+  {
+    "tool": "get_trace",
+    "req": {
+      "value": "9756b83d-a6d6-cf5c-4a6f-b1af3f3d7b7e",
+      "time": {
+        "from": "2026-07-27T00:00:00Z",
+        "to": "2026-07-28T00:00:00Z"
+      },
+      "limit": 10000,
+      "field": "run_id"
+    }
+  },
+  {
+    "tool": "search_logs",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T23:16:40.000Z",
+          "to": "2026-07-27T23:18:34.320Z"
+        },
+        "where": [
+          {
+            "any": [
+              {
+                "field": "run_id",
+                "op": "eq",
+                "value": "9756b83d-a6d6-cf5c-4a6f-b1af3f3d7b7e"
+              },
+              {
+                "field": "session",
+                "op": "eq",
+                "value": "9756b83d-a6d6-cf5c-4a6f-b1af3f3d7b7e"
+              },
+              {
+                "field": "sessionId",
+                "op": "eq",
+                "value": "9756b83d-a6d6-cf5c-4a6f-b1af3f3d7b7e"
+              }
+            ]
+          }
+        ]
+      },
+      "limit": 59
+    }
+  },
+  {
+    "tool": "resource_usage",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T19:03:53.000Z",
+          "to": "2026-07-27T19:09:12.684Z"
+        },
+        "where": [
+          {
+            "field": "service",
+            "op": "eq",
+            "value": "workspace"
+          }
+        ]
+      },
+      "group_by": "service",
+      "summary_only": true
+    }
+  },
+  {
+    "tool": "resource_usage",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T23:15:40.000Z",
+          "to": "2026-07-27T23:19:34.319Z"
+        },
+        "where": [
+          {
+            "field": "service",
+            "op": "eq",
+            "value": "orchestrator"
+          }
+        ]
+      },
+      "group_by": "service",
+      "summary_only": true
+    }
+  },
+  {
+    "tool": "resource_usage",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T23:15:40.000Z",
+          "to": "2026-07-27T23:19:34.319Z"
+        },
+        "where": [
+          {
+            "field": "service",
+            "op": "eq",
+            "value": "sandbox-s"
+          }
+        ]
+      },
+      "group_by": "service",
+      "summary_only": true
+    }
+  },
+  {
+    "tool": "resource_usage",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T23:15:40.000Z",
+          "to": "2026-07-27T23:19:34.319Z"
+        },
+        "where": [
+          {
+            "field": "service",
+            "op": "eq",
+            "value": "workspace"
+          }
+        ]
+      },
+      "group_by": "service",
+      "summary_only": true
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "service",
+            "op": "eq",
+            "value": "workspace"
+          }
+        ]
+      },
+      "measure": "",
+      "group_by": "sessionId",
+      "bins": "all",
+      "measures": [
+        {
+          "measure": "min:ts"
+        },
+        {
+          "measure": "max:ts"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "level",
+              "op": "eq",
+              "value": "error"
+            }
+          ]
+        },
+        {
+          "measure": "count"
+        },
+        {
+          "measure": "distinct:service"
+        },
+        {
+          "measure": "span:ts"
+        },
+        {
+          "measure": "first:service"
+        },
+        {
+          "measure": "last:service"
+        },
+        {
+          "measure": "last:duration_ms"
+        },
+        {
+          "measure": "last:message.content.name"
+        }
+      ],
+      "having": [
+        {
+          "index": 3,
+          "op": "gt",
+          "value": 1
+        }
+      ],
+      "sort": "0:desc",
+      "limit": 100
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": []
+      },
+      "measure": "",
+      "group_by": "run_id",
+      "bins": "all",
+      "measures": [
+        {
+          "measure": "min:ts"
+        },
+        {
+          "measure": "max:ts"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "level",
+              "op": "eq",
+              "value": "error"
+            }
+          ]
+        },
+        {
+          "measure": "count"
+        },
+        {
+          "measure": "distinct:service"
+        },
+        {
+          "measure": "span:ts"
+        },
+        {
+          "measure": "first:service"
+        },
+        {
+          "measure": "last:service"
+        },
+        {
+          "measure": "last:duration_ms"
+        },
+        {
+          "measure": "last:message.content.name"
+        }
+      ],
+      "having": [
+        {
+          "index": 3,
+          "op": "gt",
+          "value": 1
+        }
+      ],
+      "sort": "0:desc",
+      "limit": 100
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": []
+      },
+      "measure": "",
+      "group_by": "task",
+      "bins": "all",
+      "measures": [
+        {
+          "measure": "min:ts"
+        },
+        {
+          "measure": "max:ts"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "level",
+              "op": "eq",
+              "value": "error"
+            }
+          ]
+        },
+        {
+          "measure": "count"
+        },
+        {
+          "measure": "distinct:service"
+        },
+        {
+          "measure": "span:ts"
+        },
+        {
+          "measure": "first:service"
+        },
+        {
+          "measure": "last:service"
+        },
+        {
+          "measure": "last:duration_ms"
+        },
+        {
+          "measure": "last:message.content.name"
+        }
+      ],
+      "having": [
+        {
+          "index": 3,
+          "op": "gt",
+          "value": 1
+        }
+      ],
+      "sort": "0:desc",
+      "limit": 100
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "level",
+            "op": "eq",
+            "value": "info"
+          }
+        ]
+      },
+      "measure": "",
+      "group_by": "run_id",
+      "bins": "all",
+      "measures": [
+        {
+          "measure": "min:ts"
+        },
+        {
+          "measure": "max:ts"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "level",
+              "op": "eq",
+              "value": "error"
+            }
+          ]
+        },
+        {
+          "measure": "count"
+        },
+        {
+          "measure": "distinct:service"
+        },
+        {
+          "measure": "span:ts"
+        },
+        {
+          "measure": "first:service"
+        },
+        {
+          "measure": "last:service"
+        },
+        {
+          "measure": "last:duration_ms"
+        },
+        {
+          "measure": "last:message.content.name"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "service",
+              "op": "eq",
+              "value": "orchestrator"
+            }
+          ]
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "service",
+              "op": "eq",
+              "value": "postgres"
+            }
+          ]
+        }
+      ],
+      "having": [
+        {
+          "index": 3,
+          "op": "gt",
+          "value": 1
+        },
+        {
+          "index": 10,
+          "op": "gt",
+          "value": 0
+        },
+        {
+          "index": 11,
+          "op": "gt",
+          "value": 0
+        }
+      ],
+      "sort": "0:desc",
+      "limit": 100
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "service",
+            "op": "eq",
+            "value": "sandbox-s"
+          }
+        ]
+      },
+      "measure": "",
+      "group_by": "run_id",
+      "bins": "all",
+      "measures": [
+        {
+          "measure": "min:ts"
+        },
+        {
+          "measure": "max:ts"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "level",
+              "op": "eq",
+              "value": "error"
+            }
+          ]
+        },
+        {
+          "measure": "count"
+        },
+        {
+          "measure": "distinct:service"
+        },
+        {
+          "measure": "span:ts"
+        },
+        {
+          "measure": "first:service"
+        },
+        {
+          "measure": "last:service"
+        },
+        {
+          "measure": "last:duration_ms"
+        },
+        {
+          "measure": "last:message.content.name"
+        }
+      ],
+      "having": [
+        {
+          "index": 3,
+          "op": "gt",
+          "value": 1
+        }
+      ],
+      "sort": "0:desc",
+      "limit": 100
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "service",
+            "op": "eq",
+            "value": "postgres"
+          }
+        ]
+      },
+      "measure": "",
+      "group_by": "task",
+      "bins": "all",
+      "measures": [
+        {
+          "measure": "min:ts"
+        },
+        {
+          "measure": "max:ts"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "level",
+              "op": "eq",
+              "value": "error"
+            }
+          ]
+        },
+        {
+          "measure": "count"
+        },
+        {
+          "measure": "distinct:service"
+        },
+        {
+          "measure": "span:ts"
+        },
+        {
+          "measure": "first:service"
+        },
+        {
+          "measure": "last:service"
+        },
+        {
+          "measure": "last:duration_ms"
+        },
+        {
+          "measure": "last:message.content.name"
+        }
+      ],
+      "having": [
+        {
+          "index": 3,
+          "op": "gt",
+          "value": 1
+        }
+      ],
+      "sort": "0:desc",
+      "limit": 100
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "level",
+            "op": "eq",
+            "value": "info"
+          }
+        ]
+      },
+      "measure": "",
+      "group_by": "sessionId",
+      "bins": "all",
+      "measures": [
+        {
+          "measure": "min:ts"
+        },
+        {
+          "measure": "max:ts"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "level",
+              "op": "eq",
+              "value": "error"
+            }
+          ]
+        },
+        {
+          "measure": "count"
+        },
+        {
+          "measure": "distinct:service"
+        },
+        {
+          "measure": "span:ts"
+        },
+        {
+          "measure": "first:service"
+        },
+        {
+          "measure": "last:service"
+        },
+        {
+          "measure": "last:duration_ms"
+        },
+        {
+          "measure": "last:message.content.name"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "service",
+              "op": "eq",
+              "value": "orchestrator"
+            }
+          ]
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "service",
+              "op": "eq",
+              "value": "postgres"
+            }
+          ]
+        }
+      ],
+      "having": [
+        {
+          "index": 3,
+          "op": "gt",
+          "value": 1
+        },
+        {
+          "index": 10,
+          "op": "gt",
+          "value": 0
+        },
+        {
+          "index": 11,
+          "op": "gt",
+          "value": 0
+        }
+      ],
+      "sort": "0:desc",
+      "limit": 100
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "service",
+            "op": "eq",
+            "value": "sandbox-s"
+          }
+        ]
+      },
+      "measure": "",
+      "group_by": "sessionId",
+      "bins": "all",
+      "measures": [
+        {
+          "measure": "min:ts"
+        },
+        {
+          "measure": "max:ts"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "level",
+              "op": "eq",
+              "value": "error"
+            }
+          ]
+        },
+        {
+          "measure": "count"
+        },
+        {
+          "measure": "distinct:service"
+        },
+        {
+          "measure": "span:ts"
+        },
+        {
+          "measure": "first:service"
+        },
+        {
+          "measure": "last:service"
+        },
+        {
+          "measure": "last:duration_ms"
+        },
+        {
+          "measure": "last:message.content.name"
+        }
+      ],
+      "having": [
+        {
+          "index": 3,
+          "op": "gt",
+          "value": 1
+        }
+      ],
+      "sort": "0:desc",
+      "limit": 100
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": []
+      },
+      "measure": "",
+      "group_by": "run_id",
+      "bins": "all",
+      "measures": [
+        {
+          "measure": "min:ts"
+        },
+        {
+          "measure": "max:ts"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "level",
+              "op": "eq",
+              "value": "error"
+            }
+          ]
+        },
+        {
+          "measure": "count"
+        },
+        {
+          "measure": "distinct:service"
+        },
+        {
+          "measure": "span:ts"
+        },
+        {
+          "measure": "first:service"
+        },
+        {
+          "measure": "last:service"
+        },
+        {
+          "measure": "last:duration_ms"
+        },
+        {
+          "measure": "last:message.content.name"
+        }
+      ],
+      "having": [
+        {
+          "index": 3,
+          "op": "gt",
+          "value": 1
+        },
+        {
+          "index": 5,
+          "op": "ge",
+          "value": 500
+        }
+      ],
+      "sort": "0:desc",
+      "limit": 100
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "service",
+            "op": "eq",
+            "value": "workspace"
+          }
+        ]
+      },
+      "measure": "",
+      "group_by": "run_id",
+      "bins": "all",
+      "measures": [
+        {
+          "measure": "min:ts"
+        },
+        {
+          "measure": "max:ts"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "level",
+              "op": "eq",
+              "value": "error"
+            }
+          ]
+        },
+        {
+          "measure": "count"
+        },
+        {
+          "measure": "distinct:service"
+        },
+        {
+          "measure": "span:ts"
+        },
+        {
+          "measure": "first:service"
+        },
+        {
+          "measure": "last:service"
+        },
+        {
+          "measure": "last:duration_ms"
+        },
+        {
+          "measure": "last:message.content.name"
+        }
+      ],
+      "having": [
+        {
+          "index": 3,
+          "op": "gt",
+          "value": 1
+        }
+      ],
+      "sort": "0:desc",
+      "limit": 100
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": []
+      },
+      "measure": "",
+      "group_by": "run_id",
+      "bins": "all",
+      "measures": [
+        {
+          "measure": "min:ts"
+        },
+        {
+          "measure": "max:ts"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "level",
+              "op": "eq",
+              "value": "error"
+            }
+          ]
+        },
+        {
+          "measure": "count"
+        },
+        {
+          "measure": "distinct:service"
+        },
+        {
+          "measure": "span:ts"
+        },
+        {
+          "measure": "first:service"
+        },
+        {
+          "measure": "last:service"
+        },
+        {
+          "measure": "last:duration_ms"
+        },
+        {
+          "measure": "last:message.content.name"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "service",
+              "op": "eq",
+              "value": "workspace"
+            }
+          ]
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "service",
+              "op": "eq",
+              "value": "orchestrator"
+            }
+          ]
+        }
+      ],
+      "having": [
+        {
+          "index": 3,
+          "op": "gt",
+          "value": 1
+        },
+        {
+          "index": 10,
+          "op": "gt",
+          "value": 0
+        },
+        {
+          "index": 11,
+          "op": "gt",
+          "value": 0
+        }
+      ],
+      "sort": "0:desc",
+      "limit": 100
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": []
+      },
+      "measure": "",
+      "group_by": "run_id",
+      "bins": "all",
+      "measures": [
+        {
+          "measure": "min:ts"
+        },
+        {
+          "measure": "max:ts"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "level",
+              "op": "eq",
+              "value": "error"
+            }
+          ]
+        },
+        {
+          "measure": "count"
+        },
+        {
+          "measure": "distinct:service"
+        },
+        {
+          "measure": "span:ts"
+        },
+        {
+          "measure": "first:service"
+        },
+        {
+          "measure": "last:service"
+        },
+        {
+          "measure": "last:duration_ms"
+        },
+        {
+          "measure": "last:message.content.name"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "message",
+              "op": "regex",
+              "value": "(?i)claimed"
+            }
+          ]
+        }
+      ],
+      "having": [
+        {
+          "index": 3,
+          "op": "gt",
+          "value": 1
+        },
+        {
+          "index": 10,
+          "op": "gt",
+          "value": 0
+        }
+      ],
+      "sort": "0:desc",
+      "limit": 100
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": []
+      },
+      "measure": "",
+      "group_by": "run_id",
+      "bins": "all",
+      "measures": [
+        {
+          "measure": "min:ts"
+        },
+        {
+          "measure": "max:ts"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "level",
+              "op": "eq",
+              "value": "error"
+            }
+          ]
+        },
+        {
+          "measure": "count"
+        },
+        {
+          "measure": "distinct:service"
+        },
+        {
+          "measure": "span:ts"
+        },
+        {
+          "measure": "first:service"
+        },
+        {
+          "measure": "last:service"
+        },
+        {
+          "measure": "last:duration_ms"
+        },
+        {
+          "measure": "last:message.content.name"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "message",
+              "op": "regex",
+              "value": "(?i)claimed"
+            },
+            {
+              "field": "service",
+              "op": "ne",
+              "value": "workspace"
+            }
+          ]
+        }
+      ],
+      "having": [
+        {
+          "index": 3,
+          "op": "gt",
+          "value": 1
+        },
+        {
+          "index": 10,
+          "op": "gt",
+          "value": 0
+        }
+      ],
+      "sort": "0:desc",
+      "limit": 100
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "level",
+            "op": "eq",
+            "value": "info"
+          }
+        ]
+      },
+      "measure": "",
+      "group_by": "task",
+      "bins": "all",
+      "measures": [
+        {
+          "measure": "min:ts"
+        },
+        {
+          "measure": "max:ts"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "level",
+              "op": "eq",
+              "value": "error"
+            }
+          ]
+        },
+        {
+          "measure": "count"
+        },
+        {
+          "measure": "distinct:service"
+        },
+        {
+          "measure": "span:ts"
+        },
+        {
+          "measure": "first:service"
+        },
+        {
+          "measure": "last:service"
+        },
+        {
+          "measure": "last:duration_ms"
+        },
+        {
+          "measure": "last:message.content.name"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "service",
+              "op": "eq",
+              "value": "orchestrator"
+            }
+          ]
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "service",
+              "op": "eq",
+              "value": "postgres"
+            }
+          ]
+        }
+      ],
+      "having": [
+        {
+          "index": 3,
+          "op": "gt",
+          "value": 1
+        },
+        {
+          "index": 10,
+          "op": "gt",
+          "value": 0
+        },
+        {
+          "index": 11,
+          "op": "gt",
+          "value": 0
+        }
+      ],
+      "sort": "0:desc",
+      "limit": 100
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "service",
+            "op": "eq",
+            "value": "sandbox-s"
+          }
+        ]
+      },
+      "measure": "",
+      "group_by": "task",
+      "bins": "all",
+      "measures": [
+        {
+          "measure": "min:ts"
+        },
+        {
+          "measure": "max:ts"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "level",
+              "op": "eq",
+              "value": "error"
+            }
+          ]
+        },
+        {
+          "measure": "count"
+        },
+        {
+          "measure": "distinct:service"
+        },
+        {
+          "measure": "span:ts"
+        },
+        {
+          "measure": "first:service"
+        },
+        {
+          "measure": "last:service"
+        },
+        {
+          "measure": "last:duration_ms"
+        },
+        {
+          "measure": "last:message.content.name"
+        }
+      ],
+      "having": [
+        {
+          "index": 3,
+          "op": "gt",
+          "value": 1
+        }
+      ],
+      "sort": "0:desc",
+      "limit": 100
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "level",
+            "op": "eq",
+            "value": "info"
+          }
+        ]
+      },
+      "measure": "",
+      "group_by": "session",
+      "bins": "all",
+      "measures": [
+        {
+          "measure": "min:ts"
+        },
+        {
+          "measure": "max:ts"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "level",
+              "op": "eq",
+              "value": "error"
+            }
+          ]
+        },
+        {
+          "measure": "count"
+        },
+        {
+          "measure": "distinct:service"
+        },
+        {
+          "measure": "span:ts"
+        },
+        {
+          "measure": "first:service"
+        },
+        {
+          "measure": "last:service"
+        },
+        {
+          "measure": "last:duration_ms"
+        },
+        {
+          "measure": "last:message.content.name"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "service",
+              "op": "eq",
+              "value": "orchestrator"
+            }
+          ]
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "service",
+              "op": "eq",
+              "value": "postgres"
+            }
+          ]
+        }
+      ],
+      "having": [
+        {
+          "index": 3,
+          "op": "gt",
+          "value": 1
+        },
+        {
+          "index": 10,
+          "op": "gt",
+          "value": 0
+        },
+        {
+          "index": 11,
+          "op": "gt",
+          "value": 0
+        }
+      ],
+      "sort": "0:desc",
+      "limit": 100
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "service",
+            "op": "eq",
+            "value": "postgres"
+          }
+        ]
+      },
+      "measure": "",
+      "group_by": "task",
+      "bins": "all",
+      "measures": [
+        {
+          "measure": "min:ts"
+        },
+        {
+          "measure": "max:ts"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "level",
+              "op": "eq",
+              "value": "error"
+            }
+          ]
+        },
+        {
+          "measure": "count"
+        },
+        {
+          "measure": "distinct:service"
+        },
+        {
+          "measure": "span:ts"
+        },
+        {
+          "measure": "first:service"
+        }
+      ],
+      "having": [
+        {
+          "index": 3,
+          "op": "gt",
+          "value": 1
+        }
+      ],
+      "sort": "0:desc",
+      "limit": 100
+    }
+  }
+]

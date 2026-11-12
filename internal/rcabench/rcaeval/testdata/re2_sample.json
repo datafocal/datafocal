@@ -1,0 +1,23 @@
+{
+  "suite": "RE2",
+  "cases": [
+    {
+      "id": "re2-001",
+      "root_cause_service": "order-service",
+      "fault_type": "latency",
+      "candidates": ["order-service", "payment-service", "gateway"]
+    },
+    {
+      "id": "re2-002",
+      "root_cause_service": "db-proxy",
+      "fault_type": "error_rate",
+      "candidates": ["cache-service", "db-proxy", "auth-service"]
+    },
+    {
+      "id": "re2-003",
+      "root_cause_service": "auth-service",
+      "fault_type": "cpu",
+      "candidates": ["gateway", "user-service", "auth-service", "db-proxy"]
+    }
+  ]
+}

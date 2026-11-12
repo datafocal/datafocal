@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: querier
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: querier
+  template:
+    metadata:
+      labels:
+        app: querier
+    spec:
+      securityContext:
+        runAsNonRoot: true
+      # The SLO definitions, read-only, as an image built by make definitions-image, whose
+      # tag make deploy-kind replaces with the sample's content hash. Needs the ImageVolume feature.
+      volumes:
+        - name: definitions
+          image:
+            reference: datafocal-definitions:sample
+            pullPolicy: IfNotPresent
+      containers:
+        - name: querier
+          image: datafocal-querier:dev
+          env:
+            - name: DATAFOCAL_DEFINITIONS_DIR
+              value: /definitions
+            - name: DATAFOCAL_MEMORY_LIMIT
+              valueFrom:
+                resourceFieldRef:
+                  resource: limits.memory
+          envFrom:
+            - configMapRef:
+                name: datafocal
+            - secretRef:
+                name: datafocal-s3
+          ports:
+            - name: http
+              containerPort: 8080
+          volumeMounts:
+            - name: definitions
+              mountPath: /definitions
+              subPath: definitions
+              readOnly: true
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+          # The first summary build saturates the CPU limit, and a 1s probe timeout then
+          # restarts the querier before the build can finish.
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            timeoutSeconds: 5
+          # Memory measured on the factory cluster: 1.45 GB resident once the first summary
+          # build over 27 days of a node's history finished, so a 1 GiB limit was killed at
+          # every start.
+          resources:
+            requests:
+              cpu: 100m
+              memory: 1536Mi
+            limits:
+              cpu: "1"
+              memory: 3Gi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: [ALL]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: querier
+spec:
+  selector:
+    app: querier
+  ports:
+    - name: http
+      port: 8080
+      targetPort: http

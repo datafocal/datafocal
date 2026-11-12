@@ -1,0 +1,105 @@
+[
+  {
+    "tool": "resource_usage",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:00:00Z",
+          "to": "2026-07-18T14:10:00Z"
+        },
+        "where": []
+      },
+      "group_by": "service"
+    }
+  },
+  {
+    "tool": "resource_usage",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:00:00Z",
+          "to": "2026-07-18T14:10:00Z"
+        },
+        "where": [
+          {
+            "field": "service",
+            "op": "eq",
+            "value": "checkout"
+          }
+        ]
+      },
+      "group_by": "pod"
+    }
+  },
+  {
+    "tool": "resource_usage",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:00:00Z",
+          "to": "2026-07-18T14:10:00Z"
+        },
+        "where": [
+          {
+            "field": "host",
+            "op": "eq",
+            "value": "node-2"
+          }
+        ]
+      },
+      "group_by": "service"
+    }
+  },
+  {
+    "tool": "resource_usage",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:00:00Z",
+          "to": "2026-07-18T14:10:00Z"
+        },
+        "where": []
+      },
+      "group_by": "service",
+      "detail": "cpu"
+    }
+  },
+  {
+    "tool": "resource_usage",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:00:00Z",
+          "to": "2026-07-18T14:10:00Z"
+        },
+        "where": [
+          {
+            "field": "host",
+            "op": "eq",
+            "value": "device-1"
+          }
+        ]
+      },
+      "group_by": "service"
+    }
+  },
+  {
+    "tool": "resource_usage",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:00:00Z",
+          "to": "2026-07-18T14:10:00Z"
+        },
+        "where": [
+          {
+            "field": "host",
+            "op": "eq",
+            "value": "device-2"
+          }
+        ]
+      },
+      "group_by": "service"
+    }
+  }
+]

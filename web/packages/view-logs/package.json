@@ -1,0 +1,20 @@
+{
+  "name": "@datafocal/view-logs",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@datafocal/api": "workspace:*",
+    "@datafocal/data": "workspace:*",
+    "@datafocal/query": "workspace:*",
+    "@datafocal/render-table": "workspace:*",
+    "@datafocal/shell": "workspace:*",
+    "@datafocal/ui": "workspace:*",
+    "react": "19.3.1"
+  },
+  "devDependencies": {
+    "react-dom": "19.3.1"
+  }
+}

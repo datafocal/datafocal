@@ -1,0 +1,53 @@
+apiVersion: openslo/v1
+kind: SLO
+metadata:
+  name: checkout-p99
+spec:
+  budgetingMethod: Timeslices
+  indicator:
+    spec:
+      thresholdMetric:
+        metricSource:
+          spec:
+            query: quantile_over_time(0.99, {service="checkout"} | unwrap duration_ms
+              [1m])
+          type: DataFocal
+  objectives:
+  - op: lt
+    target: 0.995
+    timeSliceTarget: 0.995
+    timeSliceWindow: 1m
+    value: 300
+  service: checkout
+  timeWindow:
+  - duration: 7d
+    isRolling: true
+---
+apiVersion: openslo/v1
+kind: SLO
+metadata:
+  name: checkout-ratio-slices
+spec:
+  budgetingMethod: RatioTimeslices
+  indicator:
+    spec:
+      ratioMetric:
+        bad:
+          metricSource:
+            spec:
+              query: '{service="checkout", level="error"}'
+            type: DataFocal
+        total:
+          metricSource:
+            spec:
+              query: '{service="checkout"}'
+            type: DataFocal
+  objectives:
+  - op: gte
+    target: 0.9
+    timeSliceWindow: 5m
+    value: 0.95
+  service: checkout
+  timeWindow:
+  - duration: 1d
+    isRolling: true

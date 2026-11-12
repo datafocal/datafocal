@@ -1,0 +1,39 @@
+apiVersion: openslo/v1
+kind: SLO
+metadata:
+  name: checkout-availability
+  displayName: Checkout availability
+  annotations:
+    datafocal/group-by: route
+spec:
+  service: checkout
+  budgetingMethod: Occurrences
+  timeWindow: [{duration: 28d, isRolling: true}]
+  objectives: [{displayName: available, target: 0.999}]
+  indicator:
+    metadata: {name: checkout-non-5xx}
+    spec:
+      ratioMetric:
+        counter: false
+        total: {metricSource: {type: DataFocal, spec: {query: '{service="checkout", kind="request"}'}}}
+        good:  {metricSource: {type: DataFocal, spec: {query: '{service="checkout",kind="request"}|status<500'}}}
+  alertPolicies: [{alertPolicyRef: standard-burn}]
+---
+apiVersion: openslo/v1
+kind: AlertPolicy
+metadata: {name: standard-burn}
+spec:
+  alertWhenNoData: false
+  conditions:
+    - kind: AlertCondition
+      metadata: {name: page-fast}
+      spec: {severity: page, condition: {kind: burnrate, op: gte, threshold: 14.4, lookbackWindow: 1h}}
+    - kind: AlertCondition
+      metadata: {name: page-slow}
+      spec: {severity: page, condition: {kind: burnrate, op: gte, threshold: 6, lookbackWindow: 6h}}
+    - conditionRef: ticket
+---
+apiVersion: openslo/v1
+kind: AlertCondition
+metadata: {name: ticket}
+spec: {severity: ticket, condition: {kind: burnrate, op: gte, threshold: 1, lookbackWindow: 3d, alertAfter: 1h}}

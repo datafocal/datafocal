@@ -1,0 +1,7 @@
+{
+  "formats": [{
+    "name": "klog",
+    "match": "^(?P<level>[IWEF])\\d{4} \\d{2}:\\d{2}:\\d{2}\\.\\d{6}\\s+\\d+ (?P<source>[^ \\]]+:\\d+)\\] ?(?P<message>.*)$",
+    "levels": {"I": "info", "W": "warn", "E": "error", "F": "fatal"}
+  }]
+}

@@ -1,0 +1,32 @@
+rules:
+  # Deterministic, hermetic tests: synchronize on the condition, or fake the clock.
+  - id: no-sleep-in-tests
+    languages: [go]
+    severity: ERROR
+    message: No sleeps in tests - synchronize on the condition, or fake the clock.
+    paths:
+      include: ["*_test.go"]
+    pattern: time.Sleep(...)
+
+  # Log the specific fields an operator filters on, never a whole struct.
+  - id: go-no-struct-dump-logging
+    languages: [go]
+    severity: ERROR
+    message: Log the specific fields an operator filters on, never a whole struct.
+    pattern-either:
+      - pattern: zap.Any(...)
+      - pattern: zap.Reflect(...)
+      - pattern: spew.Dump(...)
+
+  # Fail fast at wiring with returned errors or panic; never fatal-exit from
+  # library code - only main owns the process.
+  - id: go-no-fatal-outside-main
+    languages: [go]
+    severity: ERROR
+    message: Only main owns the process - return the error instead of exiting.
+    paths:
+      include: ["internal/**"]
+    pattern-either:
+      - pattern: log.Fatal(...)
+      - pattern: log.Fatalf(...)
+      - pattern: os.Exit(...)

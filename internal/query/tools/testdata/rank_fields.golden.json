@@ -1,0 +1,162 @@
+{
+  "data": {
+    "fields": [
+      {
+        "name": "message",
+        "type": "str",
+        "cardinality": 11634,
+        "present": 1,
+        "lines": 1,
+        "signal": 0.6753091795146355,
+        "high_signal": true
+      },
+      {
+        "name": "duration_ms",
+        "type": "num",
+        "cardinality": 1541,
+        "present": 0.7453416149068323,
+        "lines": 0.7626382753803753,
+        "signal": 0.3946802627297529,
+        "high_signal": true
+      },
+      {
+        "name": "service",
+        "type": "enum",
+        "cardinality": 7,
+        "present": 1,
+        "lines": 1,
+        "signal": 0.15,
+        "high_signal": true
+      },
+      {
+        "name": "pod",
+        "type": "enum",
+        "cardinality": 7,
+        "present": 0.7515527950310559,
+        "lines": 0.981877902367199,
+        "signal": 0.11273291925465838,
+        "high_signal": true
+      },
+      {
+        "name": "instance",
+        "type": "enum",
+        "cardinality": 6,
+        "present": 0.7453416149068323,
+        "lines": 0.9817772240470167,
+        "signal": 0.10462192256115295,
+        "high_signal": true
+      },
+      {
+        "name": "level",
+        "type": "enum",
+        "cardinality": 3,
+        "present": 1,
+        "lines": 1,
+        "signal": 0.1,
+        "high_signal": true
+      },
+      {
+        "name": "host",
+        "type": "enum",
+        "cardinality": 7,
+        "present": 0.2546583850931677,
+        "lines": 0.018222775952983224,
+        "signal": 0.038198757763975154,
+        "high_signal": false
+      },
+      {
+        "name": "status",
+        "type": "enum",
+        "cardinality": 4,
+        "present": 0.2484472049689441,
+        "lines": 0.5059085589156945,
+        "signal": 0.028843827265681514,
+        "high_signal": false
+      },
+      {
+        "name": "endpoint",
+        "type": "enum",
+        "cardinality": 3,
+        "present": 0.2484472049689441,
+        "lines": 0.5059085589156945,
+        "signal": 0.024844720496894408,
+        "high_signal": false
+      },
+      {
+        "name": "region",
+        "type": "enum",
+        "cardinality": 1,
+        "present": 0.4968944099378882,
+        "lines": 0.7401492556096702,
+        "signal": 0.024844720496894408,
+        "high_signal": false
+      },
+      {
+        "name": "op",
+        "type": "enum",
+        "cardinality": 2,
+        "present": 0.2484472049689441,
+        "lines": 0.24162796843734663,
+        "signal": 0.019688975164237964,
+        "high_signal": false
+      },
+      {
+        "name": "cluster",
+        "type": "enum",
+        "cardinality": 1,
+        "present": 0.2484472049689441,
+        "lines": 0.24162796843734663,
+        "signal": 0.012422360248447204,
+        "high_signal": false
+      },
+      {
+        "name": "dc",
+        "type": "enum",
+        "cardinality": 1,
+        "present": 0.2484472049689441,
+        "lines": 0.018122097632800996,
+        "signal": 0.012422360248447204,
+        "high_signal": false
+      },
+      {
+        "name": "trace_id",
+        "type": "id",
+        "cardinality": 59113,
+        "present": 0.4968944099378882,
+        "lines": 0.7475365273530411,
+        "signal": 0.3938189372583966,
+        "high_signal": true
+      },
+      {
+        "name": "request_id",
+        "type": "id",
+        "cardinality": 57053,
+        "present": 0.4968944099378882,
+        "lines": 0.7475365273530411,
+        "signal": 0.3925475879638257,
+        "high_signal": true
+      },
+      {
+        "name": "user_id",
+        "type": "id",
+        "cardinality": 2983,
+        "present": 0.2484472049689441,
+        "lines": 0.5059085589156945,
+        "signal": 0.14339169963049986,
+        "high_signal": true
+      }
+    ]
+  },
+  "meta": {
+    "snapshot": "e370.s0",
+    "coverage": 1,
+    "approx": true,
+    "cost": {
+      "gets": 322,
+      "bytes_read": 0,
+      "footers_decoded": 322,
+      "segments": 322
+    },
+    "token_estimate": 586
+  }
+}

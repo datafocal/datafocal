@@ -1,0 +1,36 @@
+# Nobl9's published Grafana Loki example (nobl9-go manifest/v1alpha/slo/examples/grafana-loki.yaml)
+# as OpenSLO v1, its countMetrics as a ratioMetric and its grafanaLoki queries as nobl9-openslo
+# copies metricSource.spec.
+apiVersion: openslo/v1
+kind: SLO
+metadata:
+  name: api-server-slo
+  displayName: API Server SLO
+spec:
+  description: Example Grafana Loki SLO
+  service: api-server
+  budgetingMethod: Occurrences
+  timeWindow:
+    - duration: 1M
+      isRolling: false
+      calendar:
+        startTime: "2022-12-01 00:00:00"
+        timeZone: UTC
+  objectives:
+    - displayName: Good response (200)
+      target: 0.95
+  indicator:
+    metadata:
+      name: api-server-good-responses
+    spec:
+      ratioMetric:
+        good:
+          metricSource:
+            type: grafanaLoki
+            spec:
+              logql: count(count_over_time(({component="api-server"} | json | line_format "{{.log}}" | json | http_status_code >= 200 and http_status_code < 300)[1m]))
+        total:
+          metricSource:
+            type: grafanaLoki
+            spec:
+              logql: count(count_over_time(({component="api-server"} | json | line_format "{{.log}}" | json | http_status_code > 0)[1m]))

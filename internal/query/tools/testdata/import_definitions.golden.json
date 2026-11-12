@@ -1,0 +1,133 @@
+{
+  "data": {
+    "documents": [
+      {
+        "kind": "SLO",
+        "name": "gateway",
+        "version": "b85cdf201d10a4f3",
+        "class": "unchanged",
+        "preview": {
+          "name": "gateway",
+          "service": "gateway",
+          "state": "ok",
+          "objective": 0.99,
+          "sli": 0.9736507936507937,
+          "budget_remaining": -1.6349206349206327,
+          "burn_rate_1h": 2.6349206349206327,
+          "burn_rate_6h": 2.6349206349206327,
+          "coverage": 1,
+          "window_start": "2026-07-17T15:00:00Z",
+          "conditions": [
+            {
+              "policy": "burn",
+              "name": "fast",
+              "severity": "page",
+              "state": "ok",
+              "threshold": 14.4,
+              "lookback": "1h",
+              "short_window": "5m",
+              "burn_rate": 2.6349206349206327
+            }
+          ],
+          "forecast": {
+            "horizon": "1h",
+            "lookback": "2h",
+            "burn_rate": 2.6349206349206327,
+            "budget_remaining": -1.7447089947089924
+          },
+          "groups": [
+            {
+              "name": "gateway",
+              "service": "gateway",
+              "group": "/health",
+              "state": "ok",
+              "objective": 0.99,
+              "sli": 1,
+              "budget_remaining": 1,
+              "burn_rate_1h": 0,
+              "burn_rate_6h": 0,
+              "coverage": 1,
+              "window_start": "2026-07-17T15:00:00Z",
+              "conditions": [
+                {
+                  "policy": "burn",
+                  "name": "fast",
+                  "severity": "page",
+                  "state": "ok",
+                  "threshold": 14.4,
+                  "lookback": "1h",
+                  "short_window": "5m",
+                  "burn_rate": 0
+                }
+              ],
+              "forecast": {
+                "horizon": "1h",
+                "lookback": "2h",
+                "burn_rate": 0,
+                "budget_remaining": 1
+              }
+            },
+            {
+              "name": "gateway",
+              "service": "gateway",
+              "group": "/users",
+              "state": "ok",
+              "objective": 0.99,
+              "sli": 0.9514087083790707,
+              "budget_remaining": -3.859129162092934,
+              "burn_rate_1h": 4.859129162092934,
+              "burn_rate_6h": 4.859129162092934,
+              "coverage": 1,
+              "window_start": "2026-07-17T15:00:00Z",
+              "conditions": [
+                {
+                  "policy": "burn",
+                  "name": "fast",
+                  "severity": "page",
+                  "state": "ok",
+                  "threshold": 14.4,
+                  "lookback": "1h",
+                  "short_window": "5m",
+                  "burn_rate": 4.859129162092934
+                }
+              ],
+              "forecast": {
+                "horizon": "1h",
+                "lookback": "2h",
+                "burn_rate": 4.859129162092934,
+                "budget_remaining": -4.061592877180139
+              }
+            }
+          ]
+        }
+      },
+      {
+        "kind": "SLO",
+        "name": "gateway-prometheus",
+        "version": "f120f0d8a5e49d1a",
+        "class": "unbound",
+        "preview": {
+          "name": "gateway-prometheus",
+          "service": "gateway",
+          "state": "unbound",
+          "objective": 0.9,
+          "coverage": 0,
+          "query": "{service=\"gateway\"}"
+        }
+      }
+    ],
+    "content": "apiVersion: openslo/v1\nkind: SLO\nmetadata:\n  annotations:\n    datafocal/group-by: endpoint\n  name: gateway\nspec:\n  alertPolicies:\n  - kind: AlertPolicy\n    metadata:\n      name: burn\n    spec:\n      conditions:\n      - kind: AlertCondition\n        metadata:\n          annotations:\n            datafocal/short-window: 5m\n          name: fast\n        spec:\n          condition:\n            kind: burnrate\n            lookbackWindow: 1h\n            op: gte\n            threshold: 14.4\n          severity: page\n  budgetingMethod: Occurrences\n  indicator:\n    spec:\n      ratioMetric:\n        good:\n          metricSource:\n            spec:\n              query: '{service=\"gateway\"} | status\u003c500'\n            type: DataFocal\n        total:\n          metricSource:\n            spec:\n              query: '{service=\"gateway\"}'\n            type: DataFocal\n  objectives:\n  - target: 0.99\n  service: gateway\n  timeWindow:\n  - duration: 1d\n    isRolling: true\n---\napiVersion: openslo/v1\nkind: SLO\nmetadata:\n  annotations:\n    datafocal/group-by: endpoint\n  name: gateway-prometheus\nspec:\n  alertPolicies:\n  - kind: AlertPolicy\n    metadata:\n      name: burn\n    spec:\n      conditions:\n      - kind: AlertCondition\n        metadata:\n          annotations:\n            datafocal/short-window: 5m\n          name: fast\n        spec:\n          condition:\n            kind: burnrate\n            lookbackWindow: 1h\n            op: gte\n            threshold: 14.4\n          severity: page\n  budgetingMethod: Occurrences\n  indicator:\n    spec:\n      ratioMetric:\n        good:\n          metricSource:\n            spec:\n              query: '{service=\"gateway\"} | status \u003c 500'\n            type: Prometheus\n        total:\n          metricSource:\n            spec:\n              query: '{service=\"gateway\"}'\n            type: Prometheus\n  objectives:\n  - target: 0.9\n  service: gateway\n  timeWindow:\n  - duration: 1d\n    isRolling: true\n",
+    "saved": false
+  },
+  "meta": {
+    "snapshot": "e370.s0",
+    "coverage": 1,
+    "approx": false,
+    "cost": {
+      "gets": 0,
+      "bytes_read": 0
+    },
+    "token_estimate": 973,
+    "definitions": "3cd86f40ca2803cd"
+  }
+}

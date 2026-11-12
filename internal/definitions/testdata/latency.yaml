@@ -1,0 +1,33 @@
+apiVersion: openslo/v1
+kind: SLO
+metadata:
+  name: checkout-latency
+spec:
+  budgetingMethod: Occurrences
+  indicatorRef: checkout-fast
+  objectives:
+  - target: 0.99
+  service: checkout
+  timeWindow:
+  - calendar:
+      startTime: "2026-01-01 00:00:00"
+      timeZone: UTC
+    duration: 1M
+    isRolling: false
+---
+apiVersion: openslo/v1
+kind: SLI
+metadata:
+  name: checkout-fast
+spec:
+  ratioMetric:
+    good:
+      metricSource:
+        spec:
+          query: '{service="checkout"} | duration_ms<=300'
+        type: DataFocal
+    total:
+      metricSource:
+        spec:
+          query: '{service="checkout"}'
+        type: DataFocal

@@ -1,0 +1,177 @@
+{
+  "results": [
+    {
+      "index": 0,
+      "envelope": {
+        "data": {
+          "series": [
+            {
+              "key": "gateway",
+              "start": 1784383200000,
+              "step": 600000,
+              "values": [
+                25200
+              ],
+              "baselines": [
+                25200
+              ]
+            },
+            {
+              "key": "db",
+              "start": 1784383200000,
+              "step": 600000,
+              "values": [
+                19200
+              ],
+              "baselines": [
+                19200
+              ]
+            },
+            {
+              "key": "checkout",
+              "start": 1784383200000,
+              "step": 600000,
+              "values": [
+                15000
+              ],
+              "baselines": [
+                15000
+              ]
+            },
+            {
+              "key": "jobs",
+              "start": 1784383200000,
+              "step": 600000,
+              "values": [
+                10071
+              ],
+              "baselines": [
+                10070
+              ]
+            },
+            {
+              "key": "analytics-export",
+              "start": 1784383200000,
+              "step": 600000,
+              "values": [
+                8542
+              ],
+              "baselines": [
+                8542
+              ]
+            },
+            {
+              "key": "host",
+              "start": 1784383200000,
+              "step": 600000,
+              "values": [
+                1440
+              ],
+              "baselines": [
+                1440
+              ]
+            },
+            {
+              "key": "scheduler",
+              "start": 1784383200000,
+              "step": 600000,
+              "values": [
+                8
+              ],
+              "baselines": [
+                8
+              ]
+            }
+          ]
+        },
+        "meta": {
+          "snapshot": "e370.s0",
+          "coverage": 1,
+          "approx": false,
+          "cost": {
+            "gets": 0,
+            "bytes_read": 0
+          },
+          "token_estimate": 160
+        }
+      }
+    },
+    {
+      "index": 1,
+      "envelope": {
+        "data": {
+          "mode": "scan",
+          "lines": [
+            {
+              "timestamp": "2026-07-18T14:09:59.982142857Z",
+              "level": "info",
+              "message": "POST /users 201 5 ms",
+              "pattern_id": "9ef0c50864614821",
+              "service": "gateway",
+              "attributes": {
+                "duration_ms": "5",
+                "endpoint": "/users",
+                "instance": "gateway-0",
+                "param_1": "201",
+                "pod": "gateway-0",
+                "region": "us-east-1",
+                "request_id": "req-62abd96f2752973f",
+                "status": "201",
+                "trace_id": "gateway-d8051f7b96f527b5",
+                "user_id": "user-01742"
+              },
+              "segment": "cd3b0e746ce21a3dbb0cd3c057de1e9b",
+              "row": 899
+            },
+            {
+              "timestamp": "2026-07-18T14:09:59.964285714Z",
+              "level": "info",
+              "message": "POST /users 201 8 ms",
+              "pattern_id": "9ef0c50864614821",
+              "service": "gateway",
+              "attributes": {
+                "duration_ms": "8",
+                "endpoint": "/users",
+                "instance": "gateway-0",
+                "param_1": "201",
+                "pod": "gateway-0",
+                "region": "us-east-1",
+                "request_id": "req-a4d60cac1f62623b",
+                "status": "201",
+                "trace_id": "gateway-e0da8d845cfe5572",
+                "user_id": "user-01660"
+              },
+              "segment": "cd3b0e746ce21a3dbb0cd3c057de1e9b",
+              "row": 898
+            }
+          ],
+          "next": {
+            "time": "2026-07-18T14:09:59.964285714Z",
+            "segment": "cd3b0e746ce21a3dbb0cd3c057de1e9b",
+            "row": 898
+          }
+        },
+        "meta": {
+          "snapshot": "e370.s0",
+          "coverage": 1,
+          "approx": false,
+          "cost": {
+            "gets": 3,
+            "bytes_read": 22545,
+            "footers_decoded": 1,
+            "segments": 1
+          },
+          "token_estimate": 255
+        }
+      }
+    },
+    {
+      "index": 2,
+      "error": {
+        "code": "invalid_request",
+        "message": "batch: no tool \"no_such_tool\" to call in a batch",
+        "retryable": false
+      }
+    }
+  ]
+}

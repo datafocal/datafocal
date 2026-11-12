@@ -1,0 +1,86 @@
+apiVersion: openslo/v1
+kind: SLO
+metadata:
+  displayName: Checkout availability
+  name: checkout-availability
+spec:
+  indicator:
+    spec:
+      ratioMetric:
+        good:
+          metricSource:
+            spec:
+              query: '{service="checkout"} | status<500'
+            type: DataFocal
+        total:
+          metricSource:
+            spec:
+              query: '{service="checkout"}'
+            type: DataFocal
+  objectives:
+  - target: 0.99
+  service: checkout
+  timeWindow:
+  - duration: 1d
+    isRolling: true
+---
+apiVersion: datafocal/v1
+kind: View
+metadata:
+  displayName: Checkout
+  name: checkout
+spec:
+  panels:
+  - grid:
+      h: 4
+      w: 8
+      x: 0
+      "y": 0
+    kind: timeseries
+    query: sum by (status) (count_over_time({service="$service"} [1m]))
+    title: Requests by status
+  - grid:
+      h: 4
+      w: 4
+      x: 8
+      "y": 0
+    kind: slo
+    slo: checkout-availability
+  - grid:
+      h: 2
+      w: 3
+      x: 0
+      "y": 4
+    kind: stat
+    query: count_over_time({service="$service", level!="$level"} [1h])
+  - grid:
+      h: 2
+      w: 9
+      x: 3
+      "y": 4
+    kind: table
+    query: topk(5, sum by (path) (count_over_time({service="$service"} [1h])))
+  - grid:
+      h: 6
+      w: 6
+      x: 0
+      "y": 6
+    kind: patterns
+    query: '{service="$service"} | patterns'
+  - grid:
+      h: 6
+      w: 8
+      x: 4
+      "y": 6
+    kind: lines
+    query: '{service="$service", level="$level"}'
+  time:
+    from: now-6h
+    to: now
+  variables:
+  - allowAll: true
+    column: service
+    default: checkout
+    name: service
+  - column: level
+    name: level

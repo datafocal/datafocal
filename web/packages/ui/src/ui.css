@@ -1,0 +1,763 @@
+/* The shared components' styles. */
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 13px / 1.45 var(--sans);
+}
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+.kbd {
+  font: 10.5px var(--mono);
+  padding: 1px 5px;
+  border: 1px solid var(--line-2);
+  border-radius: 4px;
+  color: var(--ink-3);
+}
+.tbtn {
+  height: 28px;
+  padding: 0 10px;
+  border: 1px solid var(--line-2);
+  border-radius: 7px;
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+.tbtn[aria-pressed="true"] {
+  color: var(--ink);
+  background: var(--insight-soft);
+  border-color: var(--insight);
+}
+
+.chip {
+  padding: 1px 7px;
+  border-radius: 999px;
+  font: 11px var(--mono);
+  border: 1px solid var(--line-2);
+  color: var(--ink-2);
+}
+.chip.hot {
+  color: var(--err);
+  border-color: var(--err);
+  background: var(--err-soft);
+}
+.chip.warm {
+  color: var(--warn);
+  border-color: var(--warn);
+}
+
+.annot {
+  display: flex;
+  gap: 10px;
+  margin: 0;
+  padding: 9px 14px;
+  background: var(--insight-soft);
+}
+.annot::before {
+  content: "\2726";
+  color: var(--insight);
+}
+.annot .link {
+  padding: 0;
+  color: var(--insight);
+  text-decoration: underline;
+}
+.annot small {
+  margin-left: auto;
+  color: var(--ink-3);
+}
+
+.insp {
+  display: flex;
+  flex-direction: column;
+  background: var(--panel);
+  border-left: 1px solid var(--line);
+}
+/* The selection's head: what it is, its title, a line about it, its headline figure placed in
+   its whole, and what can be done with it. */
+.insp > header {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px 18px 14px;
+  border-bottom: 1px solid var(--line);
+}
+.insp-k {
+  display: flex;
+  align-items: center;
+  min-height: 20px;
+  margin-bottom: -4px;
+  font-size: 11px;
+  color: var(--ink-3);
+}
+.insp-x {
+  width: 26px;
+  height: 26px;
+  margin: -4px -6px -4px auto;
+  font-size: 18px;
+  line-height: 1;
+  color: var(--ink-3);
+  border-radius: 6px;
+}
+.insp-x:hover {
+  color: var(--ink);
+  background: var(--raise);
+}
+.insp h2 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 650;
+  overflow-wrap: anywhere;
+}
+.insp-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 8px;
+  font-size: 12px;
+  color: var(--ink-2);
+}
+.insp-hero p {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  margin: 2px 0 8px;
+}
+.insp-hero strong {
+  font: 650 24px var(--mono);
+  color: var(--ink);
+}
+.insp-hero p span {
+  font-size: 12px;
+  color: var(--ink-3);
+}
+.insp-place {
+  position: relative;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--line);
+}
+.insp-place span {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-radius: 3px;
+  background: var(--c, var(--accent));
+}
+.insp-acts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.insp-acts .tbtn:first-child,
+.insp-acts .pivots .tbtn:first-child {
+  color: var(--ink);
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+.insp-acts .pivots {
+  display: contents;
+}
+.insp [role="tablist"] {
+  display: flex;
+  gap: 18px;
+  padding: 0 18px;
+  border-bottom: 1px solid var(--line);
+}
+.insp [role="tab"] {
+  padding: 10px 0;
+  color: var(--ink-3);
+}
+.insp [role="tab"][aria-selected="true"] {
+  color: var(--ink);
+  box-shadow: inset 0 -2px var(--ink);
+}
+.insp-n {
+  margin-left: 6px;
+  color: var(--ink-3);
+}
+.insp-b {
+  flex: 1;
+  overflow: auto;
+  padding: 14px 18px;
+}
+.insp [role="tab"]:hover {
+  color: var(--ink);
+}
+/* A selection's sections, each under a small heading. */
+.insp-b h3 {
+  margin: 18px 0 6px;
+  font: 600 11px var(--sans);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.insp-b h3:first-child {
+  margin-top: 0;
+}
+/* A selection's facts: a muted key beside its value, a hairline between rows. */
+.insp-b dl {
+  display: grid;
+  grid-template-columns: minmax(84px, max-content) minmax(0, 1fr);
+  margin: 0;
+  font-size: 12.5px;
+}
+.insp-b dt,
+.insp-b dd {
+  padding: 7px 0;
+  border-bottom: 1px solid var(--line);
+}
+.insp-b dt {
+  padding-right: 14px;
+  color: var(--ink-3);
+}
+.insp-b dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+  font-family: var(--mono);
+  color: var(--ink);
+}
+
+.menu:popover-open {
+  position-area: block-end span-inline-start;
+  margin: 4px 0;
+  padding: 4px;
+  background: var(--panel);
+  color: var(--ink);
+  border: 1px solid var(--line-2);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+.menu [role="group"] > div {
+  padding: 6px 9px 3px;
+  color: var(--ink-3);
+}
+.menu button {
+  display: flex;
+  width: 100%;
+  gap: 8px;
+  padding: 6px 9px 6px 26px;
+}
+.menu [aria-checked="true"]::before {
+  content: "\2713";
+  margin-left: -17px;
+  color: var(--insight);
+}
+
+.drawer {
+  height: min(40vh, 360px);
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--line-2);
+  background: var(--panel);
+}
+.drawer > header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  border-bottom: 1px solid var(--line);
+}
+.drawer h2 {
+  margin: 0;
+  font-size: 13px;
+}
+.drawer-a {
+  margin-left: auto;
+}
+.drawer-b {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(280px, 1fr);
+  padding: 10px 14px;
+  gap: 14px;
+}
+.drawer-l {
+  min-height: 0;
+  overflow: auto;
+}
+.drawer-l > h3 {
+  position: sticky;
+  top: 0;
+  margin: 0 0 6px;
+  font: 600 10.5px var(--sans);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  background: var(--panel);
+}
+/* What the result rests on: a card beside its lines. */
+.drawer-c {
+  min-height: 0;
+  overflow: auto;
+  padding: 10px 12px;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+}
+.ln {
+  display: grid;
+  grid-template-columns: 92px 112px 1fr;
+  gap: 10px;
+  font: 12px / 1.55 var(--mono);
+}
+.ln.err {
+  color: var(--err);
+}
+
+input[type="search"],
+input[type="text"],
+select {
+  box-sizing: border-box;
+  height: 28px;
+  padding: 0 9px;
+  font: 12.5px var(--sans);
+  color: var(--ink);
+  background: var(--panel);
+  border: 1px solid var(--line-2);
+  border-radius: 7px;
+}
+input[type="search"]::placeholder,
+input[type="text"]::placeholder {
+  color: var(--ink-3);
+}
+input[type="search"]:focus-visible,
+input[type="text"]:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+/* A failure: all of its message, wrapped however narrow the column, and selectable. */
+.failure {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 6px 0;
+  padding: 8px 10px;
+  color: var(--ink);
+  background: var(--err-soft);
+  border-radius: 6px;
+}
+.failure p {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font: 12px / 1.5 var(--mono);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  user-select: text;
+}
+.failure b {
+  color: var(--err);
+}
+.failure .tbtn {
+  flex: none;
+  height: 24px;
+}
+
+/* A result kept while the next loads: dimmed, under a progress mark. */
+.stale > :not(progress) {
+  opacity: 0.5;
+}
+progress.busy {
+  display: block;
+  width: 100%;
+  height: 2px;
+  accent-color: var(--accent);
+}
+
+/* A chart with axes: uPlot's legend under it, reading each series' value at the cursor, or
+   off it a time chart's latest. */
+.chart {
+  min-width: 0;
+}
+.chart .u-legend {
+  margin-top: 6px;
+  font: 11.5px var(--sans);
+  text-align: left;
+  color: var(--ink-2);
+}
+.chart .u-legend .u-series {
+  padding: 1px 12px 1px 0;
+}
+.chart .u-legend th {
+  padding: 0;
+  font: 400 11.5px var(--sans);
+  letter-spacing: normal;
+  text-transform: none;
+  color: var(--ink-2);
+  border: 0;
+}
+.chart .u-legend td {
+  padding: 0;
+  border: 0;
+}
+.chart .u-legend .u-marker {
+  width: 8px;
+  height: 8px;
+  margin-right: 5px;
+  border-radius: 2px;
+}
+.chart .u-legend .u-value {
+  padding-left: 4px;
+  font-family: var(--mono);
+  color: var(--ink);
+}
+
+/* A splitter: a hairline between two panes, a wider grip to drag, lit while held. */
+.split {
+  position: relative;
+  z-index: 1;
+  width: 1px;
+  background: var(--line);
+  cursor: col-resize;
+  touch-action: none;
+}
+.split::before {
+  content: "";
+  position: absolute;
+  inset: 0 -4px;
+}
+.split:hover,
+.split:active,
+.split:focus-visible {
+  background: var(--accent);
+  outline: none;
+  box-shadow: 0 0 0 1px var(--accent);
+}
+/* A chart whose lines open what is behind them points at them. */
+.chart.pickable .u-over {
+  cursor: pointer;
+}
+
+/* Panels, the tiles over a page, bar rows and meters: the pieces a view's page is built of. */
+.panel {
+  margin-block: 14px;
+  padding: 14px 16px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+}
+.panel h3 {
+  margin: 0 0 10px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.panel > p {
+  margin: 4px 0 10px;
+  font-size: 12.5px;
+  color: var(--ink-2);
+}
+.kpis {
+  display: grid;
+  align-items: center;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  overflow: hidden;
+}
+.kpi {
+  display: grid;
+  align-content: start;
+  gap: 4px;
+  min-height: 92px;
+  padding: 12px 14px;
+  text-align: left;
+  border-right: 1px solid var(--line);
+}
+.kpi:hover {
+  background: var(--raise);
+}
+.kpi small:first-child {
+  font: 600 10.5px var(--sans);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.kpi strong {
+  font: 500 22px var(--mono);
+  color: var(--ink);
+}
+.kpi span {
+  font-size: 11.5px;
+  color: var(--ink-2);
+}
+.panel table {
+  width: 100%;
+  margin-top: 8px;
+  border-collapse: collapse;
+  font: 12px var(--mono);
+  font-variant-numeric: tabular-nums;
+}
+.panel th {
+  padding: 6px 8px;
+  font: 600 10.5px var(--sans);
+  letter-spacing: 0.06em;
+  text-align: left;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  border-bottom: 1px solid var(--line);
+}
+.panel td {
+  padding: 6px 8px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+}
+.panel td:not(:first-child),
+.panel th:not(:first-child) {
+  text-align: right;
+}
+.panel tr:hover td {
+  background: var(--panel-2);
+}
+.panel .link {
+  padding: 0;
+  font: inherit;
+  color: var(--accent);
+}
+.panel .link:hover {
+  text-decoration: underline;
+}
+.g2,
+.g3 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+.g3 {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+.g2 > .panel,
+.g3 > .panel {
+  margin: 0;
+  min-width: 0;
+}
+.meter {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: flex-end;
+}
+.meter > span {
+  display: inline-block;
+  width: 64px;
+  height: 6px;
+  overflow: hidden;
+  background: var(--raise);
+  border-radius: 3px;
+}
+.meter i {
+  display: block;
+  height: 100%;
+  background: var(--cat-1);
+  border-radius: 3px;
+}
+.card h3 {
+  display: flex;
+  gap: 8px;
+}
+.card h3 .link {
+  margin-left: auto;
+  font-size: 12px;
+  font-weight: 400;
+}
+.big {
+  margin-bottom: 6px;
+  font: 500 22px var(--mono);
+}
+.big small {
+  margin-left: 6px;
+  font: 12px var(--sans);
+  color: var(--ink-2);
+}
+.prow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  width: 100%;
+  padding: 6px 0;
+  text-align: left;
+  border-top: 1px solid var(--line);
+}
+.prow:hover {
+  background: var(--panel-2);
+}
+.prow .meter {
+  justify-content: flex-start;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.prow > span:last-child {
+  font: 12px var(--mono);
+  color: var(--ink-2);
+}
+@media (max-width: 900px) {
+  .g2 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.kpi.bad strong {
+  color: var(--err);
+}
+
+/* The definitions directory's pieces both SLOs and saved views draw (definitions.ts). */
+/* The one action a page leads with, filled where the others are outlined. */
+.tbtn.slo-primary {
+  padding: 0 14px;
+  font-weight: 600;
+  color: var(--bg);
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.tbtn.slo-primary:hover {
+  background: color-mix(in srgb, var(--accent) 85%, var(--ink));
+}
+/* Tones: what a value says about health, shared by text, dots and bars. */
+.slo-ok {
+  --tone: var(--ok);
+}
+.slo-warn {
+  --tone: var(--warn);
+}
+.slo-err,
+.slo-flag {
+  --tone: var(--err);
+}
+.slo-mute {
+  --tone: var(--ink-3);
+}
+.slo-flag,
+.slo-num.slo-ok,
+.slo-num.slo-warn,
+.slo-num.slo-err,
+.slo-burn > span:not(.slo-mute) {
+  color: var(--tone);
+}
+.slo-state {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  font-weight: 600;
+  color: var(--ink);
+}
+.slo-state > i {
+  width: 8px;
+  height: 8px;
+  background: var(--tone);
+  border-radius: 50%;
+}
+.slo-sub {
+  font-size: 12px;
+  color: var(--ink-3);
+}
+.slo-num {
+  font: 600 18px / 1.2 var(--mono);
+  color: var(--ink);
+}
+.slo-burn {
+  display: flex;
+  gap: 12px;
+  font: 600 14px / 1.6 var(--mono);
+  color: var(--ink-3);
+}
+.slo-burn small {
+  margin-left: 3px;
+  font: 11px var(--sans);
+  color: var(--ink-3);
+}
+.slo-link {
+  padding: 0;
+  color: var(--ink);
+  font-weight: 600;
+  text-align: left;
+}
+.slo-link:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+.slo-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* An SLO's card, its health along the top edge. */
+.slo-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px 16px 12px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--tone);
+  border-radius: var(--r);
+}
+.slo-card-ok {
+  --tone: var(--ok);
+}
+.slo-card-warn {
+  --tone: var(--warn);
+}
+.slo-card-err {
+  --tone: var(--err);
+}
+.slo-card-mute {
+  --tone: var(--line-2);
+}
+.slo-card > header {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.slo-card > header input {
+  margin-left: auto;
+}
+.slo-title {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+}
+.slo-title .slo-link {
+  font-size: 15px;
+}
+.slo-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  padding: 10px 0;
+  border-block: 1px solid var(--line);
+}
+.slo-stat small {
+  display: block;
+  margin-bottom: 2px;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.slo-spark {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-height: 70px;
+}
+.slo-spark-axis {
+  display: flex;
+  justify-content: space-between;
+}
+.slo-drop {
+  padding: 12px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+}

@@ -1,0 +1,180 @@
+/* The resources view: tiles of the scope's totals over charts of each use and a table of services. */
+.res {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 12px 20px 24px;
+}
+.res-lede h2 {
+  margin: 0 0 4px;
+  font: 600 19px / 1.25 var(--sans);
+}
+.res-lede p,
+.res-note {
+  max-width: 80ch;
+  margin: 0;
+  font-size: 12.5px;
+  color: var(--ink-2);
+}
+.res-crumbs {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 13px;
+}
+.res-crumbs b {
+  margin-right: 8px;
+}
+.res-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 10px;
+}
+.res-facts > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 14px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+}
+.res-facts small {
+  font: 600 10.5px var(--sans);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.res-facts b {
+  font: 500 18px var(--mono);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.res-facts span {
+  font-size: 11.5px;
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+.res-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 14px;
+}
+.res-panel {
+  min-width: 0;
+  padding: 14px 16px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+}
+.res-panel h3 {
+  margin: 0 0 10px;
+  font-size: 13.5px;
+  font-weight: 600;
+}
+.res-table {
+  width: 100%;
+  border-collapse: collapse;
+  font: 12px var(--mono);
+  font-variant-numeric: tabular-nums;
+}
+.res-table th {
+  padding: 6px 8px;
+  font: 600 10.5px var(--sans);
+  letter-spacing: 0.06em;
+  text-align: left;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  border-bottom: 1px solid var(--line);
+}
+.res-table td {
+  padding: 6px 8px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+}
+.res-table td:not(:first-child),
+.res-table th:not(:first-child) {
+  text-align: right;
+}
+.res-table tr:hover td {
+  background: var(--panel-2);
+}
+.res .link {
+  padding: 0;
+  font: inherit;
+  color: var(--accent);
+}
+.res .link:hover {
+  text-decoration: underline;
+}
+/* The filter beside the tabs between the overview and each resource's page. */
+.res-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: flex-start;
+}
+.res-filter {
+  flex: 1;
+  min-width: 280px;
+}
+.res-filter input {
+  box-sizing: border-box;
+  width: 100%;
+  height: 34px;
+  padding: 8px 12px;
+  font: 12.5px var(--mono);
+  color: var(--ink);
+  background: var(--panel);
+  border: 1px solid var(--line-2);
+  border-radius: 7px;
+}
+.res-filter input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+.res-filter .res-fault {
+  margin-top: 4px;
+  color: var(--err);
+}
+.res .seg {
+  display: inline-flex;
+  height: 34px;
+  border: 1px solid var(--line-2);
+  border-radius: 7px;
+  overflow: hidden;
+}
+.res .seg .tbtn {
+  height: 100%;
+  border: 0;
+  border-right: 1px solid var(--line-2);
+  border-radius: 0;
+}
+.res .seg .tbtn:last-child {
+  border-right: 0;
+}
+.res .seg .tbtn[aria-pressed="true"] {
+  background: var(--raise);
+}
+/* A resource's page charts each across the page. */
+.res-panel.wide {
+  grid-column: 1 / -1;
+}
+.res-panel h3 .link {
+  font-weight: 600;
+}
+/* A column's heading sorts the table by it. */
+.res-sort {
+  padding: 0;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+.res-sort:hover,
+.res-sort.on {
+  color: var(--ink);
+}

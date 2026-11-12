@@ -1,0 +1,238 @@
+[
+  {
+    "tool": "get_view",
+    "req": {
+      "name": "querier"
+    }
+  },
+  {
+    "tool": "list_views",
+    "req": {}
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        }
+      },
+      "measure": "count",
+      "group_by": "path",
+      "bins": "all",
+      "limit": 20
+    }
+  },
+  {
+    "tool": "list_slos",
+    "req": {
+      "query": "querier-availability",
+      "trend": true
+    }
+  },
+  {
+    "tool": "list_slos",
+    "req": {}
+  },
+  {
+    "tool": "export_definitions",
+    "req": {
+      "names": ["View/querier"]
+    }
+  },
+  {
+    "tool": "rank_fields",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        }
+      }
+    }
+  },
+  {
+    "tool": "import_definitions",
+    "req": {
+      "content": "{\"apiVersion\":\"datafocal/v1\",\"kind\":\"View\",\"metadata\":{\"name\":\"gateway-errors\",\"displayName\":\"Gateway errors\"},\"spec\":{\"time\":{\"from\":\"2026-07-27T00:00:00Z\",\"to\":\"2026-07-28T00:00:00Z\"},\"variables\":[],\"panels\":[]}}",
+      "dry_run": true
+    }
+  },
+  {
+    "tool": "import_definitions",
+    "req": {
+      "content": "{\"apiVersion\":\"datafocal/v1\",\"kind\":\"View\",\"metadata\":{\"name\":\"gateway-errors\",\"displayName\":\"Gateway errors\"},\"spec\":{\"time\":{\"from\":\"2026-07-27T00:00:00Z\",\"to\":\"2026-07-28T00:00:00Z\"},\"variables\":[],\"panels\":[{\"kind\":\"lines\",\"query\":\"\",\"grid\":{\"x\":0,\"y\":0,\"w\":6,\"h\":4}}]}}",
+      "dry_run": true
+    }
+  },
+  {
+    "tool": "query",
+    "req": {
+      "q": "sum by (status) (count_over_time({service=\"querier\", path=\"$path\"} | status>0 [5m]))",
+      "time": {
+        "from": "2026-07-27T00:00:00Z",
+        "to": "2026-07-28T00:00:00Z"
+      },
+      "vars": {
+        "path": "*"
+      }
+    }
+  },
+  {
+    "tool": "query",
+    "req": {
+      "q": "count_over_time({service=\"querier\", path=\"$path\"} | status>=500 [1h])",
+      "time": {
+        "from": "2026-07-27T00:00:00Z",
+        "to": "2026-07-28T00:00:00Z"
+      },
+      "vars": {
+        "path": "*"
+      }
+    }
+  },
+  {
+    "tool": "query",
+    "req": {
+      "q": "topk(10, sum by (path) (count_over_time({service=\"querier\"} | status>0 [1h])))",
+      "time": {
+        "from": "2026-07-27T00:00:00Z",
+        "to": "2026-07-28T00:00:00Z"
+      },
+      "vars": {
+        "path": "*"
+      }
+    }
+  },
+  {
+    "tool": "query",
+    "req": {
+      "q": "{service=\"querier\", path=\"$path\"} | patterns",
+      "time": {
+        "from": "2026-07-27T00:00:00Z",
+        "to": "2026-07-28T00:00:00Z"
+      },
+      "vars": {
+        "path": "*"
+      }
+    }
+  },
+  {
+    "tool": "query",
+    "req": {
+      "q": "{service=\"querier\", path=\"$path\"} | status>=500",
+      "time": {
+        "from": "2026-07-27T00:00:00Z",
+        "to": "2026-07-28T00:00:00Z"
+      },
+      "vars": {
+        "path": "*"
+      }
+    }
+  },
+  {
+    "tool": "query",
+    "req": {
+      "q": "sum by (status) (count_over_time({service=\"querier\", path=\"$path\"} | status>0 [5m]))",
+      "time": {
+        "from": "2026-07-27T00:00:00Z",
+        "to": "2026-07-28T00:00:00Z"
+      },
+      "vars": {
+        "path": "/healthz"
+      }
+    }
+  },
+  {
+    "tool": "query",
+    "req": {
+      "q": "count_over_time({service=\"querier\", path=\"$path\"} | status>=500 [1h])",
+      "time": {
+        "from": "2026-07-27T00:00:00Z",
+        "to": "2026-07-28T00:00:00Z"
+      },
+      "vars": {
+        "path": "/healthz"
+      }
+    }
+  },
+  {
+    "tool": "query",
+    "req": {
+      "q": "topk(10, sum by (path) (count_over_time({service=\"querier\"} | status>0 [1h])))",
+      "time": {
+        "from": "2026-07-27T00:00:00Z",
+        "to": "2026-07-28T00:00:00Z"
+      },
+      "vars": {
+        "path": "/healthz"
+      }
+    }
+  },
+  {
+    "tool": "query",
+    "req": {
+      "q": "{service=\"querier\", path=\"$path\"} | status>=500",
+      "time": {
+        "from": "2026-07-27T00:00:00Z",
+        "to": "2026-07-28T00:00:00Z"
+      },
+      "vars": {
+        "path": "/healthz"
+      }
+    }
+  },
+  {
+    "tool": "import_definitions",
+    "req": {
+      "content": "{\"apiVersion\":\"datafocal/v1\",\"kind\":\"View\",\"metadata\":{\"displayName\":\"Querier\",\"name\":\"querier\"},\"spec\":{\"panels\":[{\"grid\":{\"h\":4,\"w\":8,\"x\":0,\"y\":0},\"kind\":\"timeseries\",\"query\":\"sum by (status) (count_over_time({service=\\\"querier\\\", path=\\\"$path\\\"} | status>0 [5m]))\",\"title\":\"Requests by status\"},{\"grid\":{\"h\":4,\"w\":4,\"x\":8,\"y\":0},\"kind\":\"slo\",\"slo\":\"querier-availability\"},{\"grid\":{\"h\":2,\"w\":4,\"x\":0,\"y\":4},\"kind\":\"stat\",\"query\":\"count_over_time({service=\\\"querier\\\", path=\\\"$path\\\"} | status>=500 [1h])\",\"title\":\"Failed requests\"},{\"grid\":{\"h\":2,\"w\":8,\"x\":4,\"y\":4},\"kind\":\"table\",\"query\":\"topk(10, sum by (path) (count_over_time({service=\\\"querier\\\"} | status>0 [1h])))\",\"title\":\"Busiest paths\"},{\"grid\":{\"h\":4,\"w\":6,\"x\":0,\"y\":6},\"kind\":\"patterns\",\"query\":\"{service=\\\"querier\\\", path=\\\"$path\\\"} | patterns\",\"title\":\"Patterns\"},{\"grid\":{\"h\":4,\"w\":6,\"x\":6,\"y\":6},\"kind\":\"lines\",\"query\":\"{service=\\\"querier\\\", path=\\\"$path\\\"} | status>=500\",\"title\":\"Failures\"}],\"time\":{\"from\":\"now-6h\",\"to\":\"now\"},\"variables\":[{\"allowAll\":true,\"column\":\"path\",\"name\":\"path\"}]}}",
+      "dry_run": true
+    }
+  },
+  {
+    "tool": "import_definitions",
+    "req": {
+      "content": "{\"apiVersion\":\"datafocal/v1\",\"kind\":\"View\",\"metadata\":{\"displayName\":\"Querier\",\"name\":\"querier\"},\"spec\":{\"panels\":[{\"grid\":{\"h\":4,\"w\":8,\"x\":0,\"y\":0},\"kind\":\"timeseries\",\"query\":\"sum by (status) (count_over_time({service=\\\"querier\\\", path=\\\"$path\\\"} | status>0 [5m]))\",\"title\":\"Requests by status\"},{\"grid\":{\"h\":4,\"w\":4,\"x\":8,\"y\":0},\"kind\":\"slo\",\"slo\":\"querier-availability\"},{\"grid\":{\"h\":2,\"w\":4,\"x\":0,\"y\":4},\"kind\":\"stat\",\"query\":\"count_over_time({service=\\\"querier\\\", path=\\\"$path\\\"} | status>=500 [1h])\",\"title\":\"Failed requests\"},{\"grid\":{\"h\":2,\"w\":8,\"x\":4,\"y\":4},\"kind\":\"table\",\"query\":\"topk(10, sum by (path) (count_over_time({service=\\\"querier\\\"} | status>0 [1h])))\",\"title\":\"Busiest paths\"},{\"grid\":{\"h\":4,\"w\":6,\"x\":0,\"y\":6},\"kind\":\"patterns\",\"query\":\"{service=\\\"querier\\\", path=\\\"$path\\\"} | patterns\",\"title\":\"Patterns\"},{\"grid\":{\"h\":4,\"w\":6,\"x\":6,\"y\":6},\"kind\":\"lines\",\"query\":\"{service=\\\"querier\\\", path=\\\"$path\\\"} | status>=500\",\"title\":\"Failures\"},{\"kind\":\"lines\",\"query\":\"{service=\\\"gateway\\\"} |~ \\\"timeout\\\"\",\"grid\":{\"x\":0,\"y\":10,\"w\":6,\"h\":4}}],\"time\":{\"from\":\"now-6h\",\"to\":\"now\"},\"variables\":[{\"allowAll\":true,\"column\":\"path\",\"name\":\"path\"}]}}",
+      "dry_run": true
+    }
+  },
+  {
+    "tool": "import_definitions",
+    "req": {
+      "content": "{\"apiVersion\":\"datafocal/v1\",\"kind\":\"View\",\"metadata\":{\"displayName\":\"Querier\",\"name\":\"querier\"},\"spec\":{\"panels\":[{\"grid\":{\"h\":4,\"w\":8,\"x\":0,\"y\":0},\"kind\":\"timeseries\",\"query\":\"sum by (status) (count_over_time({service=\\\"querier\\\", path=\\\"$path\\\"} | status>0 [5m]))\",\"title\":\"Requests by status\"},{\"grid\":{\"h\":4,\"w\":4,\"x\":8,\"y\":0},\"kind\":\"slo\",\"slo\":\"querier-availability\"},{\"grid\":{\"h\":2,\"w\":4,\"x\":0,\"y\":4},\"kind\":\"stat\",\"query\":\"count_over_time({service=\\\"querier\\\", path=\\\"$path\\\"} | status>=500 [1h])\",\"title\":\"Failed requests\"},{\"grid\":{\"h\":2,\"w\":8,\"x\":4,\"y\":4},\"kind\":\"table\",\"query\":\"topk(10, sum by (path) (count_over_time({service=\\\"querier\\\"} | status>0 [1h])))\",\"title\":\"Busiest paths\"},{\"grid\":{\"h\":4,\"w\":6,\"x\":0,\"y\":6},\"kind\":\"patterns\",\"query\":\"{service=\\\"querier\\\", path=\\\"$path\\\"} | patterns\",\"title\":\"Patterns\"},{\"grid\":{\"h\":4,\"w\":6,\"x\":6,\"y\":6},\"kind\":\"lines\",\"query\":\"{service=\\\"querier\\\", path=\\\"$path\\\"} | status>=500\",\"title\":\"Failures\"},{\"kind\":\"timeseries\",\"query\":\"sum by (model) (sum_over_time({} | unwrap cost_usd [1h]))\",\"grid\":{\"x\":0,\"y\":10,\"w\":6,\"h\":4}}],\"time\":{\"from\":\"now-6h\",\"to\":\"now\"},\"variables\":[{\"allowAll\":true,\"column\":\"path\",\"name\":\"path\"}]}}",
+      "dry_run": true
+    }
+  },
+  {
+    "tool": "query",
+    "req": {
+      "q": "{service=\"querier\", path=\"$path\"} | patterns",
+      "time": {
+        "from": "2026-07-27T00:00:00Z",
+        "to": "2026-07-28T00:00:00Z"
+      },
+      "vars": {
+        "path": "/healthz"
+      }
+    }
+  },
+  {
+    "tool": "query",
+    "req": {
+      "q": "{service=\"querier\"} | status>=500",
+      "time": {
+        "from": "2026-07-27T00:00:00Z",
+        "to": "2026-07-28T00:00:00Z"
+      },
+      "vars": {}
+    }
+  },
+  {
+    "tool": "import_definitions",
+    "req": {
+      "content": "{\"apiVersion\":\"datafocal/v1\",\"kind\":\"View\",\"metadata\":{\"name\":\"gateway-errors\",\"displayName\":\"Gateway errors\"},\"spec\":{\"time\":{\"from\":\"2026-07-27T00:00:00Z\",\"to\":\"2026-07-28T00:00:00Z\"},\"variables\":[],\"panels\":[{\"kind\":\"lines\",\"query\":\"{service=\\\"querier\\\"} | status>=500\",\"grid\":{\"x\":0,\"y\":0,\"w\":6,\"h\":4}}]}}",
+      "dry_run": true
+    }
+  }
+]

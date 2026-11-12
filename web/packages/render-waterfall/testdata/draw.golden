@@ -1,0 +1,171 @@
+waterfall
+setTransform 2 0 0 2 0 0
+clearRect 0 0 800 100
+beginPath 
+roundRect 0 6.2 800 7.6 3
+fill #5b9dff
+beginPath 
+stroke #5b9dff
+beginPath 
+roundRect 480 86.19999999999999 240 7.6 3
+fill #2fc4b2
+beginPath 
+stroke #2fc4b2
+beginPath 
+fill #e8a050
+beginPath 
+stroke #e8a050
+beginPath 
+roundRect 400 66.2 80 7.6 3
+fill #b48cf2
+beginPath 
+stroke #b48cf2
+beginPath 
+fill #f07aa8
+beginPath 
+stroke #f07aa8
+beginPath 
+fill #8fb8de
+beginPath 
+stroke #8fb8de
+beginPath 
+fill #c9b27a
+beginPath 
+stroke #c9b27a
+beginPath 
+fill #6fcfe8
+beginPath 
+stroke #6fcfe8
+beginPath 
+fill #d39bd6
+beginPath 
+stroke #d39bd6
+beginPath 
+fill #a3b86c
+beginPath 
+stroke #a3b86c
+beginPath 
+fill #9aa3b5
+beginPath 
+stroke #9aa3b5
+beginPath 
+roundRect 40 26.200000000000003 320 7.6 3
+roundRect 80 46.2 160 7.6 3
+fill #ef5b5b
+beginPath 
+stroke #ef5b5b
+beginPath 
+rect 0 14.799999999999999 800 1
+rect 40 34.8 320 1
+rect 80 54.8 160 1
+fill #8a8f98
+beginPath 
+rect 48 31.266666666666666 1 2.533333333333333
+rect 320 31.266666666666666 1 2.533333333333333
+rect 488 91.26666666666668 1 2.533333333333333
+fill rgba(0, 0, 0, 0.4)
+beginPath 
+rect 96 46.2 2 7.6
+rect 224 46.2 2 7.6
+fill #ef5b5b
+beginPath 
+rect 360 26.200000000000003 40 7.6
+fill #d0d7de
+beginPath 
+rect 400 70 9 3.8
+rect 410 70 9 3.8
+rect 470 70 9 3.8
+fill #1f2328
+setLineDash 
+beginPath 
+moveTo 40 13.799999999999999
+lineTo 40 26.200000000000003
+moveTo 400 13.799999999999999
+lineTo 400 66.2
+stroke #8a8f98
+setLineDash 3,3
+beginPath 
+moveTo 80 33.8
+lineTo 80 46.2
+moveTo 480 13.799999999999999
+lineTo 480 86.19999999999999
+stroke #8a8f98
+setLineDash 
+beginPath 
+moveTo 80 33.8
+lineTo 80 46.2
+stroke #ef5b5b
+setLineDash 
+fillText no ev… 362 30
+fillText bytes_read 1.2K · gets 4 246 50
+{"drawCalls":34,"primitives":22,"labels":2}
+flame
+setTransform 2 0 0 2 0 0
+clearRect 0 0 800 100
+beginPath 
+roundRect 0 4 800 12 3
+fill #5b9dff
+beginPath 
+stroke #5b9dff
+beginPath 
+roundRect 480 24 240 12 3
+fill #2fc4b2
+beginPath 
+stroke #2fc4b2
+beginPath 
+fill #e8a050
+beginPath 
+stroke #e8a050
+beginPath 
+roundRect 400 24 80 12 3
+roundRect 496 24 96 12 3
+roundRect 608 24 160 12 3
+fill #b48cf2
+beginPath 
+stroke #b48cf2
+beginPath 
+fill #f07aa8
+beginPath 
+stroke #f07aa8
+beginPath 
+fill #8fb8de
+beginPath 
+stroke #8fb8de
+beginPath 
+fill #c9b27a
+beginPath 
+stroke #c9b27a
+beginPath 
+fill #6fcfe8
+beginPath 
+stroke #6fcfe8
+beginPath 
+fill #d39bd6
+beginPath 
+stroke #d39bd6
+beginPath 
+fill #a3b86c
+beginPath 
+stroke #a3b86c
+beginPath 
+fill #9aa3b5
+beginPath 
+stroke #9aa3b5
+beginPath 
+roundRect 40 24 320 12 3
+roundRect 80 44 160 12 3
+fill #ef5b5b
+beginPath 
+stroke #ef5b5b
+beginPath 
+rect 0 17 800 1
+rect 40 37 320 1
+rect 80 57 160 1
+fill #8a8f98
+fillText GET /checkout 4 10
+fillText charge 44 30
+fillText cache.get 404 30
+fillText emit 484 30
+fillText cache.get 612 30
+fillText db.query 84 50
+{"drawCalls":31,"primitives":10,"labels":6}

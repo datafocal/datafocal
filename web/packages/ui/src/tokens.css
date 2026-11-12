@@ -1,0 +1,38 @@
+/* Design tokens: every colour the UI uses, as light-dark(light, dark). The theme follows the
+   system unless :root carries data-theme. This is the only file allowed raw colour literals. */
+:root {
+  color-scheme: light dark;
+  --bg: light-dark(#f3f5f8, #0d0f13);
+  --panel: light-dark(#ffffff, #13161c);
+  --panel-2: light-dark(#f7f8fb, #191d25);
+  --raise: light-dark(#eceff4, #20252f);
+  --line: light-dark(#e0e4eb, #262b35);
+  --line-2: light-dark(#cdd3dd, #333a47);
+  --ink: light-dark(#151a22, #e6e9ef);
+  --ink-2: light-dark(#4a5262, #aab1bf);
+  --ink-3: light-dark(#5f6878, #8a93a3);
+  --accent: light-dark(#2b6fd8, #5b9dff);
+  --accent-soft: light-dark(rgb(43 111 216 / 10%), rgb(91 157 255 / 14%));
+  --insight: light-dark(#096b60, #2fc4b2);
+  --insight-soft: light-dark(rgb(15 143 128 / 10%), rgb(47 196 178 / 13%));
+  --ok: light-dark(#23864f, #3fb67b);
+  --warn: light-dark(#8f5d0d, #e3a33b);
+  --err: light-dark(#b02c2c, #ef5b5b);
+  --err-soft: light-dark(rgb(208 59 59 / 10%), rgb(239 91 91 / 14%));
+  /* Categorical: values of a field told apart by colour alone, none reading as a status. */
+  --cat-1: light-dark(#2f6fcf, #5b9dff);
+  --cat-2: light-dark(#0f8f80, #2fc4b2);
+  --cat-3: light-dark(#b8661b, #e8a050);
+  --cat-4: light-dark(#8a4fc7, #b48cf2);
+  --cat-5: light-dark(#c2417a, #f07aa8);
+  --shadow: 0 10px 30px rgb(0 0 0 / 28%);
+  --sans: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --r: 8px;
+}
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}

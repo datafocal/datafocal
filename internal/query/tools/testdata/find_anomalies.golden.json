@@ -1,0 +1,304 @@
+{
+  "data": {
+    "anomalies": [
+      {
+        "kind": "new_pattern",
+        "pattern_id": "168b725e27267cf",
+        "pattern": "slow query \u003c*\u003e ms",
+        "service": "db",
+        "at": "2026-07-18T14:02:00Z",
+        "observed": 4,
+        "expected": 0,
+        "level": "warn",
+        "score": 16.59508705871257,
+        "members": [
+          {
+            "kind": "spike",
+            "pattern_id": "168b725e27267cf",
+            "pattern": "slow query \u003c*\u003e ms",
+            "service": "db",
+            "at": "2026-07-18T14:02:15Z",
+            "observed": 71,
+            "expected": 1.2,
+            "level": "warn",
+            "score": 15.850889596072928
+          },
+          {
+            "kind": "new_pattern",
+            "pattern_id": "17f72c8fc2aafcf4",
+            "pattern": "query ok \u003c*\u003e ms",
+            "service": "db",
+            "at": "2026-07-18T14:00:00Z",
+            "observed": 480,
+            "expected": 0,
+            "score": 9.628260921351693,
+            "routine": true
+          }
+        ]
+      },
+      {
+        "kind": "new_pattern",
+        "pattern_id": "431a7be27e7e3e4d",
+        "pattern": "scheduled pod \u003c*\u003e host \u003c*\u003e",
+        "service": "scheduler",
+        "at": "2026-07-18T14:00:00Z",
+        "observed": 7,
+        "expected": 0,
+        "score": 2.1972245773362196
+      },
+      {
+        "kind": "new_pattern",
+        "pattern_id": "9ef0c50864614821",
+        "pattern": "POST /users \u003c*\u003e \u003c*\u003e ms",
+        "service": "gateway",
+        "at": "2026-07-18T14:00:00Z",
+        "observed": 456,
+        "expected": 0,
+        "score": 10.013193612624185,
+        "routine": true,
+        "members": [
+          {
+            "kind": "new_pattern",
+            "pattern_id": "122485649c5e4821",
+            "pattern": "GET /health \u003c*\u003e \u003c*\u003e ms",
+            "service": "gateway",
+            "at": "2026-07-18T14:00:00Z",
+            "observed": 218,
+            "expected": 0,
+            "score": 9.353227859524731,
+            "routine": true
+          }
+        ]
+      },
+      {
+        "kind": "new_pattern",
+        "pattern_id": "92d58908259adaa2",
+        "pattern": "POST /checkout \u003c*\u003e \u003c*\u003e ms",
+        "service": "checkout",
+        "at": "2026-07-18T14:00:00Z",
+        "observed": 152,
+        "expected": 0,
+        "score": 8.7558950816463,
+        "routine": true
+      },
+      {
+        "kind": "spike",
+        "pattern_id": "122485649c5e4821",
+        "pattern": "GET /health \u003c*\u003e \u003c*\u003e ms",
+        "service": "gateway",
+        "at": "2026-07-18T14:06:00Z",
+        "observed": 424,
+        "expected": 202.69678527315668,
+        "score": 8.210069035519686,
+        "routine": true
+      },
+      {
+        "kind": "new_pattern",
+        "pattern_id": "a8f3d27afcbd7a8b",
+        "pattern": "job queued depth \u003c*\u003e type export",
+        "service": "jobs",
+        "at": "2026-07-18T14:00:00Z",
+        "observed": 29,
+        "expected": 0,
+        "score": 7.849323818040561,
+        "routine": true,
+        "members": [
+          {
+            "kind": "new_pattern",
+            "pattern_id": "5ca295431e99fa20",
+            "pattern": "job queued depth \u003c*\u003e type index",
+            "service": "jobs",
+            "at": "2026-07-18T14:00:00Z",
+            "observed": 29,
+            "expected": 0,
+            "score": 7.83161727635261,
+            "routine": true
+          },
+          {
+            "kind": "new_pattern",
+            "pattern_id": "5d122df17430a225",
+            "pattern": "job queued depth \u003c*\u003e type reindex",
+            "service": "jobs",
+            "at": "2026-07-18T14:00:00Z",
+            "observed": 31,
+            "expected": 0,
+            "score": 7.824046010856292,
+            "routine": true
+          },
+          {
+            "kind": "new_pattern",
+            "pattern_id": "7fdbec8357fe05f7",
+            "pattern": "job queued depth \u003c*\u003e type email",
+            "service": "jobs",
+            "at": "2026-07-18T14:00:00Z",
+            "observed": 31,
+            "expected": 0,
+            "score": 7.820840879907344,
+            "routine": true
+          },
+          {
+            "kind": "spike",
+            "pattern_id": "a8f3d27afcbd7a8b",
+            "pattern": "job queued depth \u003c*\u003e type export",
+            "service": "jobs",
+            "at": "2026-07-18T14:03:00Z",
+            "observed": 76,
+            "expected": 41.68679559628999,
+            "score": 5.27445806461476,
+            "routine": true
+          }
+        ]
+      },
+      {
+        "kind": "new_pattern",
+        "pattern_id": "35f1b3ec3fce153",
+        "pattern": "wrote \u003c*\u003e rows to pageviews",
+        "service": "analytics-export",
+        "at": "2026-07-18T14:00:00Z",
+        "observed": 11,
+        "expected": 0,
+        "score": 7.688913336864796,
+        "routine": true,
+        "members": [
+          {
+            "kind": "new_pattern",
+            "pattern_id": "3b529f3474e72919",
+            "pattern": "wrote \u003c*\u003e rows to sessions",
+            "service": "analytics-export",
+            "at": "2026-07-18T14:00:00Z",
+            "observed": 15,
+            "expected": 0,
+            "score": 7.675081857716334,
+            "routine": true
+          },
+          {
+            "kind": "new_pattern",
+            "pattern_id": "cebda8d1d4d7aff9",
+            "pattern": "wrote \u003c*\u003e rows to events",
+            "service": "analytics-export",
+            "at": "2026-07-18T14:00:00Z",
+            "observed": 11,
+            "expected": 0,
+            "score": 7.6577552711348655,
+            "routine": true
+          },
+          {
+            "kind": "new_pattern",
+            "pattern_id": "854326dfa9e8b60b",
+            "pattern": "wrote \u003c*\u003e rows to clickstream",
+            "service": "analytics-export",
+            "at": "2026-07-18T14:00:00Z",
+            "observed": 8,
+            "expected": 0,
+            "score": 7.645397699428633,
+            "routine": true
+          },
+          {
+            "kind": "spike",
+            "pattern_id": "35f1b3ec3fce153",
+            "pattern": "wrote \u003c*\u003e rows to pageviews",
+            "service": "analytics-export",
+            "at": "2026-07-18T14:02:45Z",
+            "observed": 77,
+            "expected": 24.1438605791,
+            "score": 5.774276537008261,
+            "routine": true
+          }
+        ]
+      },
+      {
+        "kind": "new_pattern",
+        "pattern_id": "bdc6eb72ce9f6c7",
+        "pattern": "disk util \u003c*\u003e pct await \u003c*\u003e ms",
+        "service": "host",
+        "at": "2026-07-18T14:00:00Z",
+        "observed": 30,
+        "expected": 0,
+        "score": 7.0909098220799835,
+        "routine": true,
+        "members": [
+          {
+            "kind": "new_pattern",
+            "pattern_id": "cef4f11974f1a241",
+            "pattern": "memory used \u003c*\u003e pct",
+            "service": "host",
+            "at": "2026-07-18T14:00:00Z",
+            "observed": 6,
+            "expected": 0,
+            "score": 5.484796933490655,
+            "routine": true
+          }
+        ]
+      },
+      {
+        "kind": "spike",
+        "pattern_id": "3b529f3474e72919",
+        "pattern": "wrote \u003c*\u003e rows to sessions",
+        "service": "analytics-export",
+        "at": "2026-07-18T14:02:15Z",
+        "observed": 40,
+        "expected": 13.018554749999996,
+        "score": 5.469012865032365,
+        "routine": true,
+        "members": [
+          {
+            "kind": "spike",
+            "pattern_id": "854326dfa9e8b60b",
+            "pattern": "wrote \u003c*\u003e rows to clickstream",
+            "service": "analytics-export",
+            "at": "2026-07-18T14:02:15Z",
+            "observed": 32,
+            "expected": 12.363923959999997,
+            "score": 4.820228168902463,
+            "routine": true
+          }
+        ]
+      },
+      {
+        "kind": "spike",
+        "pattern_id": "cebda8d1d4d7aff9",
+        "pattern": "wrote \u003c*\u003e rows to events",
+        "service": "analytics-export",
+        "at": "2026-07-18T14:02:30Z",
+        "observed": 50,
+        "expected": 17.096749789999997,
+        "score": 5.271766610498926,
+        "routine": true
+      },
+      {
+        "kind": "spike",
+        "pattern_id": "5ca295431e99fa20",
+        "pattern": "job queued depth \u003c*\u003e type index",
+        "service": "jobs",
+        "at": "2026-07-18T14:02:45Z",
+        "observed": 62,
+        "expected": 32.1958865564,
+        "score": 5.106457912394275,
+        "routine": true
+      },
+      {
+        "kind": "spike",
+        "pattern_id": "5d122df17430a225",
+        "pattern": "job queued depth \u003c*\u003e type reindex",
+        "service": "jobs",
+        "at": "2026-07-18T14:02:30Z",
+        "observed": 65,
+        "expected": 37.751342040999994,
+        "score": 4.8117426988595815,
+        "routine": true
+      }
+    ]
+  },
+  "meta": {
+    "snapshot": "e370.s0",
+    "coverage": 1,
+    "approx": false,
+    "cost": {
+      "gets": 392,
+      "bytes_read": 48844,
+      "footers_decoded": 322,
+      "segments": 678
+    },
+    "token_estimate": 1434
+  }
+}

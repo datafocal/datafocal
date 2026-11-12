@@ -1,0 +1,2 @@
+{"timestamp":"2026-10-30T09:00:00Z","session_id":"00000000-0000-4000-8000-0000000000b1","model":{"id":"claude-opus-5-5","display_name":"Opus"},"rate_limits":{"five_hour":{"used_percentage":23.5,"resets_at":1793869200},"seven_day":{"used_percentage":41.2,"resets_at":1794268800}}}
+{"timestamp":"2026-10-30T09:01:00Z","session_id":"00000000-0000-4000-8000-0000000000b1","model":{"id":"claude-opus-5-5","display_name":"Opus"},"rate_limits":{"five_hour":{"used_percentage":24,"resets_at":1793869200},"seven_day":{"used_percentage":41.3,"resets_at":1794268800}}}

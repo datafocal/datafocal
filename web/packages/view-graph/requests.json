@@ -1,0 +1,40 @@
+[
+  {
+    "tool": "find_anomalies",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:00:00Z",
+          "to": "2026-07-18T14:10:00Z"
+        }
+      }
+    }
+  },
+  {
+    "tool": "service_graph",
+    "req": {
+      "group_by": "auto",
+      "max_nodes": 400,
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:00:00Z",
+          "to": "2026-07-18T14:10:00Z"
+        }
+      }
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "group_by": "service",
+      "limit": 1000000,
+      "measure": "count",
+      "selector": {
+        "time": {
+          "from": "2026-07-18T14:00:00Z",
+          "to": "2026-07-18T14:10:00Z"
+        }
+      }
+    }
+  }
+]

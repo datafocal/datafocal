@@ -1,0 +1,16 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": { "composite": true, "types": ["vite/client"] },
+  "include": ["src"],
+  "references": [
+    { "path": "../api" },
+    { "path": "../shell" },
+    { "path": "../view-ai" },
+    { "path": "../view-logs" },
+    { "path": "../view-graph" },
+    { "path": "../view-trace" },
+    { "path": "../view-resources" },
+    { "path": "../view-slos" },
+    { "path": "../view-views" }
+  ]
+}

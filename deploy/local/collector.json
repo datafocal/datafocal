@@ -1,0 +1,18 @@
+{
+  "ingest": {
+    "state_dir": "@STATE@",
+    "sources": [
+      {
+        "kind": "command",
+        "command": ["journalctl", "--follow", "--output=json", "--all"],
+        "resume": "--after-cursor={cursor}",
+        "cursor": "__CURSOR",
+        "parse": {"format": "journal"}
+      },
+      {"path": "@HOME@/.claude/projects/*/*.jsonl", "parse": {"format": "json"}},
+      {"path": "@HOME@/.claude/projects/*/*/subagents/*.jsonl", "parse": {"format": "json"}},
+      {"path": "@HOME@/.claude/claude-quota.jsonl", "parse": {"format": "json"}},
+      {"path": "@HOME@/.codex/sessions/*/*/*/*.jsonl", "parse": {"format": "json"}}
+    ]
+  }
+}

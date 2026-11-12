@@ -1,0 +1,15 @@
+# Follows this machine's journal, cAdvisor's samples in it, and the coding agents' transcripts.
+[Unit]
+Description=DataFocal collector
+After=network-online.target
+
+[Service]
+EnvironmentFile=%h/.config/datafocal/datafocal.env
+# The state dir is read only from the config file, which install-local.sh writes.
+Environment=DATAFOCAL_CONFIG_FILE=%h/.config/datafocal/collector.json
+ExecStart=%h/.local/bin/datafocal-collector
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target

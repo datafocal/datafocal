@@ -1,0 +1,16 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true,
+    "resolveJsonModule": true,
+    "types": ["vite/client"],
+    "skipLibCheck": true
+  },
+  "include": ["src", "fixtures/*.json"],
+  "references": [
+    { "path": "../api" },
+    { "path": "../query" },
+    { "path": "../shell" },
+    { "path": "../ui" }
+  ]
+}

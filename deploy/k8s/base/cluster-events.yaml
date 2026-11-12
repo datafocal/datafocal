@@ -1,0 +1,95 @@
+# One collector following the API server's Events and container states, replaced rather
+# than rolled so two never send the same lines. Its saved cursor lives on a volume, so a
+# replaced pod resumes after the last line it flushed.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: cluster-events
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: cluster-events
+rules:
+  - apiGroups: [""]
+    resources: [events, pods]
+    verbs: [get, list, watch]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: cluster-events
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-events
+subjects:
+  - kind: ServiceAccount
+    name: cluster-events
+    namespace: datafocal
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: cluster-events-state
+spec:
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests:
+      storage: 16Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cluster-events
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: cluster-events
+  template:
+    metadata:
+      labels:
+        app: cluster-events
+    spec:
+      serviceAccountName: cluster-events
+      containers:
+        - name: collector
+          image: datafocal-collector:dev
+          # A stable name keeps one commit log across replaced pods, and is the host of
+          # lines about no pod.
+          env:
+            - name: DATAFOCAL_INGEST_HOST
+              value: cluster-events
+          envFrom:
+            - configMapRef:
+                name: datafocal
+            - secretRef:
+                name: datafocal-s3
+          resources:
+            requests:
+              cpu: 20m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          securityContext:
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: [ALL]
+          volumeMounts:
+            - name: config
+              mountPath: /etc/config
+              readOnly: true
+            - name: state
+              mountPath: /var/lib/datafocal/state
+      volumes:
+        - name: config
+          configMap:
+            name: cluster-events
+        - name: state
+          persistentVolumeClaim:
+            claimName: cluster-events-state

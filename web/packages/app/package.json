@@ -1,0 +1,21 @@
+{
+  "name": "@datafocal/app",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@datafocal/api": "workspace:*",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "@datafocal/shell": "workspace:*",
+    "@datafocal/view-ai": "workspace:*",
+    "@datafocal/view-logs": "workspace:*",
+    "@datafocal/view-graph": "workspace:*",
+    "@datafocal/view-trace": "workspace:*",
+    "@datafocal/view-resources": "workspace:*",
+    "@datafocal/view-slos": "workspace:*",
+    "@datafocal/view-views": "workspace:*"
+  }
+}

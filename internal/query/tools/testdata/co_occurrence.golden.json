@@ -1,0 +1,17 @@
+{
+  "data": {
+    "pairs": []
+  },
+  "meta": {
+    "snapshot": "e370.s0",
+    "coverage": 1,
+    "approx": false,
+    "cost": {
+      "gets": 642,
+      "bytes_read": 588146,
+      "footers_decoded": 322,
+      "segments": 322
+    },
+    "token_estimate": 3
+  }
+}

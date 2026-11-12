@@ -1,0 +1,16 @@
+{
+  "formats": [
+    {
+      "name": "syslog",
+      "match": "^(?:<(?P<severity>\\d{1,3})>)?(?:1 (?:-|(?P<time>\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d(?:\\.\\d+)?(?:Z|[+-]\\d\\d:\\d\\d))) (?:-|(?P<host>\\S+)) (?:-|(?P<service>\\S+)) (?:-|(?P<pid>\\S+)) (?:-|(?P<msgid>\\S+)) (?:-|(?P<structured_data>(?:\\[[^\\s\\]\"=]+(?: [^\\s\\]\"=]+=\"(?:[^\"\\\\]|\\\\.)*\")*\\])+))(?: \\x{FEFF}?(?P<body>.*))?|(?P<time>[A-Z][a-z]{2} [ \\d]\\d \\d\\d:\\d\\d:\\d\\d|\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d(?:\\.\\d+)?(?:Z|[+-]\\d\\d:\\d\\d)) (?P<host>\\S+) (?P<service>[^\\s\\[]+?)(?:\\[(?P<pid>[^\\]\\s]*)\\])?: (?P<body>.*))$",
+      "layout": "Jan _2 15:04:05",
+      "levels": {"0": "fatal", "1": "fatal", "2": "fatal", "3": "error", "4": "warn", "5": "info", "6": "info", "7": "debug"},
+      "params": "structured_data"
+    }
+  ],
+  "sources": [
+    {"path": "syslog", "parse": {"format": "auto"}},
+    {"path": "messages", "parse": {"format": "auto"}},
+    {"path": "**/*.log", "parse": {"format": "auto"}}
+  ]
+}

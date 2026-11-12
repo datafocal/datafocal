@@ -1,0 +1,13 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "ignore": ["gate-fixtures/**", "packages/api/src/generated/**"],
+  "ignoreBinaries": ["go"],
+  "ignoreDependencies": [
+    "@biomejs/biome",
+    "@swc/core",
+    "dependency-cruiser",
+    "oxlint",
+    "oxlint-tsgolint"
+  ],
+  "workspaces": { ".": { "entry": ["perf/gen.ts", "perf/nightly/soak.cjs", "preview/shoot.ts"] } }
+}

@@ -1,0 +1,46 @@
+# One replica, replaced rather than rolled: the compactor is the bucket's one rewriter,
+# so two must never run at once.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: compactor
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: compactor
+  template:
+    metadata:
+      labels:
+        app: compactor
+    spec:
+      securityContext:
+        runAsNonRoot: true
+      # A stopped pass ends at its next hour; an hour cut short is merged again by the next.
+      terminationGracePeriodSeconds: 60
+      containers:
+        - name: compactor
+          image: datafocal-compactor:dev
+          env:
+            - name: DATAFOCAL_MEMORY_LIMIT
+              valueFrom:
+                resourceFieldRef:
+                  resource: limits.memory
+          envFrom:
+            - configMapRef:
+                name: datafocal
+            - secretRef:
+                name: datafocal-s3
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: "1"
+              memory: 1Gi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: [ALL]

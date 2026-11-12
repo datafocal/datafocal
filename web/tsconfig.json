@@ -1,0 +1,24 @@
+{
+  "files": [],
+  "references": [
+    { "path": "packages/api" },
+    { "path": "packages/app" },
+    { "path": "packages/data" },
+    { "path": "packages/query" },
+    { "path": "packages/render-core" },
+    { "path": "packages/render-graph" },
+    { "path": "packages/render-table" },
+    { "path": "packages/render-timeline" },
+    { "path": "packages/render-waterfall" },
+    { "path": "packages/shell" },
+    { "path": "packages/ui" },
+    { "path": "packages/view-ai" },
+    { "path": "packages/view-graph" },
+    { "path": "packages/view-logs" },
+    { "path": "packages/view-trace" },
+    { "path": "packages/view-resources" },
+    { "path": "packages/view-slos" },
+    { "path": "packages/view-views" },
+    { "path": "perf" }
+  ]
+}

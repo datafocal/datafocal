@@ -1,0 +1,16 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true,
+    "rootDir": "..",
+    "lib": ["es2022", "esnext.disposable", "dom", "dom.iterable"],
+    "types": ["node"]
+  },
+  "include": [".", "../playwright.config.ts", "../gate-fixtures/perf"],
+  "references": [
+    { "path": "../packages/api" },
+    { "path": "../packages/render-core" },
+    { "path": "../packages/render-timeline" },
+    { "path": "../packages/render-waterfall" }
+  ]
+}

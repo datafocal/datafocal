@@ -1,0 +1,13 @@
+[Unit]
+Description=DataFocal querier, the UI at http://localhost:8080/ui/ and MCP at /mcp
+After=network-online.target
+
+[Service]
+EnvironmentFile=%h/.config/datafocal/datafocal.env
+Environment=DATAFOCAL_ADDR=127.0.0.1:8080
+ExecStart=%h/.local/bin/datafocal-querier
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target

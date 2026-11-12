@@ -1,0 +1,5 @@
+Oct 28 10:00:01 web1 sshd[8812]: Accepted publickey for deploy from 10.0.0.7 port 51122 ssh2: ED25519 SHA256:p0kVQ0Zl9sWq8oG8tI3nVb7m4m2yQjzYcZ1sXw3hJgE
+Oct 28 10:00:01 web1 sshd[8812]: pam_unix(sshd:session): session opened for user deploy(uid=1000) by (uid=0)
+Oct 28 10:00:01 web1 systemd-logind[612]: New session 41 of user deploy.
+Oct 28 10:00:07 web1 sudo:   deploy : TTY=pts/0 ; PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/systemctl restart nginx
+Oct 28 10:00:09 web1 sshd[8840]: Invalid user admin from 203.0.113.9 port 40022

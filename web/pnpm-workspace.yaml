@@ -1,0 +1,7 @@
+packages:
+  - packages/*
+# No package runs an install script, and none is installed until it is three days old.
+onlyBuiltDependencies: []
+minimumReleaseAge: 4320
+# @swc/core's postinstall only checks for its prebuilt binary, which installs without it.
+ignoredBuiltDependencies: ["@swc/core"]

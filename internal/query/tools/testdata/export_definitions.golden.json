@@ -1,0 +1,16 @@
+{
+  "data": {
+    "content": "apiVersion: openslo/v1\nkind: SLO\nmetadata:\n  annotations:\n    datafocal/group-by: endpoint\n  name: gateway-prometheus\nspec:\n  alertPolicies:\n  - kind: AlertPolicy\n    metadata:\n      name: burn\n    spec:\n      conditions:\n      - kind: AlertCondition\n        metadata:\n          annotations:\n            datafocal/short-window: 5m\n          name: fast\n        spec:\n          condition:\n            kind: burnrate\n            lookbackWindow: 1h\n            op: gte\n            threshold: 14.4\n          severity: page\n  budgetingMethod: Occurrences\n  indicator:\n    spec:\n      ratioMetric:\n        good:\n          metricSource:\n            spec:\n              query: '{service=\"gateway\"} | status \u003c 500'\n            type: Prometheus\n        total:\n          metricSource:\n            spec:\n              query: '{service=\"gateway\"}'\n            type: Prometheus\n  objectives:\n  - target: 0.99\n  service: gateway\n  timeWindow:\n  - duration: 1d\n    isRolling: true\n---\napiVersion: datafocal/v1\nkind: View\nmetadata:\n  displayName: Gateway\n  name: gateway\nspec:\n  panels:\n  - grid:\n      h: 4\n      w: 8\n      x: 0\n      \"y\": 0\n    kind: timeseries\n    query: sum by (status) (count_over_time({service=\"gateway\", endpoint=\"$endpoint\"}\n      [1m]))\n  - grid:\n      h: 4\n      w: 4\n      x: 8\n      \"y\": 0\n    kind: slo\n    slo: gateway\n  time:\n    from: now-1h\n    to: now\n  variables:\n  - allowAll: true\n    column: endpoint\n    name: endpoint\n"
+  },
+  "meta": {
+    "snapshot": "e370.s0",
+    "coverage": 1,
+    "approx": false,
+    "cost": {
+      "gets": 0,
+      "bytes_read": 0
+    },
+    "token_estimate": 387,
+    "definitions": "3cd86f40ca2803cd"
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "data": {
+    "columns": [
+      {
+        "name": "cluster",
+        "type": "string",
+        "kind": "enum",
+        "cardinality": 1
+      },
+      {
+        "name": "dc",
+        "type": "string",
+        "kind": "enum",
+        "cardinality": 1
+      },
+      {
+        "name": "duration_ms",
+        "type": "int",
+        "kind": "num",
+        "cardinality": 1541
+      },
+      {
+        "name": "endpoint",
+        "type": "string",
+        "kind": "enum",
+        "cardinality": 3
+      },
+      {
+        "name": "host",
+        "type": "string",
+        "kind": "enum",
+        "cardinality": 7
+      },
+      {
+        "name": "instance",
+        "type": "string",
+        "kind": "enum",
+        "cardinality": 6
+      },
+      {
+        "name": "level",
+        "type": "string",
+        "kind": "enum",
+        "cardinality": 3
+      },
+      {
+        "name": "message",
+        "type": "string",
+        "kind": "str",
+        "cardinality": 11634
+      },
+      {
+        "name": "op",
+        "type": "string",
+        "kind": "enum",
+        "cardinality": 2
+      },
+      {
+        "name": "pod",
+        "type": "string",
+        "kind": "enum",
+        "cardinality": 7
+      },
+      {
+        "name": "region",
+        "type": "string",
+        "kind": "enum",
+        "cardinality": 1
+      },
+      {
+        "name": "request_id",
+        "type": "string",
+        "kind": "id",
+        "cardinality": 57053
+      },
+      {
+        "name": "service",
+        "type": "string",
+        "kind": "enum",
+        "cardinality": 7
+      },
+      {
+        "name": "status",
+        "type": "string",
+        "kind": "enum",
+        "cardinality": 4
+      },
+      {
+        "name": "trace_id",
+        "type": "string",
+        "kind": "id",
+        "cardinality": 59113
+      },
+      {
+        "name": "user_id",
+        "type": "string",
+        "kind": "id",
+        "cardinality": 2983
+      }
+    ],
+    "producers": [
+      {
+        "profile": "auto",
+        "version": 1,
+        "degradation": "none",
+        "segments": 322
+      }
+    ]
+  },
+  "meta": {
+    "snapshot": "e370.s0",
+    "coverage": 1,
+    "approx": true,
+    "cost": {
+      "gets": 322,
+      "bytes_read": 0,
+      "footers_decoded": 322,
+      "segments": 322
+    },
+    "token_estimate": 283
+  }
+}

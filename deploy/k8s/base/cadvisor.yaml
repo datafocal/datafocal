@@ -1,0 +1,68 @@
+# One cAdvisor per node, writing each container's CPU, memory, network and disk use to its
+# stdout every 15s, which the collector reads as the container log it is and identity names
+# after the pod measured.
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: cadvisor
+spec:
+  selector:
+    matchLabels:
+      app: cadvisor
+  template:
+    metadata:
+      labels:
+        app: cadvisor
+    spec:
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          effect: NoSchedule
+      automountServiceAccountToken: false
+      containers:
+        - name: cadvisor
+          image: ghcr.io/google/cadvisor:0.60.6
+          args:
+            - --storage_driver=stdout
+            # A fixed 15s, the engine's narrowest bin, rather than as often as each container changes.
+            - --housekeeping_interval=15s
+            - --allow_dynamic_housekeeping=false
+            # The pods' containers and the node's total, not every systemd cgroup on it.
+            - --docker_only=true
+            # The stdout driver writes none of these.
+            - --disable_metrics=advtcp,cpu_topology,cpuset,diskIO,hugetlb,memory_numa,percpu,perf_event,process,referenced_memory,resctrl,sched,tcp,udp
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          securityContext:
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+          volumeMounts:
+            - name: rootfs
+              mountPath: /rootfs
+              readOnly: true
+            - name: var-run
+              mountPath: /var/run
+              readOnly: true
+            - name: sys
+              mountPath: /sys
+              readOnly: true
+            - name: disk
+              mountPath: /dev/disk
+              readOnly: true
+      volumes:
+        - name: rootfs
+          hostPath:
+            path: /
+        - name: var-run
+          hostPath:
+            path: /var/run
+        - name: sys
+          hostPath:
+            path: /sys
+        - name: disk
+          hostPath:
+            path: /dev/disk

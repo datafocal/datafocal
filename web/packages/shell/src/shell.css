@@ -1,0 +1,329 @@
+/* The shell's layout: a fixed rail, a top bar
+   with the time range, the view, and the evidence drawer below it. */
+.shell {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr) auto;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+}
+.shell > main {
+  grid-column: 2;
+  overflow: auto;
+}
+.shell > :not(.rail, main) {
+  grid-column: 2 / -1;
+}
+
+.rail {
+  grid-row: 1 / 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-block: 10px;
+  background: var(--panel);
+  border-right: 1px solid var(--line);
+}
+.rail button {
+  width: 40px;
+  height: 40px;
+  border-radius: 9px;
+  color: var(--ink-3);
+}
+.rail [aria-current="page"] {
+  color: var(--ink);
+  background: var(--raise);
+}
+.rail svg {
+  width: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+}
+
+.top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 14px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--line);
+}
+.top > a {
+  color: var(--accent);
+}
+.range {
+  flex: 1;
+  font: 11.5px var(--mono);
+  color: var(--ink-2);
+}
+
+/* Compare's choice, and the range it compares against when typed in. */
+.compare {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  color: var(--ink-3);
+}
+.compare select,
+.compare input {
+  height: 24px;
+  padding: 0 6px;
+  font: 11.5px var(--sans);
+  color: var(--ink);
+  background: var(--panel);
+  border: 1px solid var(--line-2);
+  border-radius: 6px;
+}
+
+/* Focus: a panel beside the view, so the lines it describes stay in sight. Its header stays
+   put and its body scrolls, a card a section. */
+.shell > .focus {
+  grid-column: 3;
+  grid-row: 2 / -1;
+  width: min(420px, 40vw);
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--panel);
+  border-left: 1px solid var(--line-2);
+  box-shadow: var(--shadow);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .shell > .focus {
+    animation: focus-in 140ms ease-out;
+  }
+}
+@keyframes focus-in {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+}
+/* A narrow window has no room beside the view, so Focus covers it. */
+@media (max-width: 900px) {
+  .shell > .focus {
+    grid-column: 2 / -1;
+    width: auto;
+  }
+}
+.focus > header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 16px 12px;
+  border-bottom: 1px solid var(--line);
+}
+.focus-t {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.focus-k {
+  font: 600 10.5px var(--sans);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--insight);
+}
+.focus-x {
+  width: 26px;
+  height: 26px;
+  font-size: 18px;
+  line-height: 1;
+  color: var(--ink-3);
+  border-radius: 6px;
+}
+.focus-x:hover {
+  color: var(--ink);
+  background: var(--raise);
+}
+/* A long pattern template as a title: two lines at most, the whole of it on hover. */
+.focus h2 {
+  display: -webkit-box;
+  margin: 0;
+  overflow: hidden;
+  font: 600 14px / 1.4 var(--mono);
+  overflow-wrap: anywhere;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.focus header code {
+  display: block;
+  max-height: 4.5em;
+  overflow: auto;
+  padding: 6px 8px;
+  font: 11px / 1.5 var(--mono);
+  overflow-wrap: anywhere;
+  color: var(--ink-2);
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+.focus-a {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.focus-a .tbtn:first-child {
+  color: var(--ink);
+  border-color: var(--insight);
+  background: var(--insight-soft);
+}
+.focus-b {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 4px 12px 16px;
+  background: var(--bg);
+}
+.focus-why {
+  margin: 10px 4px 0;
+  color: var(--ink);
+}
+.focus-b > section {
+  margin-top: 10px;
+  padding: 10px 12px 12px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+}
+.focus section > h3 {
+  margin: 0 0 8px;
+  font: 600 10.5px var(--sans);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.focus section > p {
+  margin: 0 0 6px;
+  font-size: 12px;
+  color: var(--ink-2);
+}
+/* A pattern: a row across the card, its template clipped, its count in the open. */
+.focus section > .tbtn {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  margin-bottom: 4px;
+  padding: 5px 8px;
+  overflow: hidden;
+  font: 11.5px var(--mono);
+  text-align: left;
+  text-overflow: ellipsis;
+  border-color: var(--line);
+}
+.focus section > .tbtn:hover {
+  color: var(--ink);
+  border-color: var(--accent);
+}
+.focus .ln {
+  grid-template-columns: 64px minmax(0, 1fr);
+  row-gap: 2px;
+  margin: 0;
+  padding: 6px 0;
+  border-top: 1px solid var(--line);
+}
+.focus h3 + .ln {
+  border-top: 0;
+  padding-top: 0;
+}
+.focus .ln > :first-child {
+  align-self: center;
+  color: var(--ink-3);
+}
+.focus .ln > :last-child {
+  grid-column: 1 / -1;
+  overflow-wrap: anywhere;
+}
+/* The fields an example is focused on, beside its message. */
+.focus .ln .ln-kv {
+  display: block;
+  font: 11.5px var(--mono);
+  color: var(--ink-3);
+}
+/* The service beside the time is a chip to focus on, not a bar across the panel. */
+.focus .ln > .tbtn {
+  justify-self: start;
+  height: 20px;
+  padding: 0 7px;
+  font-size: 11px;
+  border-radius: 999px;
+}
+
+/* What the focused lines have in common: a value, then its share here and elsewhere as two
+   bars on one scale. */
+.common-r {
+  display: grid;
+  gap: 3px;
+  width: 100%;
+  padding: 6px 8px;
+  text-align: left;
+  border-radius: 6px;
+}
+.common-r:hover {
+  background: var(--raise);
+}
+.common-k {
+  overflow: hidden;
+  font: 12px var(--mono);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.common-bar {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr) 84px;
+  gap: 8px;
+  align-items: center;
+  font-size: 11px;
+  color: var(--ink-3);
+}
+.common-bar > :last-child {
+  font-variant-numeric: tabular-nums;
+}
+.common-track {
+  height: 6px;
+  background: var(--line);
+  border-radius: 3px;
+}
+.common-track i {
+  display: block;
+  height: 100%;
+  border-radius: 3px;
+  background: var(--ink-3);
+}
+.common-bar.here {
+  color: var(--ink);
+}
+.common-bar.here .common-track i {
+  background: var(--accent);
+}
+
+.top > .badge {
+  padding: 2px 9px;
+  border-radius: 9px;
+  font-size: 12px;
+  color: var(--ink-2);
+  background: var(--raise);
+}
+.top > .badge.firing {
+  color: var(--err);
+  background: var(--err-soft);
+}
+
+/* The drill-down's filter, as chips. */
+.drill-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-block: 10px;
+}
+
+/* The links from what a view picked into the other views. */
+.pivots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}

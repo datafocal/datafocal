@@ -1,0 +1,169 @@
+name: pr
+
+# Every check a PR into main must pass, as two parallel jobs that always run, so the
+# required checks never depend on which paths a PR touches. The costlier runs (-race,
+# the bench smoke, the images) are main.yml's, after the merge.
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches: [main]
+
+permissions:
+  contents: read
+
+# One run per PR: a new push cancels the run it supersedes, and so does closing or merging
+# the PR. The closed event starts a run in the same group whose jobs are all skipped, which
+# cancels whatever is still running and bills nothing.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Format, vet, build, the tests, the complexity ceilings and dependency allowlist
+  # (.golangci.yml) and the semgrep rules (scripts/semgrep-style.yml). The alloc-budget gates
+  # and the cost-model regression gate are ordinary tests, so they fail the build here.
+  go:
+    if: github.event.action != 'closed'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      SEMGREP_VERSION: 1.176.1
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # The merge commit and its first parent, main, for the scorecard's diff.
+          fetch-depth: 2
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+      - name: gofmt
+        run: make fmt-check
+      - name: vet
+        run: make vet
+      - name: build
+        run: make build
+      - uses: golangci/golangci-lint-action@v8
+        with:
+          version: v2.12.2
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: pip-semgrep-${{ env.SEMGREP_VERSION }}
+      - name: semgrep
+        run: |
+          pip3 install --quiet "semgrep==$SEMGREP_VERSION"
+          make semgrep
+      - name: test
+        run: make test
+      # The scorecard is regenerated only when the PR changes a package internal/rcabench's
+      # tests build, its testdata, or the module's requirements.
+      - name: does the scorecard depend on the diff
+        id: rcabench
+        run: |
+          deps=$(go list -deps -test -f '{{if and .Module .Module.Main}}{{.Dir}}{{end}}' ./internal/rcabench | sed "s|^$PWD/||" | sort -u)
+          changed=$(git diff --name-only HEAD^1 HEAD)
+          run=0
+          while read -r f; do
+            case "$f" in
+              go.mod | go.sum | Makefile) run=1 ;;
+              */testdata/*) grep -qxF "${f%%/testdata/*}" <<<"$deps" && run=1 ;;
+              *) grep -qxF "$(dirname "$f")" <<<"$deps" && run=1 ;;
+            esac
+          done <<<"$changed"
+          echo "run=$run" >>"$GITHUB_OUTPUT"
+      - name: scorecard diff
+        if: steps.rcabench.outputs.run == '1'
+        run: |
+          make rcabench
+          git diff --exit-code -- internal/rcabench/testdata
+
+  # make web-check, the component tests in the Playwright image matching @playwright/test,
+  # and the PR's screenshots; the performance budgets cost too much to run here, so they run
+  # by hand (perf.yml). The view fixtures all three read are the engine's answers, generated
+  # from internal/ and the sample definitions.
+  web:
+    if: github.event.action != 'closed'
+    runs-on: ubuntu-latest
+    container: mcr.microsoft.com/playwright:v1.64.1-noble
+    timeout-minutes: 25
+    # The screenshots' comment; a fork's token is read-only, so its PR gets none.
+    permissions:
+      contents: read
+      pull-requests: write
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: install git and make
+        run: apt-get update -qq && apt-get install -yqq --no-install-recommends git make
+      - uses: actions/checkout@v4
+        with:
+          # The merge commit and its first parent, main, for the lint rules' diff.
+          fetch-depth: 2
+      # tygo, the view fixtures and the tool surface the client tests call run on Go.
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: web/package.json
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: web/.nvmrc
+          cache: pnpm
+          cache-dependency-path: web/pnpm-lock.yaml
+      # The lint rules' self-test (scripts/web-gate-fixtures.sh) runs only when the PR changes
+      # the rules, the fixtures, the script or the linters' versions.
+      - name: do the lint rules depend on the diff
+        id: gate
+        run: |
+          if git diff --quiet HEAD^1 HEAD -- web/.oxlintrc.json web/.dependency-cruiser.cjs \
+            web/tsconfig.base.json web/package.json web/pnpm-lock.yaml web/gate-fixtures \
+            scripts/web-gate-fixtures.sh; then
+            echo "run=0" >>"$GITHUB_OUTPUT"
+          else
+            echo "run=1" >>"$GITHUB_OUTPUT"
+          fi
+      - name: make web-check
+        env:
+          WEB_GATE_FIXTURES: ${{ steps.gate.outputs.run }}
+        run: make web-check WEB_GATE_FIXTURES="$WEB_GATE_FIXTURES"
+      - name: vitest --project browser
+        run: make web-browser-run
+      # Last: it rebuilds web/dist without the fixtures, as make preview serves it.
+      - name: make preview
+        run: make preview PREVIEW_OUT=preview
+      - name: upload the screenshots
+        id: screenshots
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: preview
+          path: preview/*.png
+          if-no-files-found: ignore
+      - name: link the screenshots from the PR
+        if: >-
+          ${{ !cancelled() && steps.screenshots.outputs.artifact-url != ''
+          && github.event.pull_request.head.repo.full_name == github.repository }}
+        continue-on-error: true
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
+        env:
+          ARTIFACT_URL: ${{ steps.screenshots.outputs.artifact-url }}
+        with:
+          script: |
+            const marker = "<!-- datafocal-preview -->";
+            const body = `${marker}\nScreenshots of every view at ${context.payload.pull_request.head.sha}: [preview](${process.env.ARTIFACT_URL})`;
+            const { owner, repo } = context.repo;
+            const issue_number = context.issue.number;
+            const comments = await github.paginate(github.rest.issues.listComments, { owner, repo, issue_number });
+            const mine = comments.find((c) => c.user?.type === "Bot" && c.body?.startsWith(marker));
+            if (mine) {
+              await github.rest.issues.updateComment({ owner, repo, comment_id: mine.id, body });
+            } else {
+              await github.rest.issues.createComment({ owner, repo, issue_number, body });
+            }
+      # Reads the views make preview just shot, rather than shooting them again.
+      - name: preview check
+        run: ./scripts/web-preview-check.sh preview

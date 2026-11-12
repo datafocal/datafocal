@@ -1,0 +1,33 @@
+{
+  "data": {
+    "start": 0,
+    "step": 0,
+    "hosts": [],
+    "groups": [],
+    "total": {
+      "key": "total",
+      "summary": {
+        "cpu_cores_mean": null,
+        "cpu_cores_peak": null,
+        "memory_bytes_mean": null,
+        "memory_bytes_peak": null,
+        "rx_bytes_per_sec_mean": null,
+        "tx_bytes_per_sec_mean": null,
+        "disk_bytes_last": null
+      }
+    },
+    "columns": []
+  },
+  "meta": {
+    "snapshot": "e370.s0",
+    "coverage": 1,
+    "approx": false,
+    "cost": {
+      "gets": 322,
+      "bytes_read": 0,
+      "footers_decoded": 322,
+      "segments": 322
+    },
+    "token_estimate": 67
+  }
+}

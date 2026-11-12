@@ -1,0 +1,2456 @@
+[
+  {
+    "tool": "rank_fields",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        }
+      }
+    }
+  },
+  {
+    "tool": "rank_fields",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": [
+          {
+            "any": [
+              {
+                "field": "cost_usd",
+                "op": "exists"
+              },
+              {
+                "field": "input_tokens",
+                "op": "exists"
+              },
+              {
+                "field": "output_tokens",
+                "op": "exists"
+              },
+              {
+                "field": "cache_read_tokens",
+                "op": "exists"
+              },
+              {
+                "field": "cache_write_tokens",
+                "op": "exists"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": []
+      },
+      "measure": "",
+      "group_by": "model",
+      "measures": [
+        {
+          "measure": "sum:cost_usd",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:input_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:output_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_read_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_write_tokens",
+          "distinct_by": "message.id"
+        }
+      ],
+      "bins": "auto"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": []
+      },
+      "measure": "",
+      "group_by": "model",
+      "measures": [
+        {
+          "measure": "sum:cost_usd",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:input_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_read_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_write_tokens",
+          "distinct_by": "message.id"
+        }
+      ],
+      "bins": "auto"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": []
+      },
+      "measure": "",
+      "group_by": "content_role",
+      "measures": [
+        {
+          "measure": "sum:context_text_chars"
+        },
+        {
+          "measure": "sum:context_thinking_chars"
+        },
+        {
+          "measure": "sum:context_tool_chars"
+        }
+      ],
+      "bins": "all"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": []
+      },
+      "measure": "",
+      "group_by": "tool_name",
+      "measures": [
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "tool_call_id",
+              "op": "exists"
+            }
+          ]
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "message.content.is_error",
+              "op": "eq",
+              "value": "true"
+            }
+          ]
+        },
+        {
+          "measure": "p50:context_tool_chars",
+          "where": [
+            {
+              "field": "tool_call_id",
+              "op": "exists"
+            }
+          ]
+        },
+        {
+          "measure": "p95:context_tool_chars",
+          "where": [
+            {
+              "field": "tool_call_id",
+              "op": "exists"
+            }
+          ]
+        },
+        {
+          "measure": "sum:context_tool_chars",
+          "where": [
+            {
+              "field": "tool_call_id",
+              "op": "exists"
+            }
+          ]
+        },
+        {
+          "measure": "distinct:run_id"
+        }
+      ],
+      "bins": "all"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": []
+      },
+      "measure": "",
+      "group_by": "message.content.id",
+      "measures": [
+        {
+          "measure": "span:message.content.id"
+        },
+        {
+          "measure": "first:tool_name"
+        }
+      ],
+      "bins": "all",
+      "limit": 10000,
+      "rollup": {
+        "measure": "p95:values[0]",
+        "bins": "all",
+        "group_by": "label[1]"
+      }
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": []
+      },
+      "measure": "",
+      "group_by": "model",
+      "measures": [
+        {
+          "measure": "sum:cost_usd",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:input_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_read_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_write_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:output_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "input_tokens",
+              "op": "exists"
+            }
+          ],
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "distinct:run_id"
+        }
+      ],
+      "bins": "all"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": []
+      },
+      "measure": "",
+      "group_by": "run_id",
+      "measures": [
+        {
+          "measure": "sum:cost_usd",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:input_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_read_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_write_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "input_tokens",
+              "op": "exists"
+            }
+          ],
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "tool_name",
+              "op": "exists"
+            }
+          ]
+        }
+      ],
+      "bins": "all",
+      "limit": 10000
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": []
+      },
+      "measure": "",
+      "group_by": "run_id",
+      "measures": [
+        {
+          "measure": "changes:model"
+        }
+      ],
+      "bins": "all",
+      "limit": 10000
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": []
+      },
+      "measure": "",
+      "group_by": "message.id",
+      "measures": [
+        {
+          "measure": "max:input_tokens"
+        },
+        {
+          "measure": "max:cache_read_tokens"
+        },
+        {
+          "measure": "max:cache_write_tokens"
+        },
+        {
+          "measure": "last:run_id"
+        }
+      ],
+      "bins": "all",
+      "limit": 10000
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": []
+      },
+      "measure": "count",
+      "group_by": "run_id",
+      "bins": "all",
+      "limit": 10000
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": []
+      },
+      "measure": "",
+      "group_by": "promptId",
+      "measures": [
+        {
+          "measure": "span:promptId"
+        }
+      ],
+      "bins": "all",
+      "limit": 10000,
+      "rollup": {
+        "measure": "sum:values[0]",
+        "bins": "all"
+      }
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": []
+      },
+      "measure": "",
+      "group_by": "message.content.id",
+      "measures": [
+        {
+          "measure": "span:message.content.id"
+        },
+        {
+          "measure": "first:tool_name"
+        }
+      ],
+      "bins": "all",
+      "limit": 10000,
+      "rollup": {
+        "measure": "sum:values[0]",
+        "bins": "all",
+        "group_by": "label[1]"
+      }
+    }
+  },
+  {
+    "tool": "search_logs",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "run_id",
+            "op": "eq",
+            "value": "1aa2c099-c93b-9042-06af-ac31e31553e5"
+          },
+          {
+            "any": [
+              {
+                "field": "cost_usd",
+                "op": "exists"
+              },
+              {
+                "field": "input_tokens",
+                "op": "exists"
+              },
+              {
+                "field": "output_tokens",
+                "op": "exists"
+              },
+              {
+                "field": "cache_read_tokens",
+                "op": "exists"
+              },
+              {
+                "field": "cache_write_tokens",
+                "op": "exists"
+              }
+            ]
+          }
+        ]
+      },
+      "limit": 10000
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": []
+      },
+      "measure": "",
+      "group_by": "version",
+      "measures": [
+        {
+          "measure": "sum:cost_usd",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:input_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_read_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_write_tokens",
+          "distinct_by": "message.id"
+        }
+      ],
+      "bins": "auto"
+    }
+  },
+  {
+    "tool": "rank_fields",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "model",
+            "op": "eq",
+            "value": "claude-opus-4-5"
+          },
+          {
+            "any": [
+              {
+                "field": "cost_usd",
+                "op": "exists"
+              },
+              {
+                "field": "input_tokens",
+                "op": "exists"
+              },
+              {
+                "field": "output_tokens",
+                "op": "exists"
+              },
+              {
+                "field": "cache_read_tokens",
+                "op": "exists"
+              },
+              {
+                "field": "cache_write_tokens",
+                "op": "exists"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "model",
+            "op": "eq",
+            "value": "claude-opus-4-5"
+          }
+        ]
+      },
+      "measure": "",
+      "group_by": "model",
+      "measures": [
+        {
+          "measure": "sum:cost_usd",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:input_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:output_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_read_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_write_tokens",
+          "distinct_by": "message.id"
+        }
+      ],
+      "bins": "auto"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "model",
+            "op": "eq",
+            "value": "claude-opus-4-5"
+          }
+        ]
+      },
+      "measure": "",
+      "group_by": "version",
+      "measures": [
+        {
+          "measure": "sum:cost_usd",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:input_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_read_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_write_tokens",
+          "distinct_by": "message.id"
+        }
+      ],
+      "bins": "auto"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "model",
+            "op": "eq",
+            "value": "claude-opus-4-5"
+          }
+        ]
+      },
+      "measure": "",
+      "group_by": "content_role",
+      "measures": [
+        {
+          "measure": "sum:context_text_chars"
+        },
+        {
+          "measure": "sum:context_thinking_chars"
+        },
+        {
+          "measure": "sum:context_tool_chars"
+        }
+      ],
+      "bins": "all"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "model",
+            "op": "eq",
+            "value": "claude-opus-4-5"
+          }
+        ]
+      },
+      "measure": "",
+      "group_by": "tool_name",
+      "measures": [
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "tool_call_id",
+              "op": "exists"
+            }
+          ]
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "message.content.is_error",
+              "op": "eq",
+              "value": "true"
+            }
+          ]
+        },
+        {
+          "measure": "p50:context_tool_chars",
+          "where": [
+            {
+              "field": "tool_call_id",
+              "op": "exists"
+            }
+          ]
+        },
+        {
+          "measure": "p95:context_tool_chars",
+          "where": [
+            {
+              "field": "tool_call_id",
+              "op": "exists"
+            }
+          ]
+        },
+        {
+          "measure": "sum:context_tool_chars",
+          "where": [
+            {
+              "field": "tool_call_id",
+              "op": "exists"
+            }
+          ]
+        },
+        {
+          "measure": "distinct:run_id"
+        }
+      ],
+      "bins": "all"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "model",
+            "op": "eq",
+            "value": "claude-opus-4-5"
+          }
+        ]
+      },
+      "measure": "",
+      "group_by": "message.content.id",
+      "measures": [
+        {
+          "measure": "span:message.content.id"
+        },
+        {
+          "measure": "first:tool_name"
+        }
+      ],
+      "bins": "all",
+      "limit": 10000,
+      "rollup": {
+        "measure": "p95:values[0]",
+        "bins": "all",
+        "group_by": "label[1]"
+      }
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "model",
+            "op": "eq",
+            "value": "claude-opus-4-5"
+          }
+        ]
+      },
+      "measure": "",
+      "group_by": "model",
+      "measures": [
+        {
+          "measure": "sum:cost_usd",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:input_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_read_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_write_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:output_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "input_tokens",
+              "op": "exists"
+            }
+          ],
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "distinct:run_id"
+        }
+      ],
+      "bins": "all"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "model",
+            "op": "eq",
+            "value": "claude-opus-4-5"
+          }
+        ]
+      },
+      "measure": "",
+      "group_by": "run_id",
+      "measures": [
+        {
+          "measure": "sum:cost_usd",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:input_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_read_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_write_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "input_tokens",
+              "op": "exists"
+            }
+          ],
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "tool_name",
+              "op": "exists"
+            }
+          ]
+        }
+      ],
+      "bins": "all",
+      "limit": 10000
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "model",
+            "op": "eq",
+            "value": "claude-opus-4-5"
+          }
+        ]
+      },
+      "measure": "",
+      "group_by": "run_id",
+      "measures": [
+        {
+          "measure": "changes:model"
+        }
+      ],
+      "bins": "all",
+      "limit": 10000
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "model",
+            "op": "eq",
+            "value": "claude-opus-4-5"
+          }
+        ]
+      },
+      "measure": "",
+      "group_by": "message.id",
+      "measures": [
+        {
+          "measure": "max:input_tokens"
+        },
+        {
+          "measure": "max:cache_read_tokens"
+        },
+        {
+          "measure": "max:cache_write_tokens"
+        },
+        {
+          "measure": "last:run_id"
+        }
+      ],
+      "bins": "all",
+      "limit": 10000
+    }
+  },
+  {
+    "tool": "rank_fields",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "model",
+            "op": "eq",
+            "value": "claude-opus-4-5"
+          },
+          {
+            "field": "version",
+            "op": "eq",
+            "value": "2.1.4"
+          },
+          {
+            "any": [
+              {
+                "field": "cost_usd",
+                "op": "exists"
+              },
+              {
+                "field": "input_tokens",
+                "op": "exists"
+              },
+              {
+                "field": "output_tokens",
+                "op": "exists"
+              },
+              {
+                "field": "cache_read_tokens",
+                "op": "exists"
+              },
+              {
+                "field": "cache_write_tokens",
+                "op": "exists"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "model",
+            "op": "eq",
+            "value": "claude-opus-4-5"
+          },
+          {
+            "field": "version",
+            "op": "eq",
+            "value": "2.1.4"
+          }
+        ]
+      },
+      "measure": "",
+      "group_by": "model",
+      "measures": [
+        {
+          "measure": "sum:cost_usd",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:input_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:output_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_read_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_write_tokens",
+          "distinct_by": "message.id"
+        }
+      ],
+      "bins": "auto"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "model",
+            "op": "eq",
+            "value": "claude-opus-4-5"
+          },
+          {
+            "field": "version",
+            "op": "eq",
+            "value": "2.1.4"
+          }
+        ]
+      },
+      "measure": "",
+      "group_by": "tool_name",
+      "measures": [
+        {
+          "measure": "sum:cost_usd",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:input_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_read_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_write_tokens",
+          "distinct_by": "message.id"
+        }
+      ],
+      "bins": "auto"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "model",
+            "op": "eq",
+            "value": "claude-opus-4-5"
+          },
+          {
+            "field": "version",
+            "op": "eq",
+            "value": "2.1.4"
+          }
+        ]
+      },
+      "measure": "",
+      "group_by": "content_role",
+      "measures": [
+        {
+          "measure": "sum:context_text_chars"
+        },
+        {
+          "measure": "sum:context_thinking_chars"
+        },
+        {
+          "measure": "sum:context_tool_chars"
+        }
+      ],
+      "bins": "all"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "model",
+            "op": "eq",
+            "value": "claude-opus-4-5"
+          },
+          {
+            "field": "version",
+            "op": "eq",
+            "value": "2.1.4"
+          }
+        ]
+      },
+      "measure": "",
+      "group_by": "tool_name",
+      "measures": [
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "tool_call_id",
+              "op": "exists"
+            }
+          ]
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "message.content.is_error",
+              "op": "eq",
+              "value": "true"
+            }
+          ]
+        },
+        {
+          "measure": "p50:context_tool_chars",
+          "where": [
+            {
+              "field": "tool_call_id",
+              "op": "exists"
+            }
+          ]
+        },
+        {
+          "measure": "p95:context_tool_chars",
+          "where": [
+            {
+              "field": "tool_call_id",
+              "op": "exists"
+            }
+          ]
+        },
+        {
+          "measure": "sum:context_tool_chars",
+          "where": [
+            {
+              "field": "tool_call_id",
+              "op": "exists"
+            }
+          ]
+        },
+        {
+          "measure": "distinct:run_id"
+        }
+      ],
+      "bins": "all"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "model",
+            "op": "eq",
+            "value": "claude-opus-4-5"
+          },
+          {
+            "field": "version",
+            "op": "eq",
+            "value": "2.1.4"
+          }
+        ]
+      },
+      "measure": "",
+      "group_by": "message.content.id",
+      "measures": [
+        {
+          "measure": "span:message.content.id"
+        },
+        {
+          "measure": "first:tool_name"
+        }
+      ],
+      "bins": "all",
+      "limit": 10000,
+      "rollup": {
+        "measure": "p95:values[0]",
+        "bins": "all",
+        "group_by": "label[1]"
+      }
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "model",
+            "op": "eq",
+            "value": "claude-opus-4-5"
+          },
+          {
+            "field": "version",
+            "op": "eq",
+            "value": "2.1.4"
+          }
+        ]
+      },
+      "measure": "",
+      "group_by": "model",
+      "measures": [
+        {
+          "measure": "sum:cost_usd",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:input_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_read_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_write_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:output_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "input_tokens",
+              "op": "exists"
+            }
+          ],
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "distinct:run_id"
+        }
+      ],
+      "bins": "all"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "model",
+            "op": "eq",
+            "value": "claude-opus-4-5"
+          },
+          {
+            "field": "version",
+            "op": "eq",
+            "value": "2.1.4"
+          }
+        ]
+      },
+      "measure": "",
+      "group_by": "run_id",
+      "measures": [
+        {
+          "measure": "sum:cost_usd",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:input_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_read_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_write_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "input_tokens",
+              "op": "exists"
+            }
+          ],
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "tool_name",
+              "op": "exists"
+            }
+          ]
+        }
+      ],
+      "bins": "all",
+      "limit": 10000
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "model",
+            "op": "eq",
+            "value": "claude-opus-4-5"
+          },
+          {
+            "field": "version",
+            "op": "eq",
+            "value": "2.1.4"
+          }
+        ]
+      },
+      "measure": "",
+      "group_by": "run_id",
+      "measures": [
+        {
+          "measure": "changes:model"
+        }
+      ],
+      "bins": "all",
+      "limit": 10000
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "model",
+            "op": "eq",
+            "value": "claude-opus-4-5"
+          },
+          {
+            "field": "version",
+            "op": "eq",
+            "value": "2.1.4"
+          }
+        ]
+      },
+      "measure": "",
+      "group_by": "message.id",
+      "measures": [
+        {
+          "measure": "max:input_tokens"
+        },
+        {
+          "measure": "max:cache_read_tokens"
+        },
+        {
+          "measure": "max:cache_write_tokens"
+        },
+        {
+          "measure": "last:run_id"
+        }
+      ],
+      "bins": "all",
+      "limit": 10000
+    }
+  },
+  {
+    "tool": "rank_fields",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "model",
+            "op": "eq",
+            "value": "claude-opus-4-5"
+          },
+          {
+            "field": "version",
+            "op": "eq",
+            "value": "2.1.4"
+          },
+          {
+            "field": "tool_name",
+            "op": "eq",
+            "value": "Read"
+          },
+          {
+            "any": [
+              {
+                "field": "cost_usd",
+                "op": "exists"
+              },
+              {
+                "field": "input_tokens",
+                "op": "exists"
+              },
+              {
+                "field": "output_tokens",
+                "op": "exists"
+              },
+              {
+                "field": "cache_read_tokens",
+                "op": "exists"
+              },
+              {
+                "field": "cache_write_tokens",
+                "op": "exists"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": []
+      },
+      "measure": "",
+      "group_by": "run_id",
+      "ordinal_of": "run_id",
+      "measures": [
+        {
+          "measure": "sum:input_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_read_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_write_tokens",
+          "distinct_by": "message.id"
+        }
+      ],
+      "bins": "1",
+      "limit": 10000
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "tool_name",
+            "op": "eq",
+            "value": "Read"
+          }
+        ]
+      },
+      "measure": "",
+      "group_by": "tool_call_id",
+      "measures": [
+        {
+          "measure": "sum:context_tool_chars"
+        },
+        {
+          "measure": "last:run_id"
+        }
+      ],
+      "bins": "all",
+      "limit": 10000,
+      "sort": "0:desc"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": []
+      },
+      "measure": "",
+      "group_by": "model",
+      "measures": [
+        {
+          "measure": "sum:cost_usd",
+          "distinct_by": "message.id"
+        }
+      ],
+      "bins": "auto"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": []
+      },
+      "measure": "count",
+      "group_by": "model",
+      "bins": "all"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "model",
+            "op": "eq",
+            "value": "claude-opus-4-5"
+          }
+        ]
+      },
+      "measure": "count",
+      "group_by": "run_id",
+      "bins": "all",
+      "limit": 10000
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-27T12:00:00.000Z"
+        },
+        "where": []
+      },
+      "measure": "",
+      "group_by": "run_id",
+      "measures": [
+        {
+          "measure": "sum:cost_usd",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:input_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_read_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_write_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "input_tokens",
+              "op": "exists"
+            }
+          ],
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "tool_name",
+              "op": "exists"
+            }
+          ]
+        }
+      ],
+      "bins": "all",
+      "limit": 10000
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-27T12:00:00.000Z"
+        },
+        "where": []
+      },
+      "measure": "",
+      "group_by": "run_id",
+      "measures": [
+        {
+          "measure": "changes:model"
+        }
+      ],
+      "bins": "all",
+      "limit": 10000
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-27T12:00:00.000Z"
+        },
+        "where": []
+      },
+      "measure": "",
+      "group_by": "message.id",
+      "measures": [
+        {
+          "measure": "max:input_tokens"
+        },
+        {
+          "measure": "max:cache_read_tokens"
+        },
+        {
+          "measure": "max:cache_write_tokens"
+        },
+        {
+          "measure": "last:run_id"
+        }
+      ],
+      "bins": "all",
+      "limit": 10000
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T12:00:00.000Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": []
+      },
+      "measure": "",
+      "group_by": "run_id",
+      "measures": [
+        {
+          "measure": "sum:cost_usd",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:input_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_read_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_write_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "input_tokens",
+              "op": "exists"
+            }
+          ],
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "tool_name",
+              "op": "exists"
+            }
+          ]
+        }
+      ],
+      "bins": "all",
+      "limit": 10000
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T12:00:00.000Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": []
+      },
+      "measure": "",
+      "group_by": "run_id",
+      "measures": [
+        {
+          "measure": "changes:model"
+        }
+      ],
+      "bins": "all",
+      "limit": 10000
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T12:00:00.000Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": []
+      },
+      "measure": "",
+      "group_by": "message.id",
+      "measures": [
+        {
+          "measure": "max:input_tokens"
+        },
+        {
+          "measure": "max:cache_read_tokens"
+        },
+        {
+          "measure": "max:cache_write_tokens"
+        },
+        {
+          "measure": "last:run_id"
+        }
+      ],
+      "bins": "all",
+      "limit": 10000
+    }
+  },
+  {
+    "tool": "search_logs",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "run_id",
+            "op": "eq",
+            "value": "842e33af-9917-f20e-e46e-5bec950ddc23"
+          },
+          {
+            "any": [
+              {
+                "field": "cost_usd",
+                "op": "exists"
+              },
+              {
+                "field": "input_tokens",
+                "op": "exists"
+              },
+              {
+                "field": "output_tokens",
+                "op": "exists"
+              },
+              {
+                "field": "cache_read_tokens",
+                "op": "exists"
+              },
+              {
+                "field": "cache_write_tokens",
+                "op": "exists"
+              }
+            ]
+          }
+        ]
+      },
+      "limit": 10000
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": []
+      },
+      "measure": "",
+      "group_by": "run_id",
+      "measures": [
+        {
+          "measure": "count"
+        },
+        {
+          "measure": "sum:cost_usd",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "last:pattern_id"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "input_tokens",
+              "op": "exists"
+            }
+          ],
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:input_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_read_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_write_tokens",
+          "distinct_by": "message.id"
+        }
+      ],
+      "bins": "all",
+      "limit": 10000,
+      "sort": "1:desc",
+      "having": []
+    }
+  },
+  {
+    "tool": "list_patterns",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": [
+          {
+            "any": [
+              {
+                "field": "pattern_id",
+                "op": "eq",
+                "value": "18d03932d8e33d4f"
+              },
+              {
+                "field": "pattern_id",
+                "op": "eq",
+                "value": "d7efa29916e8ea42"
+              }
+            ]
+          }
+        ]
+      },
+      "limit": 2
+    }
+  },
+  {
+    "tool": "search_logs",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "run_id",
+            "op": "eq",
+            "value": "1aa2c099-c93b-9042-06af-ac31e31553e5"
+          }
+        ]
+      },
+      "limit": 10000,
+      "columns": ["run_id"]
+    }
+  },
+  {
+    "tool": "search_logs",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "run_id",
+            "op": "eq",
+            "value": "842e33af-9917-f20e-e46e-5bec950ddc23"
+          }
+        ]
+      },
+      "limit": 10000,
+      "columns": ["run_id"]
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "model",
+            "op": "eq",
+            "value": "claude-opus-4-5"
+          },
+          {
+            "field": "version",
+            "op": "eq",
+            "value": "2.1.4"
+          },
+          {
+            "field": "tool_name",
+            "op": "eq",
+            "value": "Read"
+          }
+        ]
+      },
+      "measure": "",
+      "group_by": "model",
+      "measures": [
+        {
+          "measure": "sum:cost_usd",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:input_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:output_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_read_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_write_tokens",
+          "distinct_by": "message.id"
+        }
+      ],
+      "bins": "auto"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "model",
+            "op": "eq",
+            "value": "claude-opus-4-5"
+          },
+          {
+            "field": "version",
+            "op": "eq",
+            "value": "2.1.4"
+          },
+          {
+            "field": "tool_name",
+            "op": "eq",
+            "value": "Read"
+          }
+        ]
+      },
+      "measure": "",
+      "group_by": "content_role",
+      "measures": [
+        {
+          "measure": "sum:context_text_chars"
+        },
+        {
+          "measure": "sum:context_thinking_chars"
+        },
+        {
+          "measure": "sum:context_tool_chars"
+        }
+      ],
+      "bins": "all"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "model",
+            "op": "eq",
+            "value": "claude-opus-4-5"
+          },
+          {
+            "field": "version",
+            "op": "eq",
+            "value": "2.1.4"
+          },
+          {
+            "field": "tool_name",
+            "op": "eq",
+            "value": "Read"
+          }
+        ]
+      },
+      "measure": "",
+      "group_by": "tool_name",
+      "measures": [
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "tool_call_id",
+              "op": "exists"
+            }
+          ]
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "message.content.is_error",
+              "op": "eq",
+              "value": "true"
+            }
+          ]
+        },
+        {
+          "measure": "p50:context_tool_chars",
+          "where": [
+            {
+              "field": "tool_call_id",
+              "op": "exists"
+            }
+          ]
+        },
+        {
+          "measure": "p95:context_tool_chars",
+          "where": [
+            {
+              "field": "tool_call_id",
+              "op": "exists"
+            }
+          ]
+        },
+        {
+          "measure": "sum:context_tool_chars",
+          "where": [
+            {
+              "field": "tool_call_id",
+              "op": "exists"
+            }
+          ]
+        },
+        {
+          "measure": "distinct:run_id"
+        }
+      ],
+      "bins": "all"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "model",
+            "op": "eq",
+            "value": "claude-opus-4-5"
+          },
+          {
+            "field": "version",
+            "op": "eq",
+            "value": "2.1.4"
+          },
+          {
+            "field": "tool_name",
+            "op": "eq",
+            "value": "Read"
+          }
+        ]
+      },
+      "measure": "",
+      "group_by": "message.content.id",
+      "measures": [
+        {
+          "measure": "span:message.content.id"
+        },
+        {
+          "measure": "first:tool_name"
+        }
+      ],
+      "bins": "all",
+      "limit": 10000,
+      "rollup": {
+        "measure": "p95:values[0]",
+        "bins": "all",
+        "group_by": "label[1]"
+      }
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "model",
+            "op": "eq",
+            "value": "claude-opus-4-5"
+          },
+          {
+            "field": "version",
+            "op": "eq",
+            "value": "2.1.4"
+          },
+          {
+            "field": "tool_name",
+            "op": "eq",
+            "value": "Read"
+          }
+        ]
+      },
+      "measure": "",
+      "group_by": "model",
+      "measures": [
+        {
+          "measure": "sum:cost_usd",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:input_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_read_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_write_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:output_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "input_tokens",
+              "op": "exists"
+            }
+          ],
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "distinct:run_id"
+        }
+      ],
+      "bins": "all"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "model",
+            "op": "eq",
+            "value": "claude-opus-4-5"
+          },
+          {
+            "field": "version",
+            "op": "eq",
+            "value": "2.1.4"
+          },
+          {
+            "field": "tool_name",
+            "op": "eq",
+            "value": "Read"
+          }
+        ]
+      },
+      "measure": "",
+      "group_by": "run_id",
+      "measures": [
+        {
+          "measure": "sum:cost_usd",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:input_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_read_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_write_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "input_tokens",
+              "op": "exists"
+            }
+          ],
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "tool_name",
+              "op": "exists"
+            }
+          ]
+        }
+      ],
+      "bins": "all",
+      "limit": 10000
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "model",
+            "op": "eq",
+            "value": "claude-opus-4-5"
+          },
+          {
+            "field": "version",
+            "op": "eq",
+            "value": "2.1.4"
+          },
+          {
+            "field": "tool_name",
+            "op": "eq",
+            "value": "Read"
+          }
+        ]
+      },
+      "measure": "",
+      "group_by": "run_id",
+      "measures": [
+        {
+          "measure": "changes:model"
+        }
+      ],
+      "bins": "all",
+      "limit": 10000
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "model",
+            "op": "eq",
+            "value": "claude-opus-4-5"
+          },
+          {
+            "field": "version",
+            "op": "eq",
+            "value": "2.1.4"
+          },
+          {
+            "field": "tool_name",
+            "op": "eq",
+            "value": "Read"
+          }
+        ]
+      },
+      "measure": "",
+      "group_by": "message.id",
+      "measures": [
+        {
+          "measure": "max:input_tokens"
+        },
+        {
+          "measure": "max:cache_read_tokens"
+        },
+        {
+          "measure": "max:cache_write_tokens"
+        },
+        {
+          "measure": "last:run_id"
+        }
+      ],
+      "bins": "all",
+      "limit": 10000
+    }
+  }
+]

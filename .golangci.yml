@@ -1,0 +1,177 @@
+# golangci-lint v2 config — the automated half of the code-quality bar.
+# It enforces what a human reviewer cannot check
+# at scale: complexity ceilings (no sprawling functions), and a strict
+# dependency allowlist (the "standard-library-only" rule — a new import is a
+# deliberate decision, not something an agent slips in).
+version: "2"
+
+run:
+  # The factory runs its own golangci-lint beside this one, which would otherwise wait on
+  # the shared lock or fail.
+  allow-parallel-runners: true
+
+linters:
+  default: standard # errcheck, govet, ineffassign, staticcheck, unused
+  enable:
+    - gocyclo # cyclomatic complexity ceiling
+    - gocognit # cognitive complexity ceiling
+    - funlen # function length ceiling
+    - nestif # deeply nested if-blocks
+    - unconvert # redundant conversions
+    - misspell # comment/string typos
+    - depguard # dependency allowlist (no new external deps)
+    - unparam # parameters nobody passes (speculative flexibility)
+    - nakedret # returns are always explicit, even with named results
+    - goconst # repeated boundary literals must become named constants
+    - gocritic # guard-clause shape: no if/else chains where early returns read better
+    - nolintlint # every suppression names its linter and carries a reason
+    - sloglint # log calls: a constant lowercase message, then key-value fields
+    - revive # readability: named results, small signatures, early returns, shallow nesting
+
+  settings:
+    sloglint:
+      static-msg: true
+      msg-style: lowercased
+      kv-only: true
+    nolintlint:
+      require-explanation: true
+      require-specific: true
+    nakedret:
+      max-func-lines: 0
+    goconst:
+      min-occurrences: 3
+      # Count only production literals: test files are excluded from reports below, and
+      # newer goconst versions otherwise still count them toward the threshold.
+      ignore-tests: true
+    gocyclo:
+      min-complexity: 20
+    gocognit:
+      min-complexity: 15
+    funlen:
+      # Statements are the size that matters; lines also count struct literals and blank
+      # lines, so they get more room.
+      lines: 100
+      statements: 40
+    nestif:
+      min-complexity: 4
+    revive:
+      rules:
+        - name: confusing-results # two unnamed results of one type: say which is which
+        - name: function-result-limit
+          arguments: [4]
+        - name: argument-limit
+          arguments: [6]
+        - name: var-naming
+        - name: early-return
+        - name: indent-error-flow
+        - name: superfluous-else
+        - name: max-control-nesting
+          arguments: [3]
+    errcheck:
+      # Errors that are genuinely not actionable: closing a read handle or
+      # response body, best-effort temp-file cleanup, and writes to in-memory
+      # sinks (hashes/buffers) that cannot fail.
+      exclude-functions:
+        - (*os.File).Close
+        - (io.ReadCloser).Close
+        - os.Remove
+        - fmt.Fprint
+        - fmt.Fprintf
+        - fmt.Fprintln
+    depguard:
+      # The end-to-end performance path stays ours (stdlib only). Non-perf
+      # packages may use the vetted libraries below. (Per-package tightening —
+      # forbidding these libs inside the perf packages via per-path rules — is a
+      # follow-up; today the perf packages simply do not import them.)
+      rules:
+        # Production code: this allowlist and nothing else.
+        main:
+          list-mode: strict
+          files:
+            - "!$test"
+          allow:
+            - $gostd
+            - github.com/datafocal/datafocal
+            - github.com/kelseyhightower/envconfig
+            # HTTP transport / middleware (internal/api)
+            - github.com/go-chi/chi/v5
+            # MCP transport (internal/api)
+            - github.com/modelcontextprotocol/go-sdk
+            # JSON Schema generation from request structs (internal/api/schema.go)
+            - github.com/google/jsonschema-go
+            # Reference sketches and the membership filter (internal/sketch)
+            - github.com/axiomhq/hyperloglog
+            - github.com/DataDog/sketches-go
+            - github.com/FastFilter/xorfilter
+            # Bounded LRU for the footer cache (internal/segment)
+            - github.com/hashicorp/golang-lru/v2
+            # Concurrent misses for one footer make one read (internal/segment)
+            - golang.org/x/sync/singleflight
+            # Column-chunk compression (internal/segment)
+            - github.com/klauspost/compress/zstd
+            # Filesystem notifications that wake followers (internal/tail)
+            - github.com/fsnotify/fsnotify
+            # S3-compatible object store client (internal/storage)
+            - github.com/minio/minio-go/v7
+            # JSON log-line parsing on the ingest hot path (internal/logformat)
+            - github.com/valyala/fastjson
+            # Kubernetes Events and Pods informers for the kube source (internal/ingest)
+            - k8s.io/api
+            - k8s.io/client-go
+            # OpenSLO files as YAML (internal/definitions only, by definitions-yaml)
+            - sigs.k8s.io/yaml
+        # The definitions directory is the one place YAML is read and written.
+        definitions-yaml:
+          files:
+            - "!**/internal/definitions/*.go"
+          deny:
+            - pkg: sigs.k8s.io/yaml
+              desc: definitions are read and written as YAML by internal/definitions only
+        # Tests: everything production may import, plus testify for assertions.
+        # Scoped to _test.go so testify cannot reach the shipped binary.
+        tests:
+          list-mode: strict
+          files:
+            - "$test"
+          allow:
+            - $gostd
+            - github.com/datafocal/datafocal
+            - github.com/kelseyhightower/envconfig
+            - github.com/go-chi/chi/v5
+            - github.com/modelcontextprotocol/go-sdk
+            - github.com/google/jsonschema-go
+            - github.com/axiomhq/hyperloglog
+            - github.com/DataDog/sketches-go
+            - github.com/FastFilter/xorfilter
+            - github.com/hashicorp/golang-lru/v2
+            - golang.org/x/sync/singleflight
+            - github.com/klauspost/compress/zstd
+            - github.com/fsnotify/fsnotify
+            - github.com/minio/minio-go/v7
+            - github.com/valyala/fastjson
+            - k8s.io/api
+            - k8s.io/apimachinery
+            - k8s.io/client-go
+            # Assertions (test-only)
+            - github.com/stretchr/testify
+
+  exclusions:
+    # Tests and the synthetic-corpus generator are allowed to be longer and
+    # more branchy than production code; the complexity gate targets the
+    # library hot paths, not fixtures.
+    rules:
+      # goconst/unparam are also off in tests: repeated literals and helpers
+      # with fixed arguments are how table tests stay readable.
+      - path: _test\.go
+        linters: [funlen, gocyclo, gocognit, nestif, goconst, unparam, revive]
+      - path: cmd/datafocal-seed/
+        linters: [funlen, gocyclo, gocognit, nestif]
+      # The corpus generator's repeated literals and branching ARE the corpus content
+      # (severities, template strings, scripted scenarios); naming or splitting each
+      # would obscure the fixtures.
+      - path: internal/seedcorpus/
+        linters: [goconst, funlen, gocognit]
+
+formatters:
+  enable:
+    - gofmt

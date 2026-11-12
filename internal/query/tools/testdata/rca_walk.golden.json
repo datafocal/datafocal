@@ -1,0 +1,184 @@
+{
+  "data": {
+    "symptom": "168b725e27267cf",
+    "patterns": {
+      "122485649c5e4821": "GET /health \u003c*\u003e \u003c*\u003e ms",
+      "168b725e27267cf": "slow query \u003c*\u003e ms",
+      "17f72c8fc2aafcf4": "query ok \u003c*\u003e ms",
+      "35f1b3ec3fce153": "wrote \u003c*\u003e rows to pageviews",
+      "3b529f3474e72919": "wrote \u003c*\u003e rows to sessions",
+      "431a7be27e7e3e4d": "scheduled pod \u003c*\u003e host \u003c*\u003e",
+      "5ca295431e99fa20": "job queued depth \u003c*\u003e type index",
+      "5d122df17430a225": "job queued depth \u003c*\u003e type reindex",
+      "7fdbec8357fe05f7": "job queued depth \u003c*\u003e type email",
+      "854326dfa9e8b60b": "wrote \u003c*\u003e rows to clickstream",
+      "92d58908259adaa2": "POST /checkout \u003c*\u003e \u003c*\u003e ms",
+      "9ef0c50864614821": "POST /users \u003c*\u003e \u003c*\u003e ms",
+      "a8f3d27afcbd7a8b": "job queued depth \u003c*\u003e type export",
+      "bdc6eb72ce9f6c7": "disk util \u003c*\u003e pct await \u003c*\u003e ms",
+      "cebda8d1d4d7aff9": "wrote \u003c*\u003e rows to events",
+      "cef4f11974f1a241": "memory used \u003c*\u003e pct"
+    },
+    "chain": [
+      {
+        "from": "db",
+        "to": "analytics-export",
+        "pattern_from": "168b725e27267cf",
+        "pattern_to": "3b529f3474e72919",
+        "rho": 0.9575279153277394,
+        "lag_seconds": 0,
+        "admitted_by": "topology",
+        "topology_edge": {
+          "from": "analytics-export",
+          "to": "host-7",
+          "method": "topology",
+          "weight": 1,
+          "confidence": 0
+        },
+        "attribution_share": 1
+      },
+      {
+        "from": "db",
+        "to": "analytics-export",
+        "pattern_from": "168b725e27267cf",
+        "pattern_to": "cebda8d1d4d7aff9",
+        "rho": 0.95665174394835,
+        "lag_seconds": 0,
+        "admitted_by": "topology",
+        "topology_edge": {
+          "from": "analytics-export",
+          "to": "host-7",
+          "method": "topology",
+          "weight": 1,
+          "confidence": 0
+        },
+        "attribution_share": 1
+      },
+      {
+        "from": "db",
+        "to": "analytics-export",
+        "pattern_from": "168b725e27267cf",
+        "pattern_to": "35f1b3ec3fce153",
+        "rho": 0.9559672048255177,
+        "lag_seconds": 0,
+        "admitted_by": "topology",
+        "topology_edge": {
+          "from": "analytics-export",
+          "to": "host-7",
+          "method": "topology",
+          "weight": 1,
+          "confidence": 0
+        },
+        "attribution_share": 1
+      },
+      {
+        "from": "db",
+        "to": "analytics-export",
+        "pattern_from": "168b725e27267cf",
+        "pattern_to": "854326dfa9e8b60b",
+        "rho": 0.9404178457876284,
+        "lag_seconds": 0,
+        "admitted_by": "topology",
+        "topology_edge": {
+          "from": "analytics-export",
+          "to": "host-7",
+          "method": "topology",
+          "weight": 1,
+          "confidence": 0
+        },
+        "attribution_share": 1
+      }
+    ],
+    "rejected": [
+      {
+        "pattern_from": "168b725e27267cf",
+        "pattern_to": "431a7be27e7e3e4d",
+        "rho": -0.3336203536346792,
+        "lag_seconds": -105,
+        "rejected_by": "below_rho"
+      },
+      {
+        "pattern_from": "168b725e27267cf",
+        "pattern_to": "92d58908259adaa2",
+        "rho": 0.2330093378281792,
+        "lag_seconds": 105,
+        "rejected_by": "below_rho"
+      },
+      {
+        "pattern_from": "168b725e27267cf",
+        "pattern_to": "bdc6eb72ce9f6c7",
+        "rho": 0,
+        "lag_seconds": 0,
+        "rejected_by": "below_rho"
+      },
+      {
+        "pattern_from": "168b725e27267cf",
+        "pattern_to": "cef4f11974f1a241",
+        "rho": 0,
+        "lag_seconds": 0,
+        "rejected_by": "below_rho"
+      },
+      {
+        "pattern_from": "168b725e27267cf",
+        "pattern_to": "122485649c5e4821",
+        "rho": 0.6200079550305512,
+        "lag_seconds": 195,
+        "rejected_by": "no_attribution"
+      },
+      {
+        "pattern_from": "168b725e27267cf",
+        "pattern_to": "5ca295431e99fa20",
+        "rho": 0.9146107111519305,
+        "lag_seconds": 15,
+        "rejected_by": "no_attribution"
+      },
+      {
+        "pattern_from": "168b725e27267cf",
+        "pattern_to": "5d122df17430a225",
+        "rho": 0.9368834631378135,
+        "lag_seconds": 0,
+        "rejected_by": "no_attribution"
+      },
+      {
+        "pattern_from": "168b725e27267cf",
+        "pattern_to": "7fdbec8357fe05f7",
+        "rho": 0.9044780866797499,
+        "lag_seconds": 0,
+        "rejected_by": "no_attribution"
+      },
+      {
+        "pattern_from": "168b725e27267cf",
+        "pattern_to": "9ef0c50864614821",
+        "rho": 0.6197216298030284,
+        "lag_seconds": 210,
+        "rejected_by": "no_attribution"
+      },
+      {
+        "pattern_from": "168b725e27267cf",
+        "pattern_to": "a8f3d27afcbd7a8b",
+        "rho": 0.8952924149381963,
+        "lag_seconds": 0,
+        "rejected_by": "no_attribution"
+      },
+      {
+        "pattern_from": "168b725e27267cf",
+        "pattern_to": "17f72c8fc2aafcf4",
+        "rho": -1,
+        "lag_seconds": 0,
+        "rejected_by": "same_node"
+      }
+    ]
+  },
+  "meta": {
+    "snapshot": "e370.s0",
+    "coverage": 1,
+    "approx": true,
+    "cost": {
+      "gets": 383,
+      "bytes_read": 1655,
+      "footers_decoded": 370,
+      "segments": 1034
+    },
+    "token_estimate": 919
+  }
+}

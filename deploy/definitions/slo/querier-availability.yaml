@@ -1,0 +1,20 @@
+# Event ratio: the share of the querier's requests it did not fail.
+apiVersion: openslo/v1
+kind: SLO
+metadata:
+  name: querier-availability
+  displayName: Querier availability
+  annotations:
+    datafocal/group-by: path
+spec:
+  service: querier
+  budgetingMethod: Occurrences
+  timeWindow: [{duration: 7d, isRolling: true}]
+  objectives: [{displayName: available, target: 0.999}]
+  indicator:
+    metadata: {name: querier-non-5xx}
+    spec:
+      ratioMetric:
+        counter: false
+        total: {metricSource: {type: DataFocal, spec: {query: '{service="querier"} | status > 0'}}}
+        good: {metricSource: {type: DataFocal, spec: {query: '{service="querier"} | status > 0 | status < 500'}}}

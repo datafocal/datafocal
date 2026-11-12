@@ -1,0 +1,23 @@
+# Local seeded corpus (cmd/datafocal-seed output).
+/.localdata/
+
+# Local agent/tool state.
+
+# Frontend dependencies and build output; dist/.gitkeep lets go:embed build without one.
+node_modules/
+/.pnpm-store/
+/web/dist/*
+!/web/dist/.gitkeep
+/web/packages/*/dist/
+/web/perf/dist/
+/web/test-results/
+/web/packages/api/fixtures/
+/web/packages/view-*/fixtures/
+/web/.vitest-attachments/
+/web/packages/*/src/__screenshots__/
+
+# Binaries from `go build ./cmd/<name>` at the repo root.
+/collector
+/compactor
+/datafocal-seed
+/querier

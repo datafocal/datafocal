@@ -1,0 +1,22 @@
+apiVersion: openslo/v1
+kind: SLO
+metadata:
+  name: heartbeat-present
+spec:
+  budgetingMethod: Timeslices
+  indicator:
+    spec:
+      thresholdMetric:
+        metricSource:
+          spec:
+            query: count_over_time({service="kindnet"} [5m])
+          type: DataFocal
+  objectives:
+  - op: gt
+    target: 0.99
+    timeSliceWindow: 5m
+    value: 0
+  service: kindnet
+  timeWindow:
+  - duration: 1d
+    isRolling: true

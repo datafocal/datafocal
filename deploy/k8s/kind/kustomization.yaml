@@ -1,0 +1,15 @@
+namespace: datafocal
+resources:
+  - ../base
+  - minio.yaml
+configMapGenerator:
+  - name: datafocal
+    behavior: merge
+    literals:
+      - DATAFOCAL_S3_ENDPOINT=minio:9000
+# Development keys, shared by MinIO's root user and both workloads.
+secretGenerator:
+  - name: datafocal-s3
+    literals:
+      - AWS_ACCESS_KEY_ID=datafocal
+      - AWS_SECRET_ACCESS_KEY=datafocal-dev-secret

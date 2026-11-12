@@ -1,0 +1,7 @@
+[
+  {"tool": "aggregate", "req": {"selector": {"time": {"from": "2026-07-27T08:00:00Z", "to": "2026-07-27T09:00:00Z"}}, "measure": "count", "group_by": "service", "bins": "15s"}},
+  {"tool": "aggregate", "req": {"selector": {"time": {"from": "2026-07-27T08:00:00Z", "to": "2026-07-27T09:00:00Z"}}, "measure": "sum:message.usage.output_tokens", "group_by": "sessionId", "bins": "1m"}},
+  {"tool": "search_logs", "req": {"selector": {"time": {"from": "2026-07-27T08:00:00Z", "to": "2026-07-27T09:00:00Z"}, "where": [{"field": "sessionId", "op": "eq", "value": "a7ea067e-c09b-8189-51df-b666e2380646"}]}, "limit": 1000}},
+  {"tool": "get_trace", "req": {"field": "sessionId", "value": "a7ea067e-c09b-8189-51df-b666e2380646", "time": {"from": "2026-07-27T08:00:00Z", "to": "2026-07-27T09:00:00Z"}}},
+  {"tool": "aggregate", "req": {"selector": {"time": {"from": "2026-07-26T00:00:00Z"}}, "measure": "sum:message.usage.input_tokens", "group_by": "service", "bins": "1h"}}
+]

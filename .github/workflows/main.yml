@@ -1,0 +1,63 @@
+name: main
+
+# The runs too costly for every PR, on each push to main: the race suite, the bench smoke
+# run and the images.
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+# Pushes queue rather than cancel, so every commit on main is tested.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  race:
+    runs-on: ubuntu-latest
+    # A run is about 10 minutes; a hung test would otherwise bill until the 6-hour default.
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+      - name: test (race)
+        # internal/query/tools builds seeded corpora and passes go test's 10-minute default
+        # under -race on a hosted runner.
+        run: go test -race -timeout 20m ./...
+
+  # A smoke test: it fails only when a benchmark breaks, never on a slower or allocating
+  # one; the alloc-budget tests are the gate.
+  bench:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+      - name: bench smoke
+        run: go test -bench=. -benchmem -run='^$' -benchtime=10x ./...
+
+  # Builds the images without pushing them.
+  image:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      # make image builds the UI first, with the pnpm corepack runs from web/package.json,
+      # over the view fixtures go test writes.
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: web/.nvmrc
+      - name: build images
+        run: make image

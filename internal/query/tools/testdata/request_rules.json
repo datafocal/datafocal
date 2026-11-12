@@ -1,0 +1,130 @@
+[
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        }
+      },
+      "measure": ""
+    },
+    "code": "invalid_request",
+    "message": "measure is empty"
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        }
+      },
+      "measure": "count",
+      "measures": [
+        {
+          "measure": "count"
+        }
+      ]
+    },
+    "code": "invalid_request",
+    "message": "aggregate: measures replaces measure and numerator; set one or the other"
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        }
+      },
+      "measures": [
+        {
+          "measure": "count"
+        }
+      ],
+      "sort": "-1:desc"
+    },
+    "code": "invalid_request",
+    "message": "aggregate: sort must be value_desc, value_asc, key or, with measures, <measure index>:desc|asc comma-separated, got \"-1:desc\""
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        }
+      },
+      "measures": [
+        {
+          "measure": "count"
+        }
+      ],
+      "having": [
+        {
+          "index": 1,
+          "op": "gt",
+          "value": 0
+        }
+      ]
+    },
+    "code": "invalid_request",
+    "message": "aggregate: having[0] needs a measure index under 1 and one of [eq ge gt le lt ne]"
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        }
+      },
+      "measure": "count",
+      "ordinal_of": "sessionId",
+      "bins": "1m"
+    },
+    "code": "invalid_request",
+    "message": "aggregate: with ordinal_of, bins is a width in positions, got \"1m\""
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2026-07-27T00:00:00Z",
+          "to": "2026-07-28T00:00:00Z"
+        }
+      },
+      "measures": [
+        {
+          "measure": "count"
+        }
+      ],
+      "group_by": "sessionId",
+      "rollup": {
+        "measure": "count",
+        "group_by": "service"
+      }
+    },
+    "code": "invalid_request",
+    "message": "aggregate: rollup group_by must be label[i] with i under 1, got \"service\""
+  },
+  {
+    "tool": "get_trace",
+    "req": {
+      "value": "",
+      "time": {
+        "from": "2026-07-27T00:00:00Z",
+        "to": "2026-07-28T00:00:00Z"
+      }
+    },
+    "code": "invalid_request",
+    "message": "get_trace: value is required"
+  }
+]

@@ -1,0 +1,23 @@
+# AI source fixtures
+
+These preserve each source’s wire shape and decoded values; they do not share a generated row template. JSON Unicode escapes retain source text that would otherwise trigger code-only lint rules.
+
+- `claude-code.jsonl`: [daaain/claude-code-log](https://github.com/daaain/claude-code-log/blob/9834d25c88dc4dbe8f8ade40ae4b74602ae7669d/dev-docs/messages/claude-code/). Three recorded assistant/Read examples, unchanged.
+- `pi.jsonl`: [badlogic/pi-mono](https://github.com/badlogic/pi-mono/blob/e7a0df27c09d11bf4161d3605246cbf57a129cb2/packages/coding-agent/test/fixtures/before-compaction.jsonl). First three records of the captured session, unchanged.
+- `gemini-cli.jsonl`: [google-gemini/gemini-cli](https://github.com/google-gemini/gemini-cli/blob/718e97c2448e0384cb582409cf4e479437bf50fe/memory-tests/large-chat-session.json). Session envelope and first three messages, unchanged.
+- `gateway.jsonl`: [BerriAI/litellm](https://github.com/BerriAI/litellm/blob/77064d6c7086919c28de177d32864e8ffba7c21a/litellm/integrations/azure_sentinel/example_standard_logging_payload.json). Upstream standard gateway logging payload, unchanged.
+- `otel.jsonl`: [BerriAI/litellm](https://github.com/BerriAI/litellm/blob/77064d6c7086919c28de177d32864e8ffba7c21a/scripts/lens_assets/fixtures/traces/claude_code_native_logs.json). Upstream native OTel file-export fixture, unchanged.
+- `codex.jsonl`: the shape of a Codex rollout: session metadata, turn context, one assistant commentary message and one token-usage receipt. Ids and text are made up; the record layout and usage fields follow a real rollout.
+- `claude-code-memory.jsonl`: hand-written, not captured. It copies the field shape of a local Claude Code 2.1.316 session (an `instructions` attachment loading `MEMORY.md`, then a `Read` and a `Write` of memory files), with made-up ids, paths, text and usage. No upstream fixture records memory use.
+- `codex-quota.jsonl`: hand-written, not captured. It has a session start and two `token_count` events whose `rate_limits` follow `codex-rs/protocol/src/protocol.rs` at `4b4a5cf`. The second event reaches the 5h limit. The values are made up.
+- `claude-code-statusline.jsonl`: hand-written. Two lines as the statusline logger (`deploy/local/claude-statusline.sh`) appends them, with the documented statusline input fields and made-up values.
+- `claude-code-compaction.jsonl`: hand-written, not captured. It copies the field shape and token counts of a local Claude Code 2.1.316 session around an auto compaction: the call before, the `compact_boundary`, the summary message, and two calls after. The ids, paths and text are made up.
+- `copilot-cli.jsonl`: [LucentMind/argus-core](https://github.com/LucentMind/argus-core/blob/8255c0214132e012ee27959a264cf661ad03bb4e/app/src/main/services/agent/drivers/copilot/__fixtures__/14-skills.jsonl). Captured CLI 1.0.71 events, with the harness envelope removed; session start, usage, assistant messages and tool execution events are unchanged. The adjacent upstream `EVIDENCE.md` documents the capture.
+
+The Claude, pi and LiteLLM sources are MIT licensed; Gemini CLI and the Copilot capture are Apache-2.0 licensed. Source license notices are retained alongside these fixtures.
+
+- `otel-api.jsonl`: [schmug/taper](https://github.com/schmug/taper/blob/bc861b27bff9b27d475f615a16f08356134a21d5/fixtures/otel/r0-read-in-workdir.jsonl). Two captured Claude Code 2.1.278 `api_request` records, with the harness envelope and unrelated records removed; their resource/scope envelopes and attributes are unchanged. Upstream already redacted user identifiers. MIT license retained in `taper-LICENSE`.
+- `otel-spans.jsonl`: [BerriAI/litellm](https://github.com/BerriAI/litellm/blob/77064d6c7086919c28de177d32864e8ffba7c21a/scripts/lens_assets/fixtures/traces/claude_code_native_traces.json). First two native Claude Code LLM spans and their envelopes, unchanged, including nested attempt events.
+- `otel-strands.jsonl`: [BerriAI/litellm](https://github.com/BerriAI/litellm/blob/77064d6c7086919c28de177d32864e8ffba7c21a/scripts/lens_assets/fixtures/traces/strands_simple.json). The captured `chat` span with standard `gen_ai.*` usage and its envelope, unchanged; parent agent spans are omitted. Both span fixtures use the existing LiteLLM MIT notice.
+
+Copilot’s `cost` is a premium request multiplier, [as documented by the SDK](https://github.com/github/copilot-sdk/blob/e22b95e6ead5e1de7e9a68d3087b8d28dc5f364a/docs/features/usage-and-billing.md); it is not logged USD. Estimate dollars from the shared token counts and price table. Skill uses are `distinct:tool_call_id` grouped by `skill_name`, so request, start and completion rows for one call count once.

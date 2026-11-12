@@ -1,0 +1,28 @@
+# Expects a Secret named datafocal-s3 holding the bucket's AWS_ACCESS_KEY_ID and
+# AWS_SECRET_ACCESS_KEY, and an overlay that sets DATAFOCAL_S3_ENDPOINT on the datafocal ConfigMap.
+namespace: datafocal
+resources:
+  - namespace.yaml
+  - collector.yaml
+  - cluster-events.yaml
+  - cadvisor.yaml
+  - querier.yaml
+  - compactor.yaml
+configMapGenerator:
+  - name: datafocal
+    literals:
+      - DATAFOCAL_STORE=s3
+      - DATAFOCAL_S3_BUCKET=datafocal
+      - DATAFOCAL_FLUSH_INTERVAL=10s
+      # Unaligned, a collector catching up on a node's history seals segments spanning weeks,
+      # past the 8192 bins the summary and service graph spread one over. Aligned to the 15s
+      # bin, 42 MB of history sealed as 68k segments, whose footers starved the querier. An
+      # hour bounds a segment at 240 bins; live segments are cut by the flush interval anyway.
+      - DATAFOCAL_FLUSH_ALIGNMENT=1h
+  # The state dir is read only from the collector's config file.
+  - name: collector
+    files:
+      - config.json=collector.json
+  - name: cluster-events
+    files:
+      - config.json=cluster-events.json

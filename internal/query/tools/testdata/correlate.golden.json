@@ -1,0 +1,19 @@
+{
+  "data": {
+    "rho": 0.95665174394835,
+    "lag_seconds": 0,
+    "direction": "none"
+  },
+  "meta": {
+    "snapshot": "e370.s0",
+    "coverage": 1,
+    "approx": false,
+    "cost": {
+      "gets": 72,
+      "bytes_read": 0,
+      "footers_decoded": 72,
+      "segments": 72
+    },
+    "token_estimate": 15
+  }
+}

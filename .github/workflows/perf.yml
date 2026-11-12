@@ -1,0 +1,69 @@
+name: perf
+
+# The absolute performance budgets, the 10-minute memlab soak and Lighthouse.
+# Their metrics are uploaded. Dispatched by hand.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  perf:
+    runs-on: ubuntu-latest
+    container: mcr.microsoft.com/playwright:v1.64.1-noble
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: bash
+        working-directory: web
+    steps:
+      - name: install make and curl
+        working-directory: /
+        run: apt-get update -qq && apt-get install -yqq --no-install-recommends make curl
+      - uses: actions/checkout@v4
+      # make web-preview writes the view fixtures with go test.
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: web/package.json
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: web/.nvmrc
+          cache: pnpm
+          cache-dependency-path: web/pnpm-lock.yaml
+      - run: make -C .. web-preview
+      - name: playwright test perf/nightly
+        run: corepack pnpm exec playwright test perf/nightly
+      - name: serve the fixtures build
+        run: |
+          corepack pnpm exec vite preview --mode fixtures --strictPort --port 4173 &
+          until curl -sf http://localhost:4173/ >/dev/null; do sleep 1; done
+          echo "CHROME_PATH=$(node -p 'require("@playwright/test").chromium.executablePath()')" >>"$GITHUB_ENV"
+      # memlab and Lighthouse are run, not installed: their dependency trees are larger than
+      # the rest of web/'s together.
+      - name: memlab soak
+        run: >-
+          PUPPETEER_SKIP_DOWNLOAD=1 corepack pnpm dlx memlab@2.0.5 run
+          --scenario perf/nightly/soak.cjs --chromium-binary "$CHROME_PATH" --work-dir memlab
+      - name: lighthouse
+        run: |
+          for i in 1 2 3; do
+            corepack pnpm dlx lighthouse@13.5.0 http://localhost:4173/ --quiet \
+              --chrome-flags="--headless=new --no-sandbox" --output json --output-path "lighthouse-$i.json"
+          done
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: perf-metrics
+          path: |
+            web/test-results/**/metrics.json
+            web/memlab/data/out
+            web/lighthouse-*.json

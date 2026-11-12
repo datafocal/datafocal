@@ -1,0 +1,63 @@
+{
+  "data": {
+    "shifts": [
+      {
+        "field": "status",
+        "value": "500",
+        "slice_share": 0.505130228887135,
+        "baseline_share": 0,
+        "slice_count": 640,
+        "baseline_count": 0
+      },
+      {
+        "field": "status",
+        "value": "503",
+        "slice_share": 0.494869771112865,
+        "baseline_share": 0,
+        "slice_count": 627,
+        "baseline_count": 0
+      },
+      {
+        "field": "endpoint",
+        "value": "/users",
+        "slice_share": 0.813733228097869,
+        "baseline_share": 0.2722331636698468,
+        "slice_count": 1031,
+        "baseline_count": 21287
+      },
+      {
+        "field": "service",
+        "value": "checkout",
+        "slice_share": 0.47592738752959746,
+        "baseline_share": 0.18411898611146635,
+        "slice_count": 603,
+        "baseline_count": 14397,
+        "also": [
+          "instance=checkout-0"
+        ]
+      },
+      {
+        "field": "pod",
+        "value": "checkout-0",
+        "slice_share": 0.47592738752959746,
+        "baseline_share": 0.18413177481648207,
+        "slice_count": 603,
+        "baseline_count": 14398
+      }
+    ],
+    "lines": 1267,
+    "rest": 78194
+  },
+  "meta": {
+    "snapshot": "e370.s0",
+    "coverage": 1,
+    "approx": false,
+    "cost": {
+      "gets": 965,
+      "bytes_read": 587001,
+      "footers_decoded": 322,
+      "segments": 644
+    },
+    "token_estimate": 190
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "data": {
+    "services": [
+      {
+        "namespace": "",
+        "service": "gateway",
+        "lines": 25200,
+        "error_lines": 664,
+        "first_seen": "2026-07-18T14:00:00Z",
+        "last_seen": "2026-07-18T14:09:45Z",
+        "pods": 1
+      },
+      {
+        "namespace": "",
+        "service": "checkout",
+        "lines": 15000,
+        "error_lines": 603,
+        "first_seen": "2026-07-18T14:00:00Z",
+        "last_seen": "2026-07-18T14:09:45Z",
+        "pods": 1
+      },
+      {
+        "namespace": "",
+        "service": "db",
+        "lines": 19200,
+        "error_lines": 0,
+        "first_seen": "2026-07-18T14:00:00Z",
+        "last_seen": "2026-07-18T14:09:45Z",
+        "pods": 2
+      },
+      {
+        "namespace": "",
+        "service": "jobs",
+        "lines": 10071,
+        "error_lines": 0,
+        "first_seen": "2026-07-18T14:00:00Z",
+        "last_seen": "2026-07-18T14:09:45Z",
+        "pods": 1
+      },
+      {
+        "namespace": "",
+        "service": "analytics-export",
+        "lines": 8542,
+        "error_lines": 0,
+        "first_seen": "2026-07-18T14:00:00Z",
+        "last_seen": "2026-07-18T14:09:45Z",
+        "pods": 1
+      },
+      {
+        "namespace": "",
+        "service": "host",
+        "lines": 1440,
+        "error_lines": 0,
+        "first_seen": "2026-07-18T14:00:00Z",
+        "last_seen": "2026-07-18T14:09:45Z",
+        "pods": 0
+      },
+      {
+        "namespace": "",
+        "service": "scheduler",
+        "lines": 8,
+        "error_lines": 0,
+        "first_seen": "2026-07-18T14:00:00Z",
+        "last_seen": "2026-07-18T14:05:00Z",
+        "pods": 7
+      }
+    ]
+  },
+  "meta": {
+    "snapshot": "e370.s0",
+    "coverage": 1,
+    "approx": false,
+    "cost": {
+      "gets": 1168,
+      "bytes_read": 73381,
+      "footers_decoded": 322,
+      "segments": 1610
+    },
+    "token_estimate": 261
+  }
+}

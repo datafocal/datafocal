@@ -1,0 +1,61 @@
+{
+  "data": {
+    "mode": "needle",
+    "lines": [
+      {
+        "timestamp": "2026-07-18T14:00:00.002Z",
+        "level": "info",
+        "message": "POST /users 201 17 ms",
+        "pattern_id": "9ef0c50864614821",
+        "service": "gateway",
+        "attributes": {
+          "duration_ms": "17",
+          "endpoint": "/users",
+          "instance": "gateway-0",
+          "param_1": "201",
+          "pod": "gateway-0",
+          "region": "us-east-1",
+          "request_id": "req-000-00",
+          "status": "201",
+          "trace_id": "gateway-fe78efb8e6e4efa0",
+          "user_id": "user-00877"
+        },
+        "segment": "520945d66a2928cd8c99469b50fd4810",
+        "row": 1
+      },
+      {
+        "timestamp": "2026-07-18T14:00:00Z",
+        "level": "info",
+        "message": "POST /users 201 13 ms",
+        "pattern_id": "9ef0c50864614821",
+        "service": "checkout",
+        "attributes": {
+          "duration_ms": "13",
+          "endpoint": "/users",
+          "instance": "checkout-0",
+          "param_1": "201",
+          "pod": "checkout-0",
+          "region": "us-east-1",
+          "request_id": "req-000-00",
+          "status": "201",
+          "trace_id": "checkout-699254eed5acc7a9",
+          "user_id": "user-00877"
+        },
+        "segment": "c59621491169f8f1230eecfc07f9f8bb",
+        "row": 0
+      }
+    ]
+  },
+  "meta": {
+    "snapshot": "e370.s0",
+    "coverage": 1,
+    "approx": false,
+    "cost": {
+      "gets": 490,
+      "bytes_read": 48886,
+      "footers_decoded": 322,
+      "segments": 164
+    },
+    "token_estimate": 222
+  }
+}

@@ -1,0 +1,121 @@
+{
+  "data": {
+    "slos": [
+      {
+        "name": "gateway",
+        "service": "gateway",
+        "state": "ok",
+        "objective": 0.99,
+        "sli": 0.9736507936507937,
+        "budget_remaining": -1.6349206349206327,
+        "burn_rate_1h": 2.6349206349206327,
+        "burn_rate_6h": 2.6349206349206327,
+        "coverage": 1,
+        "window_start": "2026-07-17T15:00:00Z",
+        "conditions": [
+          {
+            "policy": "burn",
+            "name": "fast",
+            "severity": "page",
+            "state": "ok",
+            "threshold": 14.4,
+            "lookback": "1h",
+            "short_window": "5m",
+            "burn_rate": 2.6349206349206327
+          }
+        ],
+        "forecast": {
+          "horizon": "1h",
+          "lookback": "2h",
+          "burn_rate": 2.6349206349206327,
+          "budget_remaining": -1.7447089947089924
+        },
+        "groups": [
+          {
+            "name": "gateway",
+            "service": "gateway",
+            "group": "/health",
+            "state": "ok",
+            "objective": 0.99,
+            "sli": 1,
+            "budget_remaining": 1,
+            "burn_rate_1h": 0,
+            "burn_rate_6h": 0,
+            "coverage": 1,
+            "window_start": "2026-07-17T15:00:00Z",
+            "conditions": [
+              {
+                "policy": "burn",
+                "name": "fast",
+                "severity": "page",
+                "state": "ok",
+                "threshold": 14.4,
+                "lookback": "1h",
+                "short_window": "5m",
+                "burn_rate": 0
+              }
+            ],
+            "forecast": {
+              "horizon": "1h",
+              "lookback": "2h",
+              "burn_rate": 0,
+              "budget_remaining": 1
+            }
+          },
+          {
+            "name": "gateway",
+            "service": "gateway",
+            "group": "/users",
+            "state": "ok",
+            "objective": 0.99,
+            "sli": 0.9514087083790707,
+            "budget_remaining": -3.859129162092934,
+            "burn_rate_1h": 4.859129162092934,
+            "burn_rate_6h": 4.859129162092934,
+            "coverage": 1,
+            "window_start": "2026-07-17T15:00:00Z",
+            "conditions": [
+              {
+                "policy": "burn",
+                "name": "fast",
+                "severity": "page",
+                "state": "ok",
+                "threshold": 14.4,
+                "lookback": "1h",
+                "short_window": "5m",
+                "burn_rate": 4.859129162092934
+              }
+            ],
+            "forecast": {
+              "horizon": "1h",
+              "lookback": "2h",
+              "burn_rate": 4.859129162092934,
+              "budget_remaining": -4.061592877180139
+            }
+          }
+        ]
+      },
+      {
+        "name": "gateway-prometheus",
+        "service": "gateway",
+        "state": "unbound",
+        "objective": 0.99,
+        "coverage": 0,
+        "query": "{service=\"gateway\"}"
+      }
+    ],
+    "total": 2,
+    "writable": true
+  },
+  "meta": {
+    "snapshot": "e370.s0",
+    "coverage": 1,
+    "approx": false,
+    "cost": {
+      "gets": 0,
+      "bytes_read": 0
+    },
+    "token_estimate": 418,
+    "definitions": "3cd86f40ca2803cd"
+  }
+}

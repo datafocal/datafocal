@@ -1,0 +1,16 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "files": {
+    "includes": [
+      "**",
+      "!**/dist",
+      "!pnpm-lock.yaml",
+      "!packages/api/src/generated",
+      "!packages/api/fixtures",
+      "!packages/view-*/fixtures"
+    ]
+  },
+  "formatter": { "indentStyle": "space", "lineWidth": 100 },
+  "linter": { "enabled": false },
+  "assist": { "enabled": false }
+}

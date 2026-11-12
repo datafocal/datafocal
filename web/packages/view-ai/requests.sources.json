@@ -1,0 +1,1385 @@
+[
+  {
+    "tool": "rank_fields",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2025-09-01T00:00:00Z",
+          "to": "2026-11-01T00:00:00Z"
+        }
+      }
+    }
+  },
+  {
+    "tool": "rank_fields",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2025-09-01T00:00:00Z",
+          "to": "2026-11-01T00:00:00Z"
+        },
+        "where": [
+          {
+            "any": [
+              {
+                "field": "cost_usd",
+                "op": "exists"
+              },
+              {
+                "field": "input_tokens",
+                "op": "exists"
+              },
+              {
+                "field": "output_tokens",
+                "op": "exists"
+              },
+              {
+                "field": "cache_read_tokens",
+                "op": "exists"
+              },
+              {
+                "field": "cache_write_tokens",
+                "op": "exists"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2025-09-01T00:00:00Z",
+          "to": "2026-11-01T00:00:00Z"
+        },
+        "where": []
+      },
+      "measure": "",
+      "group_by": "model",
+      "measures": [
+        {
+          "measure": "sum:cost_usd",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:input_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:output_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_read_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_write_tokens",
+          "distinct_by": "message.id"
+        }
+      ],
+      "bins": "auto"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2025-09-01T00:00:00Z",
+          "to": "2026-11-01T00:00:00Z"
+        },
+        "where": []
+      },
+      "measure": "",
+      "group_by": "model",
+      "measures": [
+        {
+          "measure": "sum:cost_usd",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:input_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_read_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_write_tokens",
+          "distinct_by": "message.id"
+        }
+      ],
+      "bins": "auto"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2025-09-01T00:00:00Z",
+          "to": "2026-11-01T00:00:00Z"
+        },
+        "where": []
+      },
+      "measure": "",
+      "group_by": "scope.version",
+      "measures": [
+        {
+          "measure": "sum:cost_usd",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:input_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_read_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_write_tokens",
+          "distinct_by": "message.id"
+        }
+      ],
+      "bins": "auto"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2025-09-01T00:00:00Z",
+          "to": "2026-11-01T00:00:00Z"
+        },
+        "where": []
+      },
+      "measure": "",
+      "group_by": "content_role",
+      "measures": [
+        {
+          "measure": "sum:context_text_chars"
+        },
+        {
+          "measure": "sum:context_tool_chars"
+        }
+      ],
+      "bins": "all"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2025-09-01T00:00:00Z",
+          "to": "2026-11-01T00:00:00Z"
+        },
+        "where": []
+      },
+      "measure": "",
+      "group_by": "tool_name",
+      "measures": [
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "tool_call_id",
+              "op": "exists"
+            }
+          ]
+        },
+        {
+          "measure": "p95:duration_ms"
+        },
+        {
+          "measure": "p50:context_tool_chars",
+          "where": [
+            {
+              "field": "tool_call_id",
+              "op": "exists"
+            }
+          ]
+        },
+        {
+          "measure": "p95:context_tool_chars",
+          "where": [
+            {
+              "field": "tool_call_id",
+              "op": "exists"
+            }
+          ]
+        },
+        {
+          "measure": "sum:context_tool_chars",
+          "where": [
+            {
+              "field": "tool_call_id",
+              "op": "exists"
+            }
+          ]
+        },
+        {
+          "measure": "distinct:run_id"
+        }
+      ],
+      "bins": "all"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2025-09-01T00:00:00Z",
+          "to": "2026-11-01T00:00:00Z"
+        },
+        "where": []
+      },
+      "measure": "",
+      "group_by": "message.content.id",
+      "measures": [
+        {
+          "measure": "span:message.content.id"
+        },
+        {
+          "measure": "first:tool_name"
+        }
+      ],
+      "bins": "all",
+      "limit": 10000,
+      "rollup": {
+        "measure": "p95:values[0]",
+        "bins": "all",
+        "group_by": "label[1]"
+      }
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2025-09-01T00:00:00Z",
+          "to": "2026-11-01T00:00:00Z"
+        },
+        "where": []
+      },
+      "measure": "",
+      "group_by": "model",
+      "measures": [
+        {
+          "measure": "sum:cost_usd",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:input_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_read_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_write_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:output_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "input_tokens",
+              "op": "exists"
+            }
+          ],
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "distinct:run_id"
+        }
+      ],
+      "bins": "all"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2025-09-01T00:00:00Z",
+          "to": "2026-11-01T00:00:00Z"
+        },
+        "where": []
+      },
+      "measure": "",
+      "group_by": "run_id",
+      "measures": [
+        {
+          "measure": "sum:cost_usd",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:input_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_read_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_write_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "input_tokens",
+              "op": "exists"
+            }
+          ],
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "tool_name",
+              "op": "exists"
+            }
+          ]
+        }
+      ],
+      "bins": "all",
+      "limit": 10000
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2025-09-01T00:00:00Z",
+          "to": "2026-11-01T00:00:00Z"
+        },
+        "where": []
+      },
+      "measure": "",
+      "group_by": "run_id",
+      "measures": [
+        {
+          "measure": "changes:model"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "compaction_tokens",
+              "op": "exists"
+            }
+          ]
+        },
+        {
+          "measure": "sum:compaction_tokens"
+        }
+      ],
+      "bins": "all",
+      "limit": 10000
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2025-09-01T00:00:00Z",
+          "to": "2026-11-01T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "after_compaction",
+            "op": "exists"
+          }
+        ]
+      },
+      "measure": "",
+      "group_by": "model",
+      "measures": [
+        {
+          "measure": "sum:cost_usd",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:input_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_read_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_write_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "input_tokens",
+              "op": "exists"
+            }
+          ],
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "tool_name",
+              "op": "exists"
+            }
+          ]
+        }
+      ],
+      "bins": "all"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2025-09-01T00:00:00Z",
+          "to": "2026-11-01T00:00:00Z"
+        },
+        "where": []
+      },
+      "measure": "",
+      "group_by": "message.id",
+      "measures": [
+        {
+          "measure": "max:input_tokens"
+        },
+        {
+          "measure": "max:cache_read_tokens"
+        },
+        {
+          "measure": "max:cache_write_tokens"
+        },
+        {
+          "measure": "last:run_id"
+        }
+      ],
+      "bins": "all",
+      "limit": 10000
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2025-09-01T00:00:00Z",
+          "to": "2026-11-01T00:00:00Z"
+        },
+        "where": []
+      },
+      "measure": "count",
+      "group_by": "run_id",
+      "bins": "all",
+      "limit": 10000
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2025-09-01T00:00:00Z",
+          "to": "2026-11-01T00:00:00Z"
+        },
+        "where": []
+      },
+      "measure": "",
+      "group_by": "",
+      "measures": [
+        {
+          "measure": "sum:duration_ms"
+        },
+        {
+          "measure": "sum:data.duration"
+        }
+      ],
+      "bins": "all"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2025-09-01T00:00:00Z",
+          "to": "2026-11-01T00:00:00Z"
+        },
+        "where": []
+      },
+      "measure": "",
+      "group_by": "model",
+      "measures": [
+        {
+          "measure": "sum:cost_usd",
+          "distinct_by": "message.id"
+        }
+      ],
+      "bins": "auto"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2025-09-01T00:00:00Z",
+          "to": "2026-11-01T00:00:00Z"
+        },
+        "where": []
+      },
+      "measure": "",
+      "group_by": "model",
+      "measures": [
+        {
+          "measure": "p50:gen_ai.server.time_to_first_token"
+        },
+        {
+          "measure": "p95:gen_ai.server.time_to_first_token"
+        }
+      ],
+      "bins": "all"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2025-09-01T00:00:00Z",
+          "to": "2026-11-01T00:00:00Z"
+        },
+        "where": []
+      },
+      "measure": "",
+      "group_by": "memory_name",
+      "measures": [
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "memory_op",
+              "op": "eq",
+              "value": "load"
+            }
+          ]
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "memory_op",
+              "op": "eq",
+              "value": "read"
+            }
+          ]
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "memory_op",
+              "op": "eq",
+              "value": "write"
+            }
+          ]
+        },
+        {
+          "measure": "distinct:run_id"
+        },
+        {
+          "measure": "sum:memory_chars"
+        }
+      ],
+      "bins": "all"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2025-09-01T00:00:00Z",
+          "to": "2026-11-01T00:00:00Z"
+        },
+        "where": [
+          {
+            "any": [
+              {
+                "field": "quota_5h_used_pct",
+                "op": "exists"
+              },
+              {
+                "field": "quota_7d_used_pct",
+                "op": "exists"
+              },
+              {
+                "field": "quota_chat_used_pct",
+                "op": "exists"
+              },
+              {
+                "field": "quota_completions_used_pct",
+                "op": "exists"
+              },
+              {
+                "field": "quota_limited",
+                "op": "exists"
+              },
+              {
+                "field": "credits_remaining",
+                "op": "exists"
+              }
+            ]
+          }
+        ]
+      },
+      "measure": "",
+      "group_by": "service",
+      "measures": [
+        {
+          "measure": "last:quota_5h_used_pct"
+        },
+        {
+          "measure": "max:quota_5h_used_pct"
+        },
+        {
+          "measure": "last:quota_5h_resets_at"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "quota_5h_used_pct",
+              "op": "exists"
+            }
+          ]
+        },
+        {
+          "measure": "last:quota_7d_used_pct"
+        },
+        {
+          "measure": "max:quota_7d_used_pct"
+        },
+        {
+          "measure": "last:quota_7d_resets_at"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "quota_7d_used_pct",
+              "op": "exists"
+            }
+          ]
+        },
+        {
+          "measure": "last:quota_chat_used_pct"
+        },
+        {
+          "measure": "max:quota_chat_used_pct"
+        },
+        {
+          "measure": "last:quota_chat_resets_at"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "quota_chat_used_pct",
+              "op": "exists"
+            }
+          ]
+        },
+        {
+          "measure": "last:quota_completions_used_pct"
+        },
+        {
+          "measure": "max:quota_completions_used_pct"
+        },
+        {
+          "measure": "last:quota_completions_resets_at"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "quota_completions_used_pct",
+              "op": "exists"
+            }
+          ]
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "quota_limited",
+              "op": "exists"
+            }
+          ]
+        },
+        {
+          "measure": "last:credits_remaining"
+        }
+      ],
+      "bins": "all"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2025-09-01T00:00:00Z",
+          "to": "2026-11-01T00:00:00Z"
+        },
+        "where": []
+      },
+      "measure": "count",
+      "group_by": "memory_op",
+      "bins": "auto"
+    }
+  },
+  {
+    "tool": "search_logs",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2025-09-01T00:00:00Z",
+          "to": "2026-11-01T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "run_id",
+            "op": "eq",
+            "value": "00000000-0000-4000-8000-0000000000a1"
+          },
+          {
+            "any": [
+              {
+                "field": "cost_usd",
+                "op": "exists"
+              },
+              {
+                "field": "input_tokens",
+                "op": "exists"
+              },
+              {
+                "field": "output_tokens",
+                "op": "exists"
+              },
+              {
+                "field": "cache_read_tokens",
+                "op": "exists"
+              },
+              {
+                "field": "cache_write_tokens",
+                "op": "exists"
+              }
+            ]
+          }
+        ]
+      },
+      "limit": 10000
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2025-09-01T00:00:00Z",
+          "to": "2026-11-01T00:00:00Z"
+        },
+        "where": [
+          {
+            "any": [
+              {
+                "field": "quota_5h_used_pct",
+                "op": "exists"
+              },
+              {
+                "field": "quota_7d_used_pct",
+                "op": "exists"
+              },
+              {
+                "field": "quota_chat_used_pct",
+                "op": "exists"
+              },
+              {
+                "field": "quota_completions_used_pct",
+                "op": "exists"
+              },
+              {
+                "field": "quota_limited",
+                "op": "exists"
+              },
+              {
+                "field": "credits_remaining",
+                "op": "exists"
+              }
+            ]
+          }
+        ]
+      },
+      "measure": "",
+      "group_by": "service",
+      "measures": [
+        {
+          "measure": "max:quota_5h_used_pct"
+        },
+        {
+          "measure": "max:quota_7d_used_pct"
+        },
+        {
+          "measure": "max:quota_chat_used_pct"
+        },
+        {
+          "measure": "max:quota_completions_used_pct"
+        }
+      ],
+      "bins": "auto"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2025-09-01T00:00:00Z",
+          "to": "2026-11-01T00:00:00Z"
+        },
+        "where": [
+          {
+            "any": [
+              {
+                "field": "quota_5h_used_pct",
+                "op": "exists"
+              },
+              {
+                "field": "quota_7d_used_pct",
+                "op": "exists"
+              },
+              {
+                "field": "quota_chat_used_pct",
+                "op": "exists"
+              },
+              {
+                "field": "quota_completions_used_pct",
+                "op": "exists"
+              },
+              {
+                "field": "quota_limited",
+                "op": "exists"
+              },
+              {
+                "field": "credits_remaining",
+                "op": "exists"
+              }
+            ]
+          }
+        ]
+      },
+      "measure": "",
+      "group_by": "run_id",
+      "measures": [
+        {
+          "measure": "first:quota_5h_used_pct"
+        },
+        {
+          "measure": "max:quota_5h_used_pct"
+        },
+        {
+          "measure": "first:quota_7d_used_pct"
+        },
+        {
+          "measure": "max:quota_7d_used_pct"
+        },
+        {
+          "measure": "first:quota_chat_used_pct"
+        },
+        {
+          "measure": "max:quota_chat_used_pct"
+        },
+        {
+          "measure": "first:quota_completions_used_pct"
+        },
+        {
+          "measure": "max:quota_completions_used_pct"
+        }
+      ],
+      "bins": "all",
+      "limit": 10000
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2025-09-01T00:00:00Z",
+          "to": "2026-11-01T00:00:00Z"
+        },
+        "where": []
+      },
+      "measure": "count",
+      "group_by": "plan",
+      "bins": "all"
+    }
+  },
+  {
+    "tool": "search_logs",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2025-09-01T00:00:00Z",
+          "to": "2026-11-01T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "run_id",
+            "op": "eq",
+            "value": "00000000-0000-4000-8000-0000000000c1"
+          },
+          {
+            "any": [
+              {
+                "field": "cost_usd",
+                "op": "exists"
+              },
+              {
+                "field": "input_tokens",
+                "op": "exists"
+              },
+              {
+                "field": "output_tokens",
+                "op": "exists"
+              },
+              {
+                "field": "cache_read_tokens",
+                "op": "exists"
+              },
+              {
+                "field": "cache_write_tokens",
+                "op": "exists"
+              }
+            ]
+          }
+        ]
+      },
+      "limit": 10000
+    }
+  },
+  {
+    "tool": "search_logs",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2025-09-01T00:00:00Z",
+          "to": "2026-11-01T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "run_id",
+            "op": "eq",
+            "value": "00000000-0000-4000-8000-0000000000a1"
+          },
+          {
+            "field": "memory_op",
+            "op": "exists"
+          }
+        ]
+      },
+      "limit": 1000
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2025-09-01T00:00:00Z",
+          "to": "2026-11-01T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "run_id",
+            "op": "eq",
+            "value": "00000000-0000-4000-8000-0000000000a1"
+          },
+          {
+            "any": [
+              {
+                "field": "quota_5h_used_pct",
+                "op": "exists"
+              },
+              {
+                "field": "quota_7d_used_pct",
+                "op": "exists"
+              },
+              {
+                "field": "quota_chat_used_pct",
+                "op": "exists"
+              },
+              {
+                "field": "quota_completions_used_pct",
+                "op": "exists"
+              },
+              {
+                "field": "quota_limited",
+                "op": "exists"
+              },
+              {
+                "field": "credits_remaining",
+                "op": "exists"
+              }
+            ]
+          }
+        ]
+      },
+      "measure": "",
+      "group_by": "service",
+      "measures": [
+        {
+          "measure": "last:quota_5h_used_pct"
+        },
+        {
+          "measure": "max:quota_5h_used_pct"
+        },
+        {
+          "measure": "last:quota_5h_resets_at"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "quota_5h_used_pct",
+              "op": "exists"
+            }
+          ]
+        },
+        {
+          "measure": "last:quota_7d_used_pct"
+        },
+        {
+          "measure": "max:quota_7d_used_pct"
+        },
+        {
+          "measure": "last:quota_7d_resets_at"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "quota_7d_used_pct",
+              "op": "exists"
+            }
+          ]
+        },
+        {
+          "measure": "last:quota_chat_used_pct"
+        },
+        {
+          "measure": "max:quota_chat_used_pct"
+        },
+        {
+          "measure": "last:quota_chat_resets_at"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "quota_chat_used_pct",
+              "op": "exists"
+            }
+          ]
+        },
+        {
+          "measure": "last:quota_completions_used_pct"
+        },
+        {
+          "measure": "max:quota_completions_used_pct"
+        },
+        {
+          "measure": "last:quota_completions_resets_at"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "quota_completions_used_pct",
+              "op": "exists"
+            }
+          ]
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "quota_limited",
+              "op": "exists"
+            }
+          ]
+        },
+        {
+          "measure": "last:credits_remaining"
+        }
+      ],
+      "bins": "all"
+    }
+  },
+  {
+    "tool": "search_logs",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2025-09-01T00:00:00Z",
+          "to": "2026-11-01T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "run_id",
+            "op": "eq",
+            "value": "00000000-0000-4000-8000-0000000000c1"
+          },
+          {
+            "field": "memory_op",
+            "op": "exists"
+          }
+        ]
+      },
+      "limit": 1000
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2025-09-01T00:00:00Z",
+          "to": "2026-11-01T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "run_id",
+            "op": "eq",
+            "value": "00000000-0000-4000-8000-0000000000c1"
+          },
+          {
+            "any": [
+              {
+                "field": "quota_5h_used_pct",
+                "op": "exists"
+              },
+              {
+                "field": "quota_7d_used_pct",
+                "op": "exists"
+              },
+              {
+                "field": "quota_chat_used_pct",
+                "op": "exists"
+              },
+              {
+                "field": "quota_completions_used_pct",
+                "op": "exists"
+              },
+              {
+                "field": "quota_limited",
+                "op": "exists"
+              },
+              {
+                "field": "credits_remaining",
+                "op": "exists"
+              }
+            ]
+          }
+        ]
+      },
+      "measure": "",
+      "group_by": "service",
+      "measures": [
+        {
+          "measure": "last:quota_5h_used_pct"
+        },
+        {
+          "measure": "max:quota_5h_used_pct"
+        },
+        {
+          "measure": "last:quota_5h_resets_at"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "quota_5h_used_pct",
+              "op": "exists"
+            }
+          ]
+        },
+        {
+          "measure": "last:quota_7d_used_pct"
+        },
+        {
+          "measure": "max:quota_7d_used_pct"
+        },
+        {
+          "measure": "last:quota_7d_resets_at"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "quota_7d_used_pct",
+              "op": "exists"
+            }
+          ]
+        },
+        {
+          "measure": "last:quota_chat_used_pct"
+        },
+        {
+          "measure": "max:quota_chat_used_pct"
+        },
+        {
+          "measure": "last:quota_chat_resets_at"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "quota_chat_used_pct",
+              "op": "exists"
+            }
+          ]
+        },
+        {
+          "measure": "last:quota_completions_used_pct"
+        },
+        {
+          "measure": "max:quota_completions_used_pct"
+        },
+        {
+          "measure": "last:quota_completions_resets_at"
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "quota_completions_used_pct",
+              "op": "exists"
+            }
+          ]
+        },
+        {
+          "measure": "count",
+          "where": [
+            {
+              "field": "quota_limited",
+              "op": "exists"
+            }
+          ]
+        },
+        {
+          "measure": "last:credits_remaining"
+        }
+      ],
+      "bins": "all"
+    }
+  },
+  {
+    "tool": "aggregate",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2025-09-01T00:00:00Z",
+          "to": "2026-11-01T00:00:00Z"
+        },
+        "where": []
+      },
+      "measure": "",
+      "group_by": "run_id",
+      "ordinal_of": "run_id",
+      "measures": [
+        {
+          "measure": "sum:input_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_read_tokens",
+          "distinct_by": "message.id"
+        },
+        {
+          "measure": "sum:cache_write_tokens",
+          "distinct_by": "message.id"
+        }
+      ],
+      "bins": "1",
+      "limit": 10000
+    }
+  },
+  {
+    "tool": "search_logs",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2025-09-01T00:00:00Z",
+          "to": "2026-11-01T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "run_id",
+            "op": "eq",
+            "value": "00000000-0000-4000-8000-0000000000a1"
+          }
+        ]
+      },
+      "limit": 10000,
+      "columns": ["run_id"]
+    }
+  },
+  {
+    "tool": "search_logs",
+    "req": {
+      "selector": {
+        "time": {
+          "from": "2025-09-01T00:00:00Z",
+          "to": "2026-11-01T00:00:00Z"
+        },
+        "where": [
+          {
+            "field": "run_id",
+            "op": "eq",
+            "value": "00000000-0000-4000-8000-0000000000c1"
+          }
+        ]
+      },
+      "limit": 10000,
+      "columns": ["run_id"]
+    }
+  }
+]

@@ -1,0 +1,26 @@
+# The querier's own requests, by path: every panel kind over one variable.
+apiVersion: datafocal/v1
+kind: View
+metadata:
+  name: querier
+  displayName: Querier
+spec:
+  time: {from: now-6h, to: now}
+  variables:
+  - {name: path, column: path, allowAll: true}
+  panels:
+  - title: Requests by status
+    kind: timeseries
+    query: sum by (status) (count_over_time({service="querier", path="$path"} | status>0 [5m]))
+    grid: {x: 0, y: 0, w: 8, h: 4}
+  - {kind: slo, slo: querier-availability, grid: {x: 8, y: 0, w: 4, h: 4}}
+  - title: Failed requests
+    kind: stat
+    query: count_over_time({service="querier", path="$path"} | status>=500 [1h])
+    grid: {x: 0, y: 4, w: 4, h: 2}
+  - title: Busiest paths
+    kind: table
+    query: topk(10, sum by (path) (count_over_time({service="querier"} | status>0 [1h])))
+    grid: {x: 4, y: 4, w: 8, h: 2}
+  - {title: Patterns, kind: patterns, query: '{service="querier", path="$path"} | patterns', grid: {x: 0, y: 6, w: 6, h: 4}}
+  - {title: Failures, kind: lines, query: '{service="querier", path="$path"} | status>=500', grid: {x: 6, y: 6, w: 6, h: 4}}

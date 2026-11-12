@@ -1,0 +1,59 @@
+{
+  "data": {
+    "patterns": [
+      {
+        "pattern_id": "f6519fdddadc723",
+        "pattern": "query executed in \u003c*\u003e ms",
+        "service": "db",
+        "count": 7,
+        "rate": 0.0009722222222222222,
+        "status": "new"
+      },
+      {
+        "pattern_id": "3d63d79a0dc8e759",
+        "pattern": "request \u003c*\u003e ok",
+        "service": "api",
+        "count": 3,
+        "rate": 0.0004166666666666667,
+        "status": "new"
+      },
+      {
+        "pattern_id": "57d71a1c11354d0e",
+        "pattern": "POST /form \u003c*\u003e",
+        "service": "web",
+        "count": 2,
+        "rate": 0.0002777777777777778,
+        "status": "new"
+      },
+      {
+        "pattern_id": "d57b12352988933b",
+        "pattern": "connection timeout from \u003c*\u003e",
+        "service": "api",
+        "count": 2,
+        "rate": 0.0002777777777777778,
+        "status": "new"
+      },
+      {
+        "pattern_id": "e5f2b234fa3dd2cb",
+        "pattern": "GET /page \u003c*\u003e",
+        "service": "web",
+        "count": 2,
+        "rate": 0.0002777777777777778,
+        "status": "new"
+      }
+    ],
+    "total": 5
+  },
+  "meta": {
+    "snapshot": "e3.s0",
+    "coverage": 1,
+    "approx": false,
+    "cost": {
+      "gets": 3,
+      "bytes_read": 0,
+      "footers_decoded": 3,
+      "segments": 6
+    },
+    "token_estimate": 188
+  }
+}

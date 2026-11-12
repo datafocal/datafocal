@@ -1,0 +1,75 @@
+{
+  "data": {
+    "field": "request_id",
+    "value": "req-000-00",
+    "spans": [
+      {
+        "name": "POST /users \u003c*\u003e \u003c*\u003e ms",
+        "service": "gateway",
+        "start_ms": 1784383199985,
+        "dur_ms": 17,
+        "error": false,
+        "parent": -1,
+        "id": "svc:gateway",
+        "parent_method": "",
+        "duration_method": "reported",
+        "lines": 1,
+        "where": [
+          {
+            "field": "service",
+            "op": "eq",
+            "value": "gateway"
+          },
+          {
+            "field": "request_id",
+            "op": "eq",
+            "value": "req-000-00"
+          }
+        ],
+        "self_ms": 4,
+        "critical": true,
+        "critical_inferred": false
+      },
+      {
+        "name": "POST /users \u003c*\u003e \u003c*\u003e ms",
+        "service": "checkout",
+        "start_ms": 1784383199987,
+        "dur_ms": 13,
+        "error": false,
+        "parent": 0,
+        "id": "svc:checkout",
+        "parent_method": "contained",
+        "duration_method": "reported",
+        "lines": 1,
+        "where": [
+          {
+            "field": "service",
+            "op": "eq",
+            "value": "checkout"
+          },
+          {
+            "field": "request_id",
+            "op": "eq",
+            "value": "req-000-00"
+          }
+        ],
+        "self_ms": 13,
+        "critical": true,
+        "critical_inferred": true
+      }
+    ],
+    "total": 2
+  },
+  "meta": {
+    "snapshot": "e370.s0",
+    "coverage": 1,
+    "approx": true,
+    "cost": {
+      "gets": 538,
+      "bytes_read": 48886,
+      "footers_decoded": 370,
+      "segments": 164
+    },
+    "token_estimate": 209
+  }
+}

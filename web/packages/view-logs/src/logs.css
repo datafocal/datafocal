@@ -1,0 +1,669 @@
+/* The query bar over the fields rail, the volume histogram above the patterns, the line
+   table or the live tail, and the selected line's inspector. */
+.logs {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.logs-q {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 12px 20px 6px;
+}
+.qbar {
+  flex: 1;
+  min-width: 0;
+}
+.q-in {
+  position: relative;
+  font: 12.5px var(--mono);
+}
+.q-in pre,
+.q-in input {
+  box-sizing: border-box;
+  width: 100%;
+  height: 34px;
+  margin: 0;
+  padding: 8px 12px;
+  font: inherit;
+  border: 1px solid var(--line-2);
+  border-radius: 7px;
+}
+.q-in pre {
+  position: absolute;
+  overflow: hidden;
+  background: var(--panel);
+}
+.q-in input {
+  position: relative;
+  color: transparent;
+  caret-color: var(--ink);
+  background: none;
+}
+.q-in input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+.q-selector,
+.q-stage {
+  color: var(--accent);
+}
+.q-string {
+  color: var(--insight);
+}
+.q-fault {
+  text-decoration: wavy underline var(--err);
+}
+.q-call {
+  margin: 4px 0 0;
+  overflow: hidden;
+  font: 11px var(--mono);
+  color: var(--ink-3);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.q-call p {
+  margin: 0;
+}
+.q-hint {
+  color: var(--err);
+}
+.seg {
+  display: inline-flex;
+  height: 34px;
+  border: 1px solid var(--line-2);
+  border-radius: 7px;
+  overflow: hidden;
+}
+.seg .tbtn {
+  height: 100%;
+  border: 0;
+  border-right: 1px solid var(--line-2);
+  border-radius: 0;
+}
+.seg .tbtn:last-child {
+  border-right: 0;
+}
+.seg .tbtn[aria-pressed="true"] {
+  background: var(--raise);
+}
+/* The "⋯" menu stands as tall and square as the mode toggle beside it. */
+.logs-q > .tbtn {
+  height: 34px;
+  min-width: 34px;
+}
+.logs-ctx {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 20px 6px;
+}
+
+/* The fields rail beside the main column, as wide as its splitter leaves it. */
+.logs-b {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: var(--rail, 280px) auto minmax(0, 1fr) auto;
+}
+.logs-b[data-rail-collapsed] > .frail {
+  visibility: hidden;
+  padding: 0;
+}
+.logs-m {
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.logs-m > .logs-t,
+.logs-m > .live,
+.logs-m > .pats {
+  flex: 1;
+  min-height: 0;
+}
+/* Narrow windows give the lines the room the rail took. */
+@media (max-width: 1100px) {
+  .logs-b {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  .frail,
+  .logs-b > .split {
+    display: none;
+  }
+}
+
+.frail {
+  overflow: hidden auto;
+  padding: 10px 14px 16px 20px;
+}
+.frail h2 {
+  margin: 0;
+  font: 600 10.5px var(--sans);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.fac {
+  margin-top: 14px;
+}
+.fac h3 {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 0 4px;
+  font: 500 12px var(--mono);
+  color: var(--ink);
+}
+.fac h3 button {
+  font: inherit;
+}
+.fac h3 button:hover {
+  color: var(--accent);
+}
+.fac h3 span {
+  font-size: 10.5px;
+  color: var(--ink-3);
+}
+.fac-v {
+  display: flex;
+  align-items: center;
+}
+.fac-v > button:first-child {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  padding: 1px 4px;
+  font: 11.5px var(--mono);
+  text-align: left;
+  border-radius: 3px;
+}
+.fac-v > button:first-child:hover {
+  background: var(--raise);
+}
+.fac-v i {
+  position: absolute;
+  inset: 1px auto 1px 0;
+  background: var(--accent-soft);
+  border-radius: 3px;
+}
+.fac-v span {
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.fac-v span:last-child {
+  flex: none;
+  color: var(--ink-3);
+}
+
+/* A number's spread, a row a service, and the bounds that narrow the query to a range of it. */
+.fac-n {
+  width: 100%;
+  margin: 2px 0 6px;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font: 11px var(--mono);
+  font-variant-numeric: tabular-nums;
+}
+.fac-n th,
+.fac-n td {
+  padding: 2px 4px;
+  overflow: hidden;
+  text-align: right;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.fac-n thead th {
+  font-weight: 400;
+  color: var(--ink-3);
+  border-bottom: 1px solid var(--line);
+}
+.fac-n th:first-child {
+  width: 38%;
+  text-align: left;
+}
+.fac-n tbody th {
+  font-weight: 400;
+  color: var(--ink-2);
+}
+.fac-n td {
+  color: var(--ink);
+}
+.fac-b {
+  display: flex;
+  gap: 6px;
+}
+.fac-b form {
+  flex: 1;
+  min-width: 0;
+}
+.fac-b label {
+  display: flex;
+  align-items: center;
+  height: 24px;
+  padding-left: 7px;
+  font: 11px var(--mono);
+  color: var(--ink-3);
+  background: var(--panel);
+  border: 1px solid var(--line-2);
+  border-radius: 6px;
+}
+.fac-b label:focus-within {
+  border-color: var(--accent);
+}
+.fac-b input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  padding: 0 6px;
+  font: 11px var(--mono);
+  color: var(--ink);
+  background: none;
+  border: 0;
+  outline: none;
+}
+
+/* The fields past the listed ones, by name, each added to the list on a click. */
+.fac-more {
+  margin-top: 14px;
+  font: 11.5px var(--mono);
+}
+.fac-more summary {
+  cursor: pointer;
+  color: var(--ink-3);
+}
+.fac-more summary:hover {
+  color: var(--accent);
+}
+.fac-more button {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  padding: 1px 4px;
+  font: inherit;
+  text-align: left;
+  border-radius: 3px;
+}
+.fac-more button:hover {
+  background: var(--raise);
+}
+.fac-more button span:first-child {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.fac-more button span:last-child {
+  flex: none;
+  color: var(--ink-3);
+}
+
+/* The volume histogram. */
+.hist-w {
+  padding: 10px 20px 6px;
+}
+.hist-h {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+  margin-bottom: 6px;
+  font-size: 11.5px;
+  color: var(--ink-2);
+}
+.hist-h b {
+  margin-right: -6px;
+  font: 500 12px var(--mono);
+  color: var(--ink);
+}
+.hist-k {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.hist-k i {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  background: var(--line-2);
+}
+/* The baseline is a teal step line over the bars, so its key is a short line. */
+.hist-k.was {
+  color: var(--ink);
+}
+.hist-k.was i {
+  width: 14px;
+  height: 0;
+  border-top: 2px solid var(--insight);
+  border-radius: 0;
+  background: none;
+}
+.hist-vs {
+  margin-left: -6px;
+  color: var(--ink);
+}
+.hist-by:hover {
+  color: var(--ink);
+  border-color: var(--accent);
+}
+.hist-tip {
+  margin-left: auto;
+  color: var(--ink-3);
+}
+.hist {
+  position: relative;
+  cursor: crosshair;
+}
+.hist canvas {
+  display: block;
+  width: 100%;
+  height: 148px;
+}
+.brush {
+  position: absolute;
+  inset-block: 0 16px;
+  background: var(--accent-soft);
+  border-inline: 1px solid var(--accent);
+}
+
+/* The line table. */
+.lrow {
+  display: grid;
+  grid-template-columns: 92px 52px 140px minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+  height: 100%;
+  padding: 0 20px;
+  font: 12px var(--mono);
+  white-space: nowrap;
+  cursor: pointer;
+}
+.lrow:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+.lrow:hover {
+  background: var(--raise);
+}
+.lrow.sel {
+  background: var(--accent-soft);
+  box-shadow: inset 2px 0 var(--accent);
+}
+.lt {
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+.llv {
+  overflow: hidden;
+  padding: 0 4px;
+  font-size: 10.5px;
+  text-align: center;
+  color: var(--ink-3);
+  border-radius: 3px;
+}
+.lrow.error .llv {
+  color: var(--err);
+  background: var(--err-soft);
+}
+.lrow.warn .llv {
+  color: var(--warn);
+  background: color-mix(in srgb, var(--warn) 13%, transparent);
+}
+.lsvc {
+  overflow: hidden;
+  color: var(--ink-2);
+  text-overflow: ellipsis;
+}
+.lmsg {
+  overflow: hidden;
+  color: var(--ink);
+  text-overflow: ellipsis;
+}
+.lrow.error .lmsg {
+  color: var(--err);
+}
+.lkv {
+  margin-left: 10px;
+  font-size: 11px;
+  color: var(--ink-3);
+}
+.lkv span {
+  color: var(--ink-2);
+}
+/* Patterns. */
+.pats {
+  overflow: auto;
+}
+.pats > p {
+  margin: 4px 20px 6px;
+  font-size: 11.5px;
+  color: var(--ink-3);
+}
+.pats ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.pats li {
+  display: grid;
+  grid-template-columns: minmax(16ch, 3fr) minmax(8ch, 1fr) 72px 96px 64px;
+  gap: 4px 12px;
+  align-items: center;
+  padding: 7px 20px;
+  border-bottom: 1px solid var(--line);
+}
+.pats.trend li {
+  grid-template-columns: minmax(16ch, 3fr) minmax(8ch, 1fr) 72px 110px 72px 64px;
+}
+.pats li:hover {
+  background: var(--panel-2);
+}
+.pats li > button[title] {
+  overflow: hidden;
+  font: 12.5px var(--mono);
+  text-align: left;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.pats li > button[title]:hover {
+  color: var(--accent);
+}
+.pats li > p {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 2px 0 0;
+}
+.pats .pat-h {
+  padding-block: 6px;
+  font: 600 10.5px var(--sans);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.pats .pat-h:hover {
+  background: none;
+}
+.ph {
+  color: var(--ink-3);
+}
+.pat-svc {
+  overflow: hidden;
+  font: 11.5px var(--mono);
+  color: var(--ink-2);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.pat-n,
+.pats .pat-h span:nth-child(3) {
+  font: 12px var(--mono);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.pat-x {
+  font-size: 11.5px;
+  color: var(--insight);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* The live tail. */
+.live {
+  display: flex;
+  flex-direction: column;
+}
+.live > .logs-t {
+  flex: 1;
+  min-height: 0;
+  margin: 0 20px 16px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+}
+.live-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 20px;
+  font-size: 11.5px;
+  color: var(--ink-3);
+}
+.live-bar .sp {
+  flex: 1;
+}
+.live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ok);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ok) 25%, transparent);
+}
+.live-dot.off {
+  background: var(--ink-3);
+  box-shadow: none;
+}
+.live-rate {
+  font: 600 12px var(--mono);
+  color: var(--ink);
+}
+.fac-x {
+  width: 18px;
+  flex: none;
+  color: var(--ink-3);
+  border-radius: 3px;
+  opacity: 0;
+}
+.fac-v:hover .fac-x,
+.fac-x:focus-visible {
+  opacity: 1;
+}
+.fac-x:hover {
+  color: var(--err);
+  background: var(--err-soft);
+}
+
+/* The stream: its status, then the lines with an open line's detail under it. */
+.live-btn {
+  gap: 6px;
+  display: inline-flex;
+  align-items: center;
+}
+.live-held {
+  color: var(--ink-3);
+}
+.jump {
+  color: var(--ink);
+  border-color: var(--accent);
+}
+.lrow.open {
+  background: var(--panel-2);
+  box-shadow: inset 2px 0 var(--ink-3);
+}
+mark {
+  color: inherit;
+  background: color-mix(in srgb, var(--warn) 30%, transparent);
+  border-radius: 2px;
+}
+.ldet {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  height: 100%;
+  padding: 0 20px 0 44px;
+  font: 12px var(--mono);
+  white-space: pre;
+  background: var(--panel-2);
+}
+.ldet.first {
+  border-top: 1px solid var(--line);
+}
+.dk {
+  overflow: hidden;
+  color: var(--ink-3);
+  text-overflow: ellipsis;
+}
+.dv {
+  overflow: hidden;
+  color: var(--ink);
+}
+.dmore {
+  color: var(--ink-3);
+  font-style: italic;
+}
+.dt {
+  display: flex;
+  gap: 2px;
+  opacity: 0;
+}
+.ldet:hover .dt,
+.dt:focus-within {
+  opacity: 1;
+}
+.dt button {
+  width: 20px;
+  height: 18px;
+  color: var(--ink-2);
+  border: 1px solid var(--line-2);
+  border-radius: 4px;
+}
+.dt button:hover {
+  color: var(--ink);
+  border-color: var(--accent);
+}
+.ldet.acts {
+  display: flex;
+  gap: 14px;
+  font-family: var(--sans);
+  border-top: 1px solid var(--line);
+}
+.ldet.acts button {
+  font-size: 12px;
+  color: var(--accent);
+}
+.ldet.acts button:hover {
+  text-decoration: underline;
+}
+.q-label {
+  color: var(--accent);
+}
+.q-not {
+  color: var(--err);
+}
+.q-op {
+  color: var(--insight);
+}
+.q-in input::placeholder {
+  color: var(--ink-3);
+}
+.logs-empty {
+  margin: 12px 20px;
+  color: var(--ink-2);
+}

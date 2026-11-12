@@ -1,0 +1,12 @@
+[
+  {
+    "name": "app shell",
+    "path": ["dist/assets/*.js", "!dist/assets/view-*.js"],
+    "limit": "250 kB"
+  },
+  { "name": "view-ai", "path": "dist/assets/view-ai-*.js", "limit": "150 kB" },
+  { "name": "view-logs", "path": "dist/assets/view-logs-*.js", "limit": "150 kB" },
+  { "name": "view-graph", "path": "dist/assets/view-graph-*.js", "limit": "150 kB" },
+  { "name": "view-trace", "path": "dist/assets/view-trace-*.js", "limit": "150 kB" },
+  { "name": "view-resources", "path": "dist/assets/view-resources-*.js", "limit": "150 kB" }
+]

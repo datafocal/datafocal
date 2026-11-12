@@ -1,0 +1,296 @@
+/* The AI systems view: the tabs over one page
+   per lever, each a heading over its facts, ledgers and charts. */
+.ai {
+  padding: 12px 20px 24px;
+}
+.ai-tabs,
+.ai-dims,
+.ai-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.ai-tabs {
+  gap: 0;
+  margin-bottom: 4px;
+}
+.ai-tabs [role="tab"] {
+  height: 30px;
+  padding: 0 12px;
+  font-size: 12.5px;
+  color: var(--ink-2);
+  border: 1px solid var(--line-2);
+  border-left-width: 0;
+}
+.ai-tabs [role="tab"]:first-child {
+  border-left-width: 1px;
+  border-radius: 7px 0 0 7px;
+}
+.ai-tabs [role="tab"]:last-of-type {
+  border-radius: 0 7px 7px 0;
+}
+.ai-tabs [role="tab"][aria-selected="true"] {
+  color: var(--ink);
+  background: var(--raise);
+}
+
+/* The tab's own panel holds the sections without a frame of its own. */
+.ai > .panel {
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: 0;
+}
+.ai > .panel > h3 {
+  display: none;
+}
+.ai-note {
+  margin: 4px 0 10px;
+  font-size: 12.5px;
+  color: var(--ink-2);
+}
+.ai-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 0 14px;
+}
+.ai-dims {
+  gap: 0;
+  margin-bottom: 10px;
+}
+.ai-dims .tbtn {
+  height: 26px;
+  font-size: 12px;
+  border-left-width: 0;
+  border-radius: 0;
+}
+.ai-dims .tbtn:first-child {
+  border-left-width: 1px;
+  border-radius: 7px 0 0 7px;
+}
+.ai-dims .tbtn:last-child {
+  border-radius: 0 7px 7px 0;
+}
+.ai-dims .tbtn[aria-pressed="true"] {
+  background: var(--raise);
+  border-color: var(--line-2);
+}
+.ai-runs [role="row"] {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  height: 28px;
+  align-items: center;
+  font: 12px var(--mono);
+  border-bottom: 1px solid var(--line);
+  cursor: pointer;
+}
+.ai-runs [role="row"]:hover {
+  background: var(--panel-2);
+}
+.ai-runs-b {
+  height: 60vh;
+  overflow: auto;
+}
+.ai-runs-b > div {
+  position: relative;
+}
+.ai-runs-b [role="row"] {
+  position: absolute;
+  inset-inline: 0;
+}
+.ai-diverge {
+  background: var(--err-soft);
+}
+.panel pre {
+  margin: 0 0 6px;
+  font: 12px / 1.5 var(--mono);
+  white-space: pre-wrap;
+}
+
+.ai-tab {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 14px;
+}
+.ai-tab > .panel {
+  margin: 0;
+}
+.ai-lede h2 {
+  margin: 0 0 4px;
+  font: 600 19px / 1.25 var(--sans);
+}
+.ai-lede p {
+  max-width: 80ch;
+  margin: 0;
+  color: var(--ink-2);
+}
+.ai-crumbs {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  font-size: 12.5px;
+  color: var(--ink-3);
+}
+.ai-crumbs button {
+  padding: 0;
+  color: var(--ink-2);
+}
+.ai-crumbs button:hover {
+  color: var(--accent);
+}
+.ai-crumbs b {
+  font-weight: 500;
+  color: var(--ink);
+}
+
+/* Facts: labelled numbers with their unit. */
+.ai-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 28px;
+  margin-bottom: 10px;
+}
+.ai-facts small {
+  display: block;
+  font: 600 10.5px var(--sans);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.ai-facts b {
+  font: 500 16px var(--mono);
+  font-variant-numeric: tabular-nums;
+}
+.ai-facts span {
+  margin-left: 4px;
+  font-size: 11.5px;
+  color: var(--ink-2);
+}
+
+.ai-empty {
+  padding: 10px 12px;
+  font-size: 12.5px;
+  color: var(--ink-2);
+  border: 1px dashed var(--line-2);
+  border-radius: 6px;
+}
+.ai-empty b {
+  color: var(--ink);
+}
+
+/* A number with its share of the column's largest beside it. */
+
+/* Shares of a whole, side by side. */
+.ai-stack {
+  display: flex;
+  gap: 2px;
+  height: 26px;
+  margin: 6px 0 8px;
+  overflow: hidden;
+  border-radius: 4px;
+}
+.ai-stack button {
+  flex-basis: 0;
+  min-width: 2px;
+  height: 100%;
+}
+.ai-stack button[aria-pressed="true"] {
+  outline: 2px solid var(--ink);
+  outline-offset: -2px;
+}
+.ai-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  font-size: 12px;
+  color: var(--ink-2);
+}
+.ai-legend span {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+}
+.ai-legend i {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+.ai-legend small {
+  font: 11px var(--mono);
+  color: var(--ink-3);
+}
+.cat-1 {
+  background: var(--cat-1);
+}
+.cat-2 {
+  background: var(--cat-3);
+}
+.cat-3 {
+  background: var(--cat-2);
+}
+.cat-4 {
+  background: var(--cat-4);
+}
+.cat-5 {
+  background: var(--cat-5);
+}
+
+/* The overview's lever cards. */
+
+/* Compare's forest of intervals. */
+.ai-forest td:nth-child(5) {
+  width: 32%;
+  min-width: 180px;
+}
+.ai-ci {
+  display: block;
+  width: 100%;
+  height: 14px;
+}
+.ai-ci .zero {
+  stroke: var(--line-2);
+  vector-effect: non-scaling-stroke;
+}
+.ai-ci rect {
+  fill: var(--ink-3);
+}
+.ai-ci rect.ok {
+  fill: var(--ok);
+}
+.ai-ci rect.warn {
+  fill: var(--warn);
+}
+.ai-pill {
+  padding: 2px 8px;
+  font: 11.5px var(--sans);
+  color: var(--ink-2);
+  white-space: nowrap;
+  background: var(--raise);
+  border-radius: 999px;
+}
+.ai-pill.ok {
+  color: var(--ok);
+}
+.ai-pill.warn {
+  color: var(--warn);
+}
+.ai-bar select,
+.ai-bar input {
+  padding: 4px 8px;
+  font: 12.5px var(--sans);
+  color: var(--ink);
+  background: var(--panel-2);
+  border: 1px solid var(--line-2);
+  border-radius: 6px;
+}
+.ai-runs [role="cell"] {
+  min-width: 0;
+  padding-right: 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
