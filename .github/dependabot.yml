@@ -1,0 +1,22 @@
+# Weekly update pull requests for the Go modules, the web workspace and the pinned Actions.
+# Minor and patch updates are grouped into one pull request per ecosystem.
+version: 2
+updates:
+  - package-ecosystem: gomod
+    directory: /
+    schedule: {interval: weekly}
+    groups:
+      go-minor:
+        update-types: [minor, patch]
+  - package-ecosystem: npm
+    directory: /web
+    schedule: {interval: weekly}
+    groups:
+      web-minor:
+        update-types: [minor, patch]
+  - package-ecosystem: github-actions
+    directory: /
+    schedule: {interval: weekly}
+    groups:
+      actions:
+        patterns: ["*"]
