@@ -29,11 +29,11 @@ jobs:
     env:
       SEMGREP_VERSION: 1.176.1
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           # The merge commit and its first parent, main, for the scorecard's diff.
           fetch-depth: 2
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v7
         with:
           go-version: "1.26.x"
           cache: true
@@ -43,10 +43,10 @@ jobs:
         run: make vet
       - name: build
         run: make build
-      - uses: golangci/golangci-lint-action@v8
+      - uses: golangci/golangci-lint-action@v9
         with:
           version: v2.12.2
-      - uses: actions/cache@v4
+      - uses: actions/cache@v6
         with:
           path: ~/.cache/pip
           key: pip-semgrep-${{ env.SEMGREP_VERSION }}
@@ -97,7 +97,7 @@ jobs:
     steps:
       - name: install git and make
         run: apt-get update -qq && apt-get install -yqq --no-install-recommends git make
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           # The merge commit and its first parent, main, for the lint rules' diff.
           fetch-depth: 2
@@ -106,14 +106,14 @@ jobs:
       - name: trust the checkout
         run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
       # tygo, the view fixtures and the tool surface the client tests call run on Go.
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v7
         with:
           go-version: "1.26.x"
           cache: true
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
         with:
           package_json_file: web/package.json
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version-file: web/.nvmrc
           cache: pnpm
@@ -152,7 +152,7 @@ jobs:
           ${{ !cancelled() && steps.screenshots.outputs.artifact-url != ''
           && github.event.pull_request.head.repo.full_name == github.repository }}
         continue-on-error: true
-        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         env:
           ARTIFACT_URL: ${{ steps.screenshots.outputs.artifact-url }}
         with:
