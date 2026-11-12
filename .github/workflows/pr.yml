@@ -35,7 +35,7 @@ jobs:
           fetch-depth: 2
       - uses: actions/setup-go@v5
         with:
-          go-version-file: go.mod
+          go-version: "1.26.x"
           cache: true
       - name: gofmt
         run: make fmt-check
@@ -101,10 +101,14 @@ jobs:
         with:
           # The merge commit and its first parent, main, for the lint rules' diff.
           fetch-depth: 2
+      # The container runs as root over a checkout owned by the runner's user, so git
+      # refuses the repository unless it is marked safe.
+      - name: trust the checkout
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
       # tygo, the view fixtures and the tool surface the client tests call run on Go.
       - uses: actions/setup-go@v5
         with:
-          go-version-file: go.mod
+          go-version: "1.26.x"
           cache: true
       - uses: pnpm/action-setup@v4
         with:
