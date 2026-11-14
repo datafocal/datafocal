@@ -13,8 +13,8 @@
       "false_admits": null,
       "refusal_expected": false,
       "refusal_correct": false,
-      "gets": 7,
-      "bytes_read": 387,
+      "gets": 6,
+      "bytes_read": 730,
       "pass": true
     },
     {
@@ -30,8 +30,8 @@
       "false_admits": null,
       "refusal_expected": false,
       "refusal_correct": false,
-      "gets": 7,
-      "bytes_read": 389,
+      "gets": 6,
+      "bytes_read": 732,
       "pass": true
     },
     {
@@ -47,8 +47,8 @@
       "false_admits": null,
       "refusal_expected": true,
       "refusal_correct": true,
-      "gets": 7,
-      "bytes_read": 468,
+      "gets": 6,
+      "bytes_read": 811,
       "pass": true
     },
     {
@@ -64,8 +64,8 @@
       "false_admits": null,
       "refusal_expected": true,
       "refusal_correct": true,
-      "gets": 7,
-      "bytes_read": 487,
+      "gets": 6,
+      "bytes_read": 830,
       "pass": true
     },
     {
@@ -81,8 +81,8 @@
       "false_admits": null,
       "refusal_expected": false,
       "refusal_correct": false,
-      "gets": 7,
-      "bytes_read": 387,
+      "gets": 6,
+      "bytes_read": 730,
       "pass": true
     },
     {
@@ -98,8 +98,8 @@
       "false_admits": null,
       "refusal_expected": false,
       "refusal_correct": false,
-      "gets": 7,
-      "bytes_read": 389,
+      "gets": 6,
+      "bytes_read": 732,
       "pass": true
     },
     {
@@ -115,8 +115,8 @@
       "false_admits": null,
       "refusal_expected": false,
       "refusal_correct": false,
-      "gets": 7,
-      "bytes_read": 387,
+      "gets": 6,
+      "bytes_read": 730,
       "pass": true
     },
     {
@@ -132,8 +132,8 @@
       "false_admits": null,
       "refusal_expected": false,
       "refusal_correct": false,
-      "gets": 7,
-      "bytes_read": 389,
+      "gets": 6,
+      "bytes_read": 732,
       "pass": true
     },
     {
@@ -149,8 +149,8 @@
       "false_admits": null,
       "refusal_expected": false,
       "refusal_correct": false,
-      "gets": 7,
-      "bytes_read": 387,
+      "gets": 6,
+      "bytes_read": 730,
       "pass": true
     },
     {
@@ -166,8 +166,8 @@
       "false_admits": null,
       "refusal_expected": false,
       "refusal_correct": false,
-      "gets": 7,
-      "bytes_read": 389,
+      "gets": 6,
+      "bytes_read": 732,
       "pass": true
     },
     {
@@ -183,8 +183,8 @@
       "false_admits": null,
       "refusal_expected": false,
       "refusal_correct": false,
-      "gets": 7,
-      "bytes_read": 387,
+      "gets": 6,
+      "bytes_read": 730,
       "pass": true
     },
     {
@@ -200,8 +200,8 @@
       "false_admits": null,
       "refusal_expected": false,
       "refusal_correct": false,
-      "gets": 7,
-      "bytes_read": 389,
+      "gets": 6,
+      "bytes_read": 732,
       "pass": true
     },
     {
@@ -217,8 +217,8 @@
       "false_admits": null,
       "refusal_expected": true,
       "refusal_correct": true,
-      "gets": 7,
-      "bytes_read": 380,
+      "gets": 6,
+      "bytes_read": 720,
       "pass": true
     },
     {
@@ -234,8 +234,8 @@
       "false_admits": null,
       "refusal_expected": true,
       "refusal_correct": true,
-      "gets": 7,
-      "bytes_read": 382,
+      "gets": 6,
+      "bytes_read": 722,
       "pass": true
     },
     {
@@ -285,8 +285,8 @@
       "false_admits": null,
       "refusal_expected": false,
       "refusal_correct": false,
-      "gets": 43,
-      "bytes_read": 3664,
+      "gets": 30,
+      "bytes_read": 4007,
       "pass": true
     },
     {
@@ -302,8 +302,8 @@
       "false_admits": null,
       "refusal_expected": false,
       "refusal_correct": false,
-      "gets": 43,
-      "bytes_read": 3727,
+      "gets": 30,
+      "bytes_read": 4070,
       "pass": true
     },
     {
@@ -319,8 +319,8 @@
       "false_admits": null,
       "refusal_expected": false,
       "refusal_correct": false,
-      "gets": 55,
-      "bytes_read": 8000,
+      "gets": 30,
+      "bytes_read": 18367,
       "pass": true
     },
     {
@@ -336,8 +336,8 @@
       "false_admits": null,
       "refusal_expected": false,
       "refusal_correct": false,
-      "gets": 55,
-      "bytes_read": 8062,
+      "gets": 30,
+      "bytes_read": 17853,
       "pass": true
     },
     {
@@ -353,8 +353,8 @@
       "false_admits": null,
       "refusal_expected": false,
       "refusal_correct": false,
-      "gets": 7,
-      "bytes_read": 387,
+      "gets": 6,
+      "bytes_read": 730,
       "pass": true
     },
     {
@@ -370,8 +370,8 @@
       "false_admits": null,
       "refusal_expected": false,
       "refusal_correct": false,
-      "gets": 7,
-      "bytes_read": 389,
+      "gets": 6,
+      "bytes_read": 732,
       "pass": true
     },
     {
@@ -387,8 +387,8 @@
       "false_admits": null,
       "refusal_expected": false,
       "refusal_correct": false,
-      "gets": 31,
-      "bytes_read": 2140,
+      "gets": 18,
+      "bytes_read": 2483,
       "pass": true
     },
     {
@@ -404,8 +404,8 @@
       "false_admits": null,
       "refusal_expected": false,
       "refusal_correct": false,
-      "gets": 31,
-      "bytes_read": 2203,
+      "gets": 18,
+      "bytes_read": 2546,
       "pass": true
     },
     {
@@ -421,8 +421,8 @@
       "false_admits": null,
       "refusal_expected": false,
       "refusal_correct": false,
-      "gets": 45,
-      "bytes_read": 5900,
+      "gets": 31,
+      "bytes_read": 17643,
       "pass": false
     },
     {
@@ -438,8 +438,8 @@
       "false_admits": null,
       "refusal_expected": false,
       "refusal_correct": false,
-      "gets": 45,
-      "bytes_read": 5912,
+      "gets": 31,
+      "bytes_read": 16503,
       "pass": false
     },
     {
@@ -562,8 +562,8 @@
       "false_admits": null,
       "refusal_expected": false,
       "refusal_correct": false,
-      "gets": 7,
-      "bytes_read": 442,
+      "gets": 6,
+      "bytes_read": 785,
       "pass": true
     },
     {
@@ -579,8 +579,8 @@
       "false_admits": null,
       "refusal_expected": false,
       "refusal_correct": false,
-      "gets": 7,
-      "bytes_read": 391,
+      "gets": 6,
+      "bytes_read": 734,
       "pass": true
     },
     {
@@ -596,8 +596,8 @@
       "false_admits": null,
       "refusal_expected": false,
       "refusal_correct": false,
-      "gets": 6,
-      "bytes_read": 337,
+      "gets": 5,
+      "bytes_read": 680,
       "pass": true
     },
     {
@@ -613,8 +613,8 @@
       "false_admits": null,
       "refusal_expected": false,
       "refusal_correct": false,
-      "gets": 6,
-      "bytes_read": 337,
+      "gets": 5,
+      "bytes_read": 680,
       "pass": true
     }
   ],
@@ -628,8 +628,8 @@
     "false_admit_rate": 0,
     "refusal_accuracy": 1,
     "known_gaps": 5,
-    "total_gets": 486,
-    "total_bytes_read": 47488
+    "total_gets": 336,
+    "total_bytes_read": 98206
   },
   "by_logs": {
     "raw": {
@@ -642,8 +642,8 @@
       "false_admit_rate": 0,
       "refusal_accuracy": 1,
       "known_gaps": 2,
-      "total_gets": 243,
-      "total_bytes_read": 23835
+      "total_gets": 168,
+      "total_bytes_read": 48330
     },
     "structured": {
       "n": 18,
@@ -655,8 +655,8 @@
       "false_admit_rate": 0,
       "refusal_accuracy": 1,
       "known_gaps": 3,
-      "total_gets": 243,
-      "total_bytes_read": 23653
+      "total_gets": 168,
+      "total_bytes_read": 49876
     }
   }
 }

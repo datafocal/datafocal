@@ -13,9 +13,25 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  perf:
+  # The @playwright/test version in web/package.json, which names perf's image (pr.yml's
+  # playwright job).
+  playwright:
     runs-on: ubuntu-latest
-    container: mcr.microsoft.com/playwright:v1.64.1-noble
+    timeout-minutes: 5
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          sparse-checkout: web/package.json
+          sparse-checkout-cone-mode: false
+      - id: version
+        run: echo "version=$(jq -r '.devDependencies["@playwright/test"]' web/package.json)" >>"$GITHUB_OUTPUT"
+
+  perf:
+    needs: playwright
+    runs-on: ubuntu-latest
+    container: mcr.microsoft.com/playwright:v${{ needs.playwright.outputs.version }}-noble
     timeout-minutes: 30
     defaults:
       run:

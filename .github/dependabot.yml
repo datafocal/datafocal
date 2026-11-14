@@ -12,6 +12,10 @@ updates:
     directory: /web
     schedule: {interval: weekly}
     groups:
+      # Together, and apart from web-minor: pr.yml and perf.yml run in the Playwright image
+      # named by @playwright/test's version, so this bump moves CI's browsers too.
+      playwright:
+        patterns: ["@playwright/test", "playwright-core"]
       web-minor:
         update-types: [minor, patch]
   - package-ecosystem: github-actions
