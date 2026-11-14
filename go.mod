@@ -9,7 +9,7 @@ require (
 	github.com/FastFilter/xorfilter v0.5.1
 	github.com/axiomhq/hyperloglog v0.2.6
 	github.com/fsnotify/fsnotify v1.10.1
-	github.com/go-chi/chi/v5 v5.3.1
+	github.com/go-chi/chi/v5 v5.4.0
 	github.com/google/jsonschema-go v0.4.3
 	github.com/hashicorp/golang-lru/v2 v2.0.7
 	github.com/klauspost/compress v1.20.3
