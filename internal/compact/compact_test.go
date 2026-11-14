@@ -282,7 +282,8 @@ func TestRunMergesSettledWindowsThenTheHour(t *testing.T) {
 }
 
 // TestMergeReadsRawInputsWholeAndAhead: a merge reads a raw input whole in one GET, and reads
-// several at once rather than one after another.
+// several at once rather than one after another, but no more than readAhead of its 20, so it
+// holds a window of inputs rather than the hour's.
 func TestMergeReadsRawInputsWholeAndAhead(t *testing.T) {
 	ctx := context.Background()
 	fs := storage.NewFS(t.TempDir())
@@ -327,6 +328,7 @@ func TestMergeReadsRawInputsWholeAndAhead(t *testing.T) {
 		assert.Equal(t, 1, n, "%s: read whole, once", key)
 	}
 	assert.Greater(t, mostInFlight, 1, "inputs are read several at once, not one after another")
+	assert.LessOrEqual(t, mostInFlight, readAhead, "inputs are read a window at a time, not the hour at once")
 }
 
 // TestRunFiltersTheHourByEachInputsIDs: the merged hour's filters hold a column an input
