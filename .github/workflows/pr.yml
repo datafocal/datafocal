@@ -78,14 +78,33 @@ jobs:
           make rcabench
           git diff --exit-code -- internal/rcabench/testdata
 
+  # The @playwright/test version in web/package.json, which names the web job's image, so a
+  # Dependabot bump of Playwright moves the browsers with it: Dependabot reads only uses:,
+  # never container:. A missing version names an image that does not exist, so web fails
+  # rather than this job failing and the required web check reporting skipped.
+  playwright:
+    if: github.event.action != 'closed'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          sparse-checkout: web/package.json
+          sparse-checkout-cone-mode: false
+      - id: version
+        run: echo "version=$(jq -r '.devDependencies["@playwright/test"]' web/package.json)" >>"$GITHUB_OUTPUT"
+
   # make web-check, the component tests in the Playwright image matching @playwright/test,
   # and the PR's screenshots; the performance budgets cost too much to run here, so they run
   # by hand (perf.yml). The view fixtures all three read are the engine's answers, generated
   # from internal/ and the sample definitions.
   web:
     if: github.event.action != 'closed'
+    needs: playwright
     runs-on: ubuntu-latest
-    container: mcr.microsoft.com/playwright:v1.64.1-noble
+    container: mcr.microsoft.com/playwright:v${{ needs.playwright.outputs.version }}-noble
     timeout-minutes: 25
     # The screenshots' comment; a fork's token is read-only, so its PR gets none.
     permissions:

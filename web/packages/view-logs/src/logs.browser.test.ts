@@ -12,7 +12,7 @@ import axe from "axe-core";
 import { createElement } from "react";
 import { createRoot } from "react-dom/client";
 import { afterEach, expect, test, vi } from "vitest";
-import { userEvent } from "vitest/browser";
+import { page, userEvent } from "vitest/browser";
 import engine from "../fixtures/engine.json";
 import { LogsView } from "./index";
 
@@ -375,10 +375,11 @@ test("Patterns lists every pattern by count, and a line's field filters in", asy
   await userEvent.click(button("Open lines") ?? el);
   await expect.poll(() => decodeURIComponent(location.pathname)).toContain('pattern_id="p10"');
 
-  // The pattern's lines, not the last query's, kept dimmed while they load.
-  const row = () => el.querySelector(".logs-b:not(.stale) .lrow");
-  await expect.poll(row).toBeTruthy();
-  await userEvent.click(row() ?? el);
+  // The pattern's lines, not the last query's, kept dimmed while they load. Their table
+  // remounts once after they land, with a window a row later, so the newest line, in both,
+  // is clicked by a locator that finds it again rather than the first row found.
+  await expect.poll(() => el.querySelector(".logs-b:not(.stale) .lrow")).toBeTruthy();
+  await userEvent.click(page.getByRole("button", { name: "14:00:59.000 error db-3" }));
   const role = () =>
     [...el.querySelectorAll(".ldet.first")].find(
       (d) => d.querySelector(".dk")?.textContent === "message.role",

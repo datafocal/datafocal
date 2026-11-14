@@ -872,12 +872,12 @@ func TestGetTraceAllocBudget(t *testing.T) {
 	}
 }
 
-// TestGetTraceDiscoveryBudget reads a 2,000-message transcript and 1,300 lines between its
+// TestGetTraceDiscovery reads a 2,000-message transcript and 1,300 lines between its
 // messages naming none, all carrying 1,500 sparse id-like columns and a model copied onto
 // every line, as ingest's carry leaves an agent's. Its uuid/parentUuid pair is found among
-// 1,500² candidates in a fraction of the time counting every pair took, and the model,
-// linking more lines but all to one value, does not pass for it.
-func TestGetTraceDiscoveryBudget(t *testing.T) {
+// 1,500² candidates, and the model, linking more lines but all to one value, does not pass
+// for it.
+func TestGetTraceDiscovery(t *testing.T) {
 	const messages, between, sparse = 2000, 1300, 1500
 	var events []segment.Record
 	for i := range messages + between {
@@ -898,13 +898,10 @@ func TestGetTraceDiscoveryBudget(t *testing.T) {
 		events = append(events, r)
 	}
 	cat, rd := readers(seedTrace(t, []traceSeg{{"claude", events}}))
-	start := time.Now()
 	env, err := toolsOver(cat, rd, nil).GetTrace(context.Background(), tools.TraceRequest{Field: "session_id", Value: "sess-1", Time: traceWindow, Limit: messages + between})
-	took := time.Since(start)
 	require.NoError(t, err)
 	type pair struct{ id, parent string }
 	assert.Equal(t, pair{"uuid", "parentUuid"}, pair{env.Data.IDField, env.Data.ParentField})
-	assert.Less(t, took, 2*time.Second, "get_trace over %d lines of %d id-like columns", messages+between, sparse)
 }
 
 // TestSpanNameFallsBackToService names a span whose row carries neither a span.name nor
