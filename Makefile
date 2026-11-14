@@ -80,11 +80,13 @@ web-browser-run: web-fixtures
 	$(WEB_PNPM) install --frozen-lockfile
 	$(WEB_PNPM) exec vitest run --project browser
 
-## image: build the collector, querier and compactor container images.
+## image: build the collector, querier and compactor container images, with go.mod's Go
+## (its go line to the minor, so the newest patch of it).
+GO_IMAGE_VERSION = $(shell $(GO) list -m -f '{{.GoVersion}}' | cut -d. -f1-2)
 image: web
-	docker build --build-arg CMD=collector -t datafocal-collector:dev -f build/Dockerfile .
-	docker build --build-arg CMD=querier -t datafocal-querier:dev -f build/Dockerfile .
-	docker build --build-arg CMD=compactor -t datafocal-compactor:dev -f build/Dockerfile .
+	docker build --build-arg GO_VERSION=$(GO_IMAGE_VERSION) --build-arg CMD=collector -t datafocal-collector:dev -f build/Dockerfile .
+	docker build --build-arg GO_VERSION=$(GO_IMAGE_VERSION) --build-arg CMD=querier -t datafocal-querier:dev -f build/Dockerfile .
+	docker build --build-arg GO_VERSION=$(GO_IMAGE_VERSION) --build-arg CMD=compactor -t datafocal-compactor:dev -f build/Dockerfile .
 
 ## definitions-image: the SLO definitions in DEFS as an image FROM busybox, with the files at
 ## /definitions, tagged by their content's hash, for the querier's image volume.

@@ -1,7 +1,11 @@
-# One image per command: docker build --build-arg CMD=collector|querier|compactor -f build/Dockerfile .
+# One image per command, built by make image:
+#   docker build --build-arg GO_VERSION=1.26 --build-arg CMD=collector|querier|compactor -f build/Dockerfile .
+# GO_VERSION is go.mod's go line to the minor, so the image builds with the Go the module
+# requires; it has no default, so a build without it fails rather than drifting from go.mod.
+ARG GO_VERSION
 ARG CMD
 
-FROM golang:1.25 AS build
+FROM golang:${GO_VERSION} AS build
 ARG CMD
 WORKDIR /src
 COPY go.mod go.sum ./
