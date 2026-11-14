@@ -6,6 +6,6 @@
     ".": "./src/index.ts"
   },
   "dependencies": {
-    "flatbush": "4.6.2"
+    "flatbush": "4.7.0"
   }
 }
