@@ -1,0 +1,105 @@
+{{- if .Values.clusterEvents.enabled }}
+{{- $fullname := include "datafocal.fullname" . -}}
+{{- with .Values.clusterEvents }}
+{{- $sa := include "datafocal.serviceAccountName" (list $ "cluster-events" .serviceAccount) }}
+# One collector following the API server's Events and container states, replaced rather
+# than rolled so two never send the same lines. Its saved cursor lives on a volume, so a
+# replaced pod resumes after the last line it flushed.
+{{- include "datafocal.serviceAccount" (list $ "cluster-events" .serviceAccount) }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ $fullname }}-cluster-events
+  labels: {{- include "datafocal.labels" $ | nindent 4 }}
+rules:
+  - apiGroups: [""]
+    resources: [events, pods]
+    verbs: [get, list, watch]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ $fullname }}-cluster-events
+  labels: {{- include "datafocal.labels" $ | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ $fullname }}-cluster-events
+subjects:
+  - kind: ServiceAccount
+    name: {{ $sa }}
+    namespace: {{ $.Release.Namespace }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ $fullname }}-cluster-events-state
+  labels: {{- include "datafocal.labels" $ | nindent 4 }}
+spec:
+  accessModes: [ReadWriteOnce]
+  {{- with .persistence.storageClass }}
+  storageClassName: {{ . }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ .persistence.size }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $fullname }}-cluster-events
+  labels: {{- include "datafocal.labels" $ | nindent 4 }}
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels: {{- include "datafocal.selector" (list $ "cluster-events") | nindent 6 }}
+  template:
+    metadata:
+      labels: {{- include "datafocal.selector" (list $ "cluster-events") | nindent 8 }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/config.yaml") $ | sha256sum }}
+    spec:
+      serviceAccountName: {{ $sa }}
+      {{- include "datafocal.pullSecrets" $ | nindent 6 }}
+      {{- include "datafocal.nonrootPod" (list $ 65532) | nindent 6 }}
+      {{- with .tolerations }}
+      tolerations: {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .nodeSelector }}
+      nodeSelector: {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: collector
+          image: {{ include "datafocal.image" (list $ "collector") }}
+          imagePullPolicy: {{ $.Values.image.pullPolicy }}
+          # A stable name keeps one commit log across replaced pods, and is the host of
+          # lines about no pod.
+          env:
+            - name: DATAFOCAL_CONFIG_FILE
+              value: /etc/config/cluster-events.json
+            - name: DATAFOCAL_INGEST_HOST
+              value: cluster-events
+            {{- include "datafocal.extraEnv" .env | nindent 12 }}
+          {{- include "datafocal.envFrom" $ | nindent 10 }}
+          resources: {{- toYaml .resources | nindent 12 }}
+          securityContext:
+            readOnlyRootFilesystem: true
+            {{- include "datafocal.containerSecurity" $ | nindent 12 }}
+          volumeMounts:
+            - name: config
+              mountPath: /etc/config
+              readOnly: true
+            - name: state
+              mountPath: /var/lib/datafocal/state
+      volumes:
+        - name: config
+          configMap:
+            name: {{ $fullname }}-files
+            items: [{key: cluster-events.json, path: cluster-events.json}]
+        - name: state
+          persistentVolumeClaim:
+            claimName: {{ $fullname }}-cluster-events-state
+{{- end }}
+{{- end }}

@@ -22,7 +22,7 @@ import (
 	"github.com/datafocal/datafocal/internal/selector"
 )
 
-// deployedFlush is deploy/k8s/base's DATAFOCAL_FLUSH_INTERVAL.
+// deployedFlush is the Helm chart's DATAFOCAL_FLUSH_INTERVAL (deploy/helm/datafocal).
 const deployedFlush = 10 * time.Second
 
 // TestSeededLogsRoundTrip is the whole system on the seeded corpus: the scenario written

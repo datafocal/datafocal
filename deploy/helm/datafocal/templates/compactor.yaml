@@ -1,0 +1,61 @@
+{{- $fullname := include "datafocal.fullname" . -}}
+{{- with .Values.compactor }}
+{{- include "datafocal.serviceAccount" (list $ "compactor" .serviceAccount) }}
+# One replica, replaced rather than rolled: the compactor is the bucket's one rewriter,
+# so two must never run at once.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $fullname }}-compactor
+  labels: {{- include "datafocal.labels" $ | nindent 4 }}
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels: {{- include "datafocal.selector" (list $ "compactor") | nindent 6 }}
+  template:
+    metadata:
+      labels: {{- include "datafocal.selector" (list $ "compactor") | nindent 8 }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/config.yaml") $ | sha256sum }}
+    spec:
+      serviceAccountName: {{ include "datafocal.serviceAccountName" (list $ "compactor" .serviceAccount) }}
+      automountServiceAccountToken: false
+      {{- include "datafocal.pullSecrets" $ | nindent 6 }}
+      {{- include "datafocal.nonrootPod" (list $ 65532) | nindent 6 }}
+      # A stopped pass ends at its next hour; an hour cut short is merged again by the next.
+      terminationGracePeriodSeconds: 60
+      {{- with .nodeSelector }}
+      nodeSelector: {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .tolerations }}
+      tolerations: {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: compactor
+          image: {{ include "datafocal.image" (list $ "compactor") }}
+          imagePullPolicy: {{ $.Values.image.pullPolicy }}
+          env:
+            - name: DATAFOCAL_CONFIG_FILE
+              value: /etc/config/compactor.json
+            - name: DATAFOCAL_MEMORY_LIMIT
+              valueFrom:
+                resourceFieldRef:
+                  resource: limits.memory
+            {{- include "datafocal.extraEnv" .env | nindent 12 }}
+          {{- include "datafocal.envFrom" $ | nindent 10 }}
+          resources: {{- toYaml .resources | nindent 12 }}
+          securityContext:
+            readOnlyRootFilesystem: true
+            {{- include "datafocal.containerSecurity" $ | nindent 12 }}
+          volumeMounts:
+            - name: config
+              mountPath: /etc/config
+              readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: {{ $fullname }}-files
+            items: [{key: compactor.json, path: compactor.json}]
+{{- end }}

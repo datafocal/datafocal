@@ -14,7 +14,7 @@ const (
 	defaultFlushInterval = time.Minute
 	defaultFlushBytes    = int64(50 << 20)
 	defaultMaxRows       = 250_000
-	// defaultFlushAlignment is what every deployment sets (deploy/k8s/base, deploy/local): a
+	// defaultFlushAlignment is what every deployment sets (deploy/helm/datafocal, deploy/local): a
 	// backfill of days unaligned seals as one segment, which the summary refuses for its bins.
 	defaultFlushAlignment = time.Hour
 )

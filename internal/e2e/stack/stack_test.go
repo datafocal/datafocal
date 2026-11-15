@@ -300,7 +300,7 @@ func (s *stack) emptyBucket(t *testing.T, name string) {
 	}
 }
 
-// env is the deployed configuration (deploy/k8s/base) pointed at this stack's bucket.
+// env is the deployed configuration (deploy/helm/datafocal) pointed at this stack's bucket.
 func (s *stack) env() []string {
 	return append(append(os.Environ(), limitEnv()...),
 		"DATAFOCAL_STORE=s3",
@@ -308,7 +308,7 @@ func (s *stack) env() []string {
 		"DATAFOCAL_S3_BUCKET="+s.bucket,
 		"DATAFOCAL_TENANT="+tenant,
 		"DATAFOCAL_FLUSH_INTERVAL="+s.flush.String(),
-		// As deployed (deploy/k8s/base, deploy/local): a backfill of days is cut by the hour.
+		// As deployed (deploy/helm/datafocal, deploy/local): a backfill of days is cut by the hour.
 		"DATAFOCAL_FLUSH_ALIGNMENT=1h",
 	)
 }

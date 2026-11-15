@@ -1,0 +1,16 @@
+# The groups the release workflow's generated notes sort merged PRs into, by label; a PR in
+# none of them lands under Changes. Dependabot labels its PRs dependencies.
+changelog:
+  exclude:
+    labels: [skip-changelog]
+  categories:
+    - title: Breaking changes
+      labels: [breaking]
+    - title: Features
+      labels: [enhancement]
+    - title: Fixes
+      labels: [bug]
+    - title: Dependencies
+      labels: [dependencies]
+    - title: Changes
+      labels: ["*"]

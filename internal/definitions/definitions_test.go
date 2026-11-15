@@ -235,4 +235,12 @@ func TestDirectory(t *testing.T) {
 	assert.Empty(t, errs)
 	parsed[0].Path = filepath.Join("slo", "api-latency-prometheus.yaml")
 	assert.Equal(t, parsed, docs)
+
+	// A ConfigMap mount's hidden copies are not read as duplicates.
+	require.NoError(t, os.MkdirAll(filepath.Join(root, "..2026_11_14", "slo"), 0o755))
+	require.NoError(t, os.WriteFile(filepath.Join(root, "..2026_11_14", "slo", "api-latency-prometheus.yaml"), content, 0o644))
+	require.NoError(t, os.Symlink("..2026_11_14", filepath.Join(root, "..data")))
+	docs, errs = dir.Load()
+	assert.Empty(t, errs)
+	assert.Equal(t, parsed, docs)
 }

@@ -1,0 +1,14 @@
+platform: kubernetes
+querier:
+  replicas: 1
+  definitions:
+    files:
+      querier-availability.yaml: |-
+        apiVersion: openslo/v1
+        kind: SLO
+        metadata: {name: example}
+    persistence:
+      enabled: true
+  ingress:
+    enabled: true
+    host: datafocal.example.com

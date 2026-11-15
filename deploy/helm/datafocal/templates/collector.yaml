@@ -1,0 +1,95 @@
+{{- if .Values.collector.enabled }}
+{{- $fullname := include "datafocal.fullname" . -}}
+{{- $openshift := include "datafocal.openshift" . -}}
+{{- with .Values.collector }}
+{{- include "datafocal.serviceAccount" (list $ "collector" .serviceAccount) }}
+# One collector per node, shipping every container's log. Its saved offsets live on the
+# node, so a replaced pod resumes where the last one flushed.
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: {{ $fullname }}-collector
+  labels: {{- include "datafocal.labels" $ | nindent 4 }}
+spec:
+  selector:
+    matchLabels: {{- include "datafocal.selector" (list $ "collector") | nindent 6 }}
+  template:
+    metadata:
+      labels: {{- include "datafocal.selector" (list $ "collector") | nindent 8 }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/config.yaml") $ | sha256sum }}
+    spec:
+      serviceAccountName: {{ include "datafocal.serviceAccountName" (list $ "collector" .serviceAccount) }}
+      automountServiceAccountToken: false
+      {{- include "datafocal.pullSecrets" $ | nindent 6 }}
+      {{- with .priorityClassName }}
+      priorityClassName: {{ . }}
+      {{- end }}
+      {{- with .tolerations }}
+      tolerations: {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .nodeSelector }}
+      nodeSelector: {{- toYaml . | nindent 8 }}
+      {{- end }}
+      # Root, to read the node's logs. On OpenShift, spc_t, since SELinux keeps a container's
+      # own type from reading the node's container logs.
+      {{- if $openshift }}
+      securityContext:
+        runAsUser: 0
+        seLinuxOptions:
+          type: spc_t
+      {{- end }}
+      containers:
+        - name: collector
+          image: {{ include "datafocal.image" (list $ "collector") }}
+          imagePullPolicy: {{ $.Values.image.pullPolicy }}
+          env:
+            - name: DATAFOCAL_CONFIG_FILE
+              value: /etc/config/collector.json
+            - name: DATAFOCAL_INGEST_HOST
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            {{- include "datafocal.extraEnv" .env | nindent 12 }}
+          {{- include "datafocal.envFrom" $ | nindent 10 }}
+          resources: {{- toYaml .resources | nindent 12 }}
+          securityContext:
+            readOnlyRootFilesystem: true
+            {{- include "datafocal.containerSecurity" $ | nindent 12 }}
+          volumeMounts:
+            - name: config
+              mountPath: /etc/config
+              readOnly: true
+            - name: containers
+              mountPath: /var/log/containers
+              readOnly: true
+            - name: pods
+              mountPath: /var/log/pods
+              readOnly: true
+            - name: state
+              mountPath: /var/lib/datafocal/state
+            # A pod's sandbox writes no log, so only the cgroup tree names the pod its
+            # network use belongs to.
+            - name: cgroup
+              mountPath: /sys/fs/cgroup
+              readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: {{ $fullname }}-files
+            items: [{key: collector.json, path: collector.json}]
+        - name: containers
+          hostPath:
+            path: /var/log/containers
+        - name: pods
+          hostPath:
+            path: /var/log/pods
+        - name: state
+          hostPath:
+            path: {{ .stateHostPath }}
+            type: DirectoryOrCreate
+        - name: cgroup
+          hostPath:
+            path: /sys/fs/cgroup
+{{- end }}
+{{- end }}

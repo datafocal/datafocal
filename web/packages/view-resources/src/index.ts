@@ -172,7 +172,7 @@ function Tables(p: {
 const empty = createElement(
   "p",
   { className: "res-note", role: "status" },
-  "No resource samples in this window. Run cAdvisor with --storage_driver=stdout beside the collector (deploy/k8s/base/cadvisor.yaml) and each host's, container's or systemd unit's CPU, memory, network and disk use shows here.",
+  "No resource samples in this window. Run cAdvisor with --storage_driver=stdout beside the collector (deploy/helm/datafocal/templates/cadvisor.yaml) and each host's, container's or systemd unit's CPU, memory, network and disk use shows here.",
 );
 
 // Graphs are the overview's charts, or the open resource's.

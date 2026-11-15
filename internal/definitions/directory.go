@@ -52,8 +52,15 @@ func (d directory) Load() ([]Document, []Error) {
 	var docs []Document
 	var errs []Error
 	err := filepath.WalkDir(d.dir, func(path string, e fs.DirEntry, err error) error {
-		if err != nil || e.IsDir() || !slices.Contains([]string{".yaml", ".yml", ".json"}, filepath.Ext(path)) {
+		switch {
+		case err != nil:
 			return err
+		// A mounted ConfigMap's ..data and ..<timestamp> hold a second copy of every file,
+		// which would reject both as duplicates, and a checkout's .git holds no definitions.
+		case e.IsDir() && path != d.dir && strings.HasPrefix(e.Name(), "."):
+			return fs.SkipDir
+		case e.IsDir() || !slices.Contains([]string{".yaml", ".yml", ".json"}, filepath.Ext(path)):
+			return nil
 		}
 		content, err := os.ReadFile(path)
 		if err != nil {

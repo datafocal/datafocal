@@ -1,0 +1,235 @@
+# Each component reads its settings from three layers, later ones winning: its JSON config
+# file (the <component>.config blocks below, written as given), DATAFOCAL_* variables (the
+# shared settings here, then each component's env), then flags. A setting made here and in
+# a config block takes this one, so set each in one place.
+
+# kubernetes, openshift, or auto: openshift when the cluster serves
+# security.openshift.io/v1. helm template sees no cluster, so state it there. openshift adds
+# the SecurityContextConstraints the node agents need, runs the collector in the spc_t
+# SELinux type, cAdvisor privileged, and leaves the UID and fsGroup to the namespace's range.
+platform: auto
+
+image:
+  registry: ghcr.io/datafocal
+  # The chart's appVersion when empty.
+  tag: ""
+  pullPolicy: IfNotPresent
+imagePullSecrets: []
+
+nameOverride: ""
+fullnameOverride: ""
+
+# Settings every component reads, set once so they agree.
+# The tenant written and read; each binary's own default ("local") when empty.
+tenant: ""
+# How long after its last row a segment is read and kept, such as 720h, by the querier and
+# the compactor; match it to the bucket's lifecycle rule. Empty keeps every segment.
+retention: ""
+# The querier's summary bins and the compactor's rollups must agree.
+summary:
+  # Such as 15s; each binary's default when empty.
+  binWidth: ""
+  sketchColumns: []
+
+# The S3 bucket every component reads and writes.
+store:
+  bucket: datafocal
+  # host:port, such as s3.us-east-1.amazonaws.com. Empty is the bundled MinIO.
+  endpoint: ""
+  region: ""
+  # HTTPS to the endpoint.
+  secure: false
+  credentials:
+    # A Secret holding AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY. When empty, the chart
+    # creates one from the two keys below, generated once for the bundled MinIO when they are empty.
+    existingSecret: ""
+    accessKeyId: ""
+    secretAccessKey: ""
+
+# More DATAFOCAL_* variables for every component.
+env: {}
+
+# One per node, following every container's log.
+collector:
+  enabled: true
+  serviceAccount:
+    # false uses an existing account, name, or the namespace's default when name is empty.
+    create: true
+    # <release>-<component> when empty.
+    name: ""
+    # Such as eks.amazonaws.com/role-arn, for a bucket reached by the workload's own identity.
+    annotations: {}
+  # collector.json, merged over {"ingest": {"state_dir": ...}}: the ingest sources, redact_key,
+  # stream service and labels, flush thresholds and the rest of cmd/collector's settings.
+  config: {}
+  env:
+    DATAFOCAL_FLUSH_INTERVAL: 10s
+    # A segment sealed while catching up on history spans at most an hour.
+    DATAFOCAL_FLUSH_ALIGNMENT: 1h
+  # The node directory the collector's offsets are kept in, so a replaced pod resumes.
+  stateHostPath: /var/lib/datafocal/state
+  # Peak RSS reached 2.3 GB catching up on 20 hours of a node's logs.
+  resources:
+    requests: {cpu: 50m, memory: 1Gi}
+    limits: {cpu: 500m, memory: 3Gi}
+  tolerations:
+    - {key: node-role.kubernetes.io/control-plane, effect: NoSchedule}
+    - {key: node-role.kubernetes.io/master, effect: NoSchedule}
+  nodeSelector: {}
+  priorityClassName: ""
+
+# One collector following the API server's Events and container states.
+clusterEvents:
+  enabled: true
+  serviceAccount:
+    # false uses an existing account, name, or the namespace's default when name is empty.
+    create: true
+    # <release>-<component> when empty.
+    name: ""
+    # Such as eks.amazonaws.com/role-arn, for a bucket reached by the workload's own identity.
+    annotations: {}
+  # collector.json, merged over {"ingest": {"state_dir": ..., "sources": [{"kind": "kube"}]}}.
+  config: {}
+  env: {}
+  persistence:
+    size: 16Mi
+    storageClass: ""
+  resources:
+    requests: {cpu: 20m, memory: 128Mi}
+    limits: {cpu: 500m, memory: 512Mi}
+  nodeSelector: {}
+  tolerations: []
+
+# One per node, logging each container's resource use to stdout, which the collector reads.
+# OpenShift's kubelet has a cAdvisor built in, but it serves Prometheus metrics, which no
+# collector source reads, so this one runs there too.
+cadvisor:
+  enabled: true
+  serviceAccount:
+    # false uses an existing account, name, or the namespace's default when name is empty.
+    create: true
+    # <release>-<component> when empty.
+    name: ""
+    # Such as eks.amazonaws.com/role-arn, for a bucket reached by the workload's own identity.
+    annotations: {}
+  image: ghcr.io/google/cadvisor:0.60.6
+  # The engine's narrowest bin.
+  housekeepingInterval: 15s
+  extraArgs: []
+  resources:
+    requests: {cpu: 50m, memory: 128Mi}
+    limits: {cpu: 500m, memory: 512Mi}
+  tolerations:
+    - {key: node-role.kubernetes.io/control-plane, effect: NoSchedule}
+    - {key: node-role.kubernetes.io/master, effect: NoSchedule}
+  nodeSelector: {}
+
+querier:
+  replicas: 2
+  serviceAccount:
+    # false uses an existing account, name, or the namespace's default when name is empty.
+    create: true
+    # <release>-<component> when empty.
+    name: ""
+    # Such as eks.amazonaws.com/role-arn, for a bucket reached by the workload's own identity.
+    annotations: {}
+  # querier.json: derived columns and tables, summary, slo, timeouts and the rest of
+  # cmd/querier's settings.
+  config: {}
+  env: {}
+  # The SLO and View definitions, read from one of these, first set first; none defines no SLOs.
+  definitions:
+    # file name: YAML document, such as querier-availability.yaml: |- ...
+    files: {}
+    # A ConfigMap of definition files.
+    existingConfigMap: ""
+    # An image with the files at /definitions (make definitions-image); needs the ImageVolume feature.
+    image: ""
+    # Without it the definitions are read-only and the UI cannot save them. With it, they live
+    # on a volume the UI's edits are saved to, seeded at each start with each file above it
+    # lacks, so an edit outlives a restart and an upgrade. A querier sees only its own volume's
+    # edits, so this needs querier.replicas 1.
+    persistence:
+      enabled: false
+      size: 64Mi
+      storageClass: ""
+      # Copies the seed files in, as the querier's image has no shell.
+      seedImage: busybox:1.37
+  service:
+    type: ClusterIP
+    port: 8080
+  # The querier serves its UI and API without authentication: expose it behind something that has some.
+  ingress:
+    enabled: false
+    className: ""
+    annotations: {}
+    host: ""
+    tls: []
+  # OpenShift only.
+  route:
+    enabled: false
+    host: ""
+    annotations: {}
+  # 1.45 GB resident once the first summary build over 27 days of a node's history finished.
+  resources:
+    requests: {cpu: 100m, memory: 1536Mi}
+    limits: {cpu: "1", memory: 3Gi}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+# The bucket's one rewriter, so always one replica.
+compactor:
+  serviceAccount:
+    # false uses an existing account, name, or the namespace's default when name is empty.
+    create: true
+    # <release>-<component> when empty.
+    name: ""
+    # Such as eks.amazonaws.com/role-arn, for a bucket reached by the workload's own identity.
+    annotations: {}
+  # compactor.json: interval, settle, lookback, window and the catalog's settings.
+  config: {}
+  env: {}
+  resources:
+    requests: {cpu: 100m, memory: 256Mi}
+    limits: {cpu: "1", memory: 1Gi}
+  nodeSelector: {}
+  tolerations: []
+
+# A single-replica MinIO and a job creating the bucket, so an install runs without an S3 of
+# your own. Set store.endpoint to a bucket, and this false, to keep data.
+minio:
+  enabled: true
+  # MinIO's and the create-bucket job's.
+  serviceAccount:
+    # false uses an existing account, name, or the namespace's default when name is empty.
+    create: true
+    # <release>-<component> when empty.
+    name: ""
+    # Such as eks.amazonaws.com/role-arn, for a bucket reached by the workload's own identity.
+    annotations: {}
+  # Chainguard's builds, since MinIO no longer publishes pullable images; their free tier
+  # serves only latest.
+  image: cgr.dev/chainguard/minio:latest
+  clientImage: cgr.dev/chainguard/minio-client:latest-dev
+  service:
+    type: ClusterIP
+    # With type NodePort, the node port; the cluster picks one when empty.
+    nodePort: ""
+  # The bucket's lifecycle rules, which the create-bucket job sets on the tenant's prefixes at
+  # each install and upgrade, replacing the bucket's rules; false leaves them alone. DataFocal
+  # deletes nothing itself. hour/, the compacted segments, expires after retention rounded up
+  # to whole days, so retention must be whole hours, such as 720h; empty keeps them.
+  lifecycle:
+    enabled: true
+    # raw/ and window/, what collectors write and the compactor merges into hour/; an hour it
+    # has not merged by then is lost.
+    unmergedDays: 3
+    # catalog/snapshot/; one that has expired is replaced by reading every commit, which never expire.
+    snapshotDays: 1
+  persistence:
+    size: 10Gi
+    storageClass: ""
+  resources:
+    requests: {cpu: 100m, memory: 256Mi}
+    limits: {cpu: "1", memory: 1Gi}
