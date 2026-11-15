@@ -92,7 +92,7 @@ standalone() {
 }
 
 # make install-local-kind deploys the cluster first, its MinIO on node port 30900
-# (deploy/k8s/kind/minio.yaml); a container on kind's network relays the port, recreated so
+# (deploy/kind/values.yaml); a container on kind's network relays the port, recreated so
 # it follows KIND_CLUSTER.
 kind_collector() {
 	local cluster=${KIND_CLUSTER:-datafocal}
@@ -109,7 +109,7 @@ kind_collector() {
 	claude_quota
 	install_services datafocal-collector
 	echo "the collector is writing to kind's MinIO; reach its querier with:"
-	echo "  kubectl --context kind-${KIND_CLUSTER:-datafocal} -n datafocal port-forward svc/querier 8080:8080"
+	echo "  kubectl --context kind-${KIND_CLUSTER:-datafocal} -n datafocal port-forward svc/datafocal-querier 8080:8080"
 }
 
 uninstall() {

@@ -1,0 +1,231 @@
+{{- $fullname := include "datafocal.fullname" . -}}
+{{- $openshift := include "datafocal.openshift" . -}}
+{{- with .Values.querier }}
+{{- $defs := .definitions }}
+{{- $defsConfigMap := $defs.existingConfigMap | default (and $defs.files (printf "%s-definitions" $fullname)) }}
+{{- $defsSource := or $defsConfigMap $defs.image }}
+{{- $defsWritable := $defs.persistence.enabled }}
+{{- if and $defsWritable (gt (int .replicas) 1) }}
+{{- fail "querier.definitions.persistence needs querier.replicas 1: a querier sees only its own volume's edits" }}
+{{- end }}
+{{- if and $defs.files (not $defs.existingConfigMap) }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $fullname }}-definitions
+  labels: {{- include "datafocal.labels" $ | nindent 4 }}
+data: {{- toYaml $defs.files | nindent 2 }}
+---
+{{- end }}
+{{- if $defsWritable }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ $fullname }}-definitions
+  labels: {{- include "datafocal.labels" $ | nindent 4 }}
+spec:
+  accessModes: [ReadWriteOnce]
+  {{- with $defs.persistence.storageClass }}
+  storageClassName: {{ . }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ $defs.persistence.size }}
+---
+{{- end }}
+{{- include "datafocal.serviceAccount" (list $ "querier" .serviceAccount) }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $fullname }}-querier
+  labels: {{- include "datafocal.labels" $ | nindent 4 }}
+spec:
+  replicas: {{ .replicas }}
+  {{- if $defsWritable }}
+  # The definitions volume mounts on one node at a time.
+  strategy:
+    type: Recreate
+  {{- end }}
+  selector:
+    matchLabels: {{- include "datafocal.selector" (list $ "querier") | nindent 6 }}
+  template:
+    metadata:
+      labels: {{- include "datafocal.selector" (list $ "querier") | nindent 8 }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/config.yaml") $ | sha256sum }}
+    spec:
+      serviceAccountName: {{ include "datafocal.serviceAccountName" (list $ "querier" .serviceAccount) }}
+      automountServiceAccountToken: false
+      {{- include "datafocal.pullSecrets" $ | nindent 6 }}
+      {{- include "datafocal.nonrootPod" (list $ 65532) | nindent 6 }}
+      {{- with .nodeSelector }}
+      nodeSelector: {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .tolerations }}
+      tolerations: {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .affinity }}
+      affinity: {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if and $defsWritable $defsSource }}
+      # Copies each seed file the volume lacks, so the UI's edits are kept.
+      initContainers:
+        - name: seed-definitions
+          image: {{ $defs.persistence.seedImage }}
+          command: [sh, -c]
+          args:
+            - for f in /seed/*; do [ -f "$f" ] && [ ! -e "/definitions/${f##*/}" ] && cp "$f" /definitions/; done; true
+          resources:
+            requests: {cpu: 10m, memory: 16Mi}
+            limits: {cpu: 100m, memory: 64Mi}
+          securityContext:
+            readOnlyRootFilesystem: true
+            {{- include "datafocal.containerSecurity" $ | nindent 12 }}
+          volumeMounts:
+            - name: definitions-source
+              mountPath: /seed
+              {{- if not $defsConfigMap }}
+              subPath: definitions
+              {{- end }}
+              readOnly: true
+            - name: definitions
+              mountPath: /definitions
+      {{- end }}
+      containers:
+        - name: querier
+          image: {{ include "datafocal.image" (list $ "querier") }}
+          imagePullPolicy: {{ $.Values.image.pullPolicy }}
+          env:
+            - name: DATAFOCAL_CONFIG_FILE
+              value: /etc/config/querier.json
+            - name: DATAFOCAL_MEMORY_LIMIT
+              valueFrom:
+                resourceFieldRef:
+                  resource: limits.memory
+            {{- if or $defsSource $defsWritable }}
+            - name: DATAFOCAL_DEFINITIONS_DIR
+              value: /definitions
+            {{- end }}
+            {{- include "datafocal.extraEnv" .env | nindent 12 }}
+          {{- include "datafocal.envFrom" $ | nindent 10 }}
+          ports:
+            - name: http
+              containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+          # The first summary build saturates the CPU limit, and a 1s probe timeout then
+          # restarts the querier before the build can finish.
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            timeoutSeconds: 5
+          resources: {{- toYaml .resources | nindent 12 }}
+          securityContext:
+            readOnlyRootFilesystem: true
+            {{- include "datafocal.containerSecurity" $ | nindent 12 }}
+          volumeMounts:
+            - name: config
+              mountPath: /etc/config
+              readOnly: true
+            {{- if $defsWritable }}
+            - name: definitions
+              mountPath: /definitions
+            {{- else if $defsSource }}
+            - name: definitions-source
+              mountPath: /definitions
+              {{- if not $defsConfigMap }}
+              subPath: definitions
+              {{- end }}
+              readOnly: true
+            {{- end }}
+      volumes:
+        - name: config
+          configMap:
+            name: {{ $fullname }}-files
+            items: [{key: querier.json, path: querier.json}]
+        {{- if $defsWritable }}
+        - name: definitions
+          persistentVolumeClaim:
+            claimName: {{ $fullname }}-definitions
+        {{- end }}
+        {{- if $defsConfigMap }}
+        - name: definitions-source
+          configMap:
+            name: {{ $defsConfigMap }}
+        {{- else if $defs.image }}
+        - name: definitions-source
+          image:
+            reference: {{ $defs.image }}
+            pullPolicy: IfNotPresent
+        {{- end }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $fullname }}-querier
+  labels: {{- include "datafocal.labels" $ | nindent 4 }}
+spec:
+  type: {{ .service.type }}
+  selector: {{- include "datafocal.selector" (list $ "querier") | nindent 4 }}
+  ports:
+    - name: http
+      port: {{ .service.port }}
+      targetPort: http
+{{- if .ingress.enabled }}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ $fullname }}-querier
+  labels: {{- include "datafocal.labels" $ | nindent 4 }}
+  {{- with .ingress.annotations }}
+  annotations: {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- with .ingress.className }}
+  ingressClassName: {{ . }}
+  {{- end }}
+  {{- with .ingress.tls }}
+  tls: {{- toYaml . | nindent 4 }}
+  {{- end }}
+  rules:
+    - {{- with .ingress.host }}
+      host: {{ . }}
+      {{- end }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ $fullname }}-querier
+                port:
+                  name: http
+{{- end }}
+{{- if and $openshift .route.enabled }}
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: {{ $fullname }}-querier
+  labels: {{- include "datafocal.labels" $ | nindent 4 }}
+  {{- with .route.annotations }}
+  annotations: {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- with .route.host }}
+  host: {{ . }}
+  {{- end }}
+  to:
+    kind: Service
+    name: {{ $fullname }}-querier
+  port:
+    targetPort: http
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+{{- end }}
+{{- end }}

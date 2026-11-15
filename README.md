@@ -18,8 +18,9 @@ changed, why, and the runs and events behind it.
 
 ## Run on kind
 
-With docker, kind and kubectl installed, `make deploy-kind` creates (or reuses) the kind
-cluster `datafocal`, builds and loads the images, and runs MinIO, a collector on every node
+With docker, kind, kubectl and helm installed, `make deploy-kind` creates (or reuses) the kind
+cluster `datafocal`, builds and loads the images, and installs the Helm chart in
+[deploy/helm/datafocal](deploy/helm/datafocal), running MinIO, a collector on every node
 shipping its containers' logs, the querier, and the compactor, which every minute merges
 each complete stream-hour into one segment, and each settled five-minute window of an hour
 still open, and folds the catalog into snapshots, in the `datafocal` namespace. `make undeploy-kind` removes them.
@@ -32,7 +33,7 @@ DataFocal deletes nothing from the bucket; set lifecycle rules instead:
 Reach the querier through a port-forward:
 
 ```
-kubectl --context kind-datafocal -n datafocal port-forward svc/querier 8080:8080
+kubectl --context kind-datafocal -n datafocal port-forward svc/datafocal-querier 8080:8080
 ```
 
 An MCP client then connects to `http://localhost:8080/mcp`; Claude Code connects with:

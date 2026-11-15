@@ -1,0 +1,226 @@
+name: release
+
+# Run by hand from main (Actions → release → Run workflow) with the version to cut, such as
+# v0.3.0, or v0.3.0-rc.1 for a prerelease. Nothing else publishes: main.yml only builds the
+# images. One run builds the UI once, then publishes from it the binaries,
+# the multi-platform images and the Helm chart, and last tags the commit and creates the
+# GitHub release, its notes generated from the merged PRs as .github/release.yml groups them.
+#
+# Images: ghcr.io/datafocal/datafocal-{collector,querier,compactor}:<version>, and :latest
+# unless a prerelease. Chart: oci://ghcr.io/datafocal/charts/datafocal, version <version>
+# without its v.
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to release, as v1.2.3 or v1.2.3-rc.1"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+# One release at a time; a second waits rather than racing the first to the tag.
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+env:
+  VERSION: ${{ inputs.version }}
+  REGISTRY: ghcr.io/${{ github.repository_owner }}
+
+jobs:
+  # Refuses a malformed version, one already tagged, or a run from any branch but main.
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      prerelease: ${{ steps.version.outputs.prerelease }}
+      chart-version: ${{ steps.version.outputs.chart-version }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - id: version
+        run: |
+          [ "$GITHUB_REF" = refs/heads/main ] || { echo "::error::release from main, not $GITHUB_REF"; exit 1; }
+          echo "$VERSION" | grep -qE '^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$' \
+            || { echo "::error::$VERSION is not v<major>.<minor>.<patch>[-<pre>]"; exit 1; }
+          ! git rev-parse -q --verify "refs/tags/$VERSION" >/dev/null \
+            || { echo "::error::$VERSION is already tagged"; exit 1; }
+          case "$VERSION" in *-*) pre=true ;; *) pre=false ;; esac
+          echo "prerelease=$pre" >>"$GITHUB_OUTPUT"
+          echo "chart-version=${VERSION#v}" >>"$GITHUB_OUTPUT"
+
+  # The UI, built once: the querier embeds web/dist, so every binary and image takes this one.
+  web:
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version: "1.26.x"
+          cache: true
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: web/.nvmrc
+      - run: make web
+      - uses: actions/upload-artifact@v7
+        with:
+          name: web-dist
+          path: web/dist
+          include-hidden-files: true
+          retention-days: 1
+
+  # One archive per platform holding the collector, querier and compactor, and their checksums.
+  binaries:
+    needs: web
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version: "1.26.x"
+          cache: true
+      - uses: actions/download-artifact@v8
+        with:
+          name: web-dist
+          path: web/dist
+      - name: build
+        run: |
+          mkdir -p dist
+          for platform in linux/amd64 linux/arm64 darwin/amd64 darwin/arm64; do
+            os=${platform%/*} arch=${platform#*/}
+            dir="datafocal_${VERSION}_${os}_${arch}"
+            mkdir -p "build-out/$dir"
+            for cmd in collector querier compactor; do
+              CGO_ENABLED=0 GOOS=$os GOARCH=$arch go build -trimpath -ldflags='-s -w' -o "build-out/$dir/$cmd" "./cmd/$cmd"
+            done
+            cp LICENSE README.md "build-out/$dir/"
+            tar -C build-out -czf "dist/$dir.tar.gz" "$dir"
+          done
+          (cd dist && sha256sum ./*.tar.gz >checksums.txt)
+      - uses: actions/upload-artifact@v7
+        with:
+          name: binaries
+          path: dist
+          retention-days: 1
+
+  images:
+    needs: [prepare, web]
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      matrix:
+        cmd: [collector, querier, compactor]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version: "1.26.x"
+          cache: false
+      - uses: actions/download-artifact@v8
+        with:
+          name: web-dist
+          path: web/dist
+      - name: go version
+        id: go
+        run: echo "version=$(go list -m -f '{{.GoVersion}}' | cut -d. -f1-2)" >>"$GITHUB_OUTPUT"
+      - uses: docker/setup-buildx-action@v4
+      - uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      # The source label links each package to this repository on GHCR.
+      - id: meta
+        uses: docker/metadata-action@v6
+        with:
+          images: ${{ env.REGISTRY }}/datafocal-${{ matrix.cmd }}
+          tags: |
+            type=raw,value=${{ env.VERSION }}
+            type=raw,value=latest,enable=${{ needs.prepare.outputs.prerelease == 'false' }}
+          labels: |
+            org.opencontainers.image.title=datafocal-${{ matrix.cmd }}
+            org.opencontainers.image.version=${{ env.VERSION }}
+      - uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: build/Dockerfile
+          platforms: linux/amd64,linux/arm64
+          build-args: |
+            GO_VERSION=${{ steps.go.outputs.version }}
+            CMD=${{ matrix.cmd }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          push: true
+
+  # Packaged at the release's version, its appVersion the image tag the chart defaults to.
+  chart:
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      packages: write
+    env:
+      CHART_VERSION: ${{ needs.prepare.outputs.chart-version }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: azure/setup-helm@v5
+      - run: make chart-lint
+      - name: package and push
+        run: |
+          mkdir -p dist
+          helm package deploy/helm/datafocal --version "$CHART_VERSION" --app-version "$VERSION" -d dist
+          echo "${{ secrets.GITHUB_TOKEN }}" | helm registry login ghcr.io -u "${{ github.actor }}" --password-stdin
+          helm push "dist/datafocal-$CHART_VERSION.tgz" "oci://$REGISTRY/charts"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: chart
+          path: dist
+          retention-days: 1
+
+  # Last, so a failed build or push leaves no tag behind and the run can be retried as is.
+  release:
+    needs: [prepare, binaries, images, chart]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v8
+        with:
+          name: binaries
+          path: dist
+      - uses: actions/download-artifact@v8
+        with:
+          name: chart
+          path: dist
+      - name: create release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PRERELEASE: ${{ needs.prepare.outputs.prerelease }}
+          CHART_VERSION: ${{ needs.prepare.outputs.chart-version }}
+        run: |
+          cat >install.md <<EOF
+          ## Install
+
+          \`\`\`
+          helm install datafocal oci://$REGISTRY/charts/datafocal --version $CHART_VERSION
+          \`\`\`
+
+          Images: \`$REGISTRY/datafocal-{collector,querier,compactor}:$VERSION\`
+          EOF
+          flags=()
+          [ "$PRERELEASE" = true ] && flags+=(--prerelease) || flags+=(--latest)
+          gh release create "$VERSION" --target "$GITHUB_SHA" --title "$VERSION" \
+            --generate-notes --notes-file install.md "${flags[@]}" \
+            dist/*.tar.gz dist/checksums.txt "dist/datafocal-$CHART_VERSION.tgz"

@@ -56,6 +56,9 @@ jobs:
           make semgrep
       - name: test
         run: make test
+      # The runner image carries helm; the release workflow lints the chart the same way.
+      - name: chart lint
+        run: make chart-lint
       # The scorecard is regenerated only when the PR changes a package internal/rcabench's
       # tests build, its testdata, or the module's requirements.
       - name: does the scorecard depend on the diff

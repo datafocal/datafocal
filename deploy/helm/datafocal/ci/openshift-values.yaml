@@ -1,0 +1,13 @@
+platform: openshift
+store:
+  endpoint: s3.us-east-1.amazonaws.com
+  region: us-east-1
+  secure: true
+  credentials:
+    existingSecret: datafocal-s3
+retention: 720h
+querier:
+  route:
+    enabled: true
+minio:
+  enabled: false

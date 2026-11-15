@@ -1,0 +1,11 @@
+apiVersion: v2
+name: datafocal
+description: Logs indexed where they are collected, queried from an S3 bucket.
+type: application
+# The release workflow packages the chart at the release's version and appVersion; these are
+# what a chart installed from a checkout carries, and its images default to :latest.
+version: 0.0.0-dev
+appVersion: latest
+home: https://github.com/datafocal/datafocal
+sources: [https://github.com/datafocal/datafocal]
+kubeVersion: ">=1.27.0-0"

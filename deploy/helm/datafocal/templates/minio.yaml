@@ -1,0 +1,132 @@
+{{- if .Values.minio.enabled }}
+{{- $fullname := include "datafocal.fullname" . -}}
+{{- $secret := include "datafocal.s3Secret" . -}}
+{{- with .Values.minio }}
+{{- $sa := include "datafocal.serviceAccountName" (list $ "minio" .serviceAccount) }}
+{{- include "datafocal.serviceAccount" (list $ "minio" .serviceAccount) }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ $fullname }}-minio
+  labels: {{- include "datafocal.labels" $ | nindent 4 }}
+spec:
+  accessModes: [ReadWriteOnce]
+  {{- with .persistence.storageClass }}
+  storageClassName: {{ . }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ .persistence.size }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $fullname }}-minio
+  labels: {{- include "datafocal.labels" $ | nindent 4 }}
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels: {{- include "datafocal.selector" (list $ "minio") | nindent 6 }}
+  template:
+    metadata:
+      labels: {{- include "datafocal.selector" (list $ "minio") | nindent 8 }}
+    spec:
+      serviceAccountName: {{ $sa }}
+      automountServiceAccountToken: false
+      {{- include "datafocal.nonrootPod" (list $ 65532) | nindent 6 }}
+      containers:
+        - name: minio
+          image: {{ .image }}
+          args: [server, /data]
+          env:
+            - name: MINIO_ROOT_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $secret }}
+                  key: AWS_ACCESS_KEY_ID
+            - name: MINIO_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $secret }}
+                  key: AWS_SECRET_ACCESS_KEY
+          ports:
+            - name: s3
+              containerPort: 9000
+          readinessProbe:
+            httpGet:
+              path: /minio/health/ready
+              port: s3
+          resources: {{- toYaml .resources | nindent 12 }}
+          securityContext: {{- include "datafocal.containerSecurity" $ | nindent 12 }}
+          volumeMounts:
+            - name: data
+              mountPath: /data
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{ $fullname }}-minio
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $fullname }}-minio
+  labels: {{- include "datafocal.labels" $ | nindent 4 }}
+spec:
+  type: {{ .service.type }}
+  selector: {{- include "datafocal.selector" (list $ "minio") | nindent 4 }}
+  ports:
+    - name: s3
+      port: 9000
+      targetPort: s3
+      {{- if and (eq .service.type "NodePort") .service.nodePort }}
+      nodePort: {{ .service.nodePort }}
+      {{- end }}
+---
+# Retried until MinIO answers, after every install and upgrade.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ $fullname }}-create-bucket
+  labels: {{- include "datafocal.labels" $ | nindent 4 }}
+  annotations:
+    helm.sh/hook: post-install,post-upgrade
+    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+spec:
+  backoffLimit: 10
+  template:
+    spec:
+      restartPolicy: OnFailure
+      serviceAccountName: {{ $sa }}
+      automountServiceAccountToken: false
+      {{- include "datafocal.nonrootPod" (list $ 65532) | nindent 6 }}
+      containers:
+        - name: mc
+          # The -dev variant carries the shell the command below runs in.
+          image: {{ .clientImage }}
+          command: [sh, -c]
+          args:
+            - >-
+              mc alias set local http://{{ $fullname }}-minio:9000 "$AWS_ACCESS_KEY_ID" "$AWS_SECRET_ACCESS_KEY" &&
+              mc mb --ignore-existing local/{{ $.Values.store.bucket }}
+              {{- if .lifecycle.enabled }} &&
+              echo "$LIFECYCLE" | mc ilm import local/{{ $.Values.store.bucket }}
+              {{- end }}
+          env:
+            {{- if .lifecycle.enabled }}
+            - name: LIFECYCLE
+              value: {{ include "datafocal.lifecycle" $ | quote }}
+            {{- end }}
+            # mc keeps its alias under $HOME, which is not the image's on OpenShift.
+            - name: HOME
+              value: /tmp
+          envFrom:
+            - secretRef:
+                name: {{ $secret }}
+          resources:
+            requests: {cpu: 10m, memory: 32Mi}
+            limits: {cpu: 100m, memory: 128Mi}
+          securityContext: {{- include "datafocal.containerSecurity" $ | nindent 12 }}
+{{- end }}
+{{- end }}

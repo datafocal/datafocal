@@ -4,7 +4,7 @@ SCENARIO ?= all
 
 ADDR    ?= :8080
 
-.PHONY: build test race lint bench fmt fmt-check vet check seed serve clean-seed rcabench semgrep web web-check web-types web-fixtures view-fixtures web-preview web-browser web-browser-run preview preview-check image definitions-image deploy-kind undeploy-kind install-local install-local-kind uninstall-local e2e bench-e2e bench-corpora bench-compare bench-query bench-fleet
+.PHONY: build test race lint bench fmt fmt-check vet check seed serve clean-seed rcabench semgrep web web-check web-types web-fixtures view-fixtures web-preview web-browser web-browser-run preview preview-check image chart-lint definitions-image deploy-kind undeploy-kind install-local install-local-kind uninstall-local e2e bench-e2e bench-corpora bench-compare bench-query bench-fleet
 
 build:
 	$(GO) build ./...
@@ -88,6 +88,14 @@ image: web
 	docker build --build-arg GO_VERSION=$(GO_IMAGE_VERSION) --build-arg CMD=querier -t datafocal-querier:dev -f build/Dockerfile .
 	docker build --build-arg GO_VERSION=$(GO_IMAGE_VERSION) --build-arg CMD=compactor -t datafocal-compactor:dev -f build/Dockerfile .
 
+## chart-lint: lint and render the Helm chart under each profile in its ci/ values, as the
+## release workflow does before packaging it.
+CHART = deploy/helm/datafocal
+chart-lint:
+	@for v in $(CHART)/ci/*-values.yaml; do \
+	  helm lint --strict $(CHART) -f $$v && helm template datafocal $(CHART) -f $$v >/dev/null || exit 1; \
+	done
+
 ## definitions-image: the SLO definitions in DEFS as an image FROM busybox, with the files at
 ## /definitions, tagged by their content's hash, for the querier's image volume.
 DEFS ?= deploy/definitions
@@ -95,29 +103,26 @@ DEFS_TAG = $(shell cd $(DEFS) && find . -type f | LC_ALL=C sort | xargs sha256su
 definitions-image:
 	printf 'FROM busybox:1.37\nCOPY . /definitions\n' | docker build -t datafocal-definitions:$(DEFS_TAG) -f - $(DEFS)
 
-## deploy-kind: run MinIO, the collector and cAdvisor DaemonSets, the cluster-events collector,
-## the querier and the compactor on
-## a kind cluster, creating the cluster if it does not exist, the querier reading the definitions
-## in DEFS.
+## deploy-kind: install the Helm chart as release datafocal, with MinIO, the collector and cAdvisor
+## DaemonSets, the cluster-events collector, the querier and the compactor, on a kind cluster,
+## creating the cluster if it does not exist, the querier reading the definitions in DEFS.
 KIND_CLUSTER ?= datafocal
 KUBECTL = kubectl --context kind-$(KIND_CLUSTER) -n datafocal
+HELM = helm --kube-context kind-$(KIND_CLUSTER) -n datafocal
 deploy-kind: image definitions-image
 	kind get clusters | grep -qx $(KIND_CLUSTER) || kind create cluster --name $(KIND_CLUSTER) --config deploy/kind/cluster.yaml
 	kind load docker-image --name $(KIND_CLUSTER) datafocal-collector:dev datafocal-querier:dev datafocal-compactor:dev datafocal-definitions:$(DEFS_TAG)
-	# The manifests name the definitions image datafocal-definitions:sample, whose tag no
-	# kustomize transformer reaches in an image volume.
-	kubectl kustomize deploy/k8s/kind | sed 's|datafocal-definitions:sample|datafocal-definitions:$(DEFS_TAG)|' | $(KUBECTL) apply -f -
-	$(KUBECTL) wait --for=condition=complete job/create-bucket --timeout=5m
-	# The images keep their :dev tag, so apply sees no change; restart onto the ones just loaded.
-	$(KUBECTL) rollout restart daemonset/collector deployment/querier deployment/compactor
-	$(KUBECTL) rollout status deployment/minio --timeout=5m
-	$(KUBECTL) rollout status daemonset/collector --timeout=5m
-	$(KUBECTL) rollout status daemonset/cadvisor --timeout=5m
-	$(KUBECTL) rollout status deployment/querier --timeout=5m
-	$(KUBECTL) rollout status deployment/compactor --timeout=5m
+	$(HELM) upgrade --install datafocal $(CHART) --create-namespace -f deploy/kind/values.yaml \
+		--set querier.definitions.image=datafocal-definitions:$(DEFS_TAG) --wait --timeout 10m
+	# The images keep their :dev tag, so an upgrade sees no change; restart onto the ones just loaded.
+	$(KUBECTL) rollout restart daemonset/datafocal-collector deployment/datafocal-cluster-events deployment/datafocal-querier deployment/datafocal-compactor
+	$(KUBECTL) rollout status daemonset/datafocal-collector --timeout=5m
+	$(KUBECTL) rollout status deployment/datafocal-cluster-events --timeout=5m
+	$(KUBECTL) rollout status deployment/datafocal-querier --timeout=5m
+	$(KUBECTL) rollout status deployment/datafocal-compactor --timeout=5m
 
 undeploy-kind:
-	$(KUBECTL) delete -k deploy/k8s/kind --ignore-not-found
+	$(HELM) uninstall datafocal --ignore-not-found
 
 ## install-local: the collector, querier and compactor as systemd user services, over a MinIO
 ## container on localhost:9000, the UI at localhost:8080/ui/. install-local-kind deploys this

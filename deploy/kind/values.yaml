@@ -1,0 +1,16 @@
+# make deploy-kind's values for the chart: the images it builds and loads into the cluster,
+# and MinIO on the node port scripts/install-local.sh relays to localhost:9000, with the
+# development keys deploy/local/datafocal.env shares.
+platform: kubernetes
+image:
+  registry: docker.io/library
+  tag: dev
+  pullPolicy: Never
+store:
+  credentials:
+    accessKeyId: datafocal
+    secretAccessKey: datafocal-dev-secret
+minio:
+  service:
+    type: NodePort
+    nodePort: 30900

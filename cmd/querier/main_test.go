@@ -148,7 +148,7 @@ func TestServerTakesTheConfiguredTimeouts(t *testing.T) {
 	srv := newServer(cfg, http.NotFoundHandler())
 	assert.Equal(t, []time.Duration{time.Second, time.Minute, time.Hour}, []time.Duration{srv.ReadTimeout, srv.WriteTimeout, srv.IdleTimeout})
 
-	deployment, err := os.ReadFile("../../deploy/k8s/base/querier.yaml")
+	deployment, err := os.ReadFile("../../deploy/helm/datafocal/templates/querier.yaml")
 	require.NoError(t, err)
 	assert.Contains(t, string(deployment), `
             - name: DATAFOCAL_MEMORY_LIMIT

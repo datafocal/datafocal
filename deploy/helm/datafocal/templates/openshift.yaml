@@ -1,0 +1,67 @@
+{{- if and (include "datafocal.openshift" .) (or .Values.collector.enabled .Values.cadvisor.enabled) }}
+{{- $fullname := include "datafocal.fullname" . -}}
+{{- $scc := printf "%s-%s-node" .Release.Namespace $fullname | trunc 63 | trimSuffix "-" -}}
+# The node agents' constraints: the collector reads the node's logs and cgroups from host
+# paths as root in spc_t, and cAdvisor runs privileged. Every other pod runs under
+# restricted-v2. Only this release's node-agent service accounts may use it.
+apiVersion: security.openshift.io/v1
+kind: SecurityContextConstraints
+metadata:
+  name: {{ $scc }}
+  labels: {{- include "datafocal.labels" . | nindent 4 }}
+allowHostDirVolumePlugin: true
+allowPrivilegedContainer: {{ .Values.cadvisor.enabled }}
+allowPrivilegeEscalation: {{ .Values.cadvisor.enabled }}
+allowHostIPC: false
+allowHostNetwork: false
+allowHostPID: false
+allowHostPorts: false
+readOnlyRootFilesystem: false
+allowedCapabilities: []
+defaultAddCapabilities: []
+requiredDropCapabilities: []
+runAsUser:
+  type: RunAsAny
+seLinuxContext:
+  type: RunAsAny
+fsGroup:
+  type: RunAsAny
+supplementalGroups:
+  type: RunAsAny
+seccompProfiles: ["*"]
+volumes: [configMap, downwardAPI, emptyDir, hostPath, projected, secret]
+users: []
+groups: []
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ $scc }}
+  labels: {{- include "datafocal.labels" . | nindent 4 }}
+rules:
+  - apiGroups: [security.openshift.io]
+    resources: [securitycontextconstraints]
+    resourceNames: [{{ $scc }}]
+    verbs: [use]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ $fullname }}-node-scc
+  labels: {{- include "datafocal.labels" . | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ $scc }}
+subjects:
+  {{- if .Values.collector.enabled }}
+  - kind: ServiceAccount
+    name: {{ include "datafocal.serviceAccountName" (list $ "collector" .Values.collector.serviceAccount) }}
+    namespace: {{ .Release.Namespace }}
+  {{- end }}
+  {{- if .Values.cadvisor.enabled }}
+  - kind: ServiceAccount
+    name: {{ include "datafocal.serviceAccountName" (list $ "cadvisor" .Values.cadvisor.serviceAccount) }}
+    namespace: {{ .Release.Namespace }}
+  {{- end }}
+{{- end }}

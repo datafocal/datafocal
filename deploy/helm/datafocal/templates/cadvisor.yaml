@@ -1,0 +1,80 @@
+{{- if .Values.cadvisor.enabled }}
+{{- $fullname := include "datafocal.fullname" . -}}
+{{- $openshift := include "datafocal.openshift" . -}}
+{{- with .Values.cadvisor }}
+{{- include "datafocal.serviceAccount" (list $ "cadvisor" .serviceAccount) }}
+# One cAdvisor per node, writing each container's CPU, memory, network and disk use to its
+# stdout every housekeeping interval, which the collector reads as the container log it is
+# and identity names after the pod measured.
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: {{ $fullname }}-cadvisor
+  labels: {{- include "datafocal.labels" $ | nindent 4 }}
+spec:
+  selector:
+    matchLabels: {{- include "datafocal.selector" (list $ "cadvisor") | nindent 6 }}
+  template:
+    metadata:
+      labels: {{- include "datafocal.selector" (list $ "cadvisor") | nindent 8 }}
+    spec:
+      serviceAccountName: {{ include "datafocal.serviceAccountName" (list $ "cadvisor" .serviceAccount) }}
+      automountServiceAccountToken: false
+      {{- with .tolerations }}
+      tolerations: {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .nodeSelector }}
+      nodeSelector: {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: cadvisor
+          image: {{ .image }}
+          args:
+            - --storage_driver=stdout
+            # A fixed interval rather than as often as each container changes.
+            - --housekeeping_interval={{ .housekeepingInterval }}
+            - --allow_dynamic_housekeeping=false
+            # The pods' containers and the node's total, not every systemd cgroup on it.
+            - --docker_only=true
+            # The stdout driver writes none of these.
+            - --disable_metrics=advtcp,cpu_topology,cpuset,diskIO,hugetlb,memory_numa,percpu,perf_event,process,referenced_memory,resctrl,sched,tcp,udp
+            {{- range .extraArgs }}
+            - {{ . }}
+            {{- end }}
+          resources: {{- toYaml .resources | nindent 12 }}
+          securityContext:
+            readOnlyRootFilesystem: true
+            {{- if $openshift }}
+            # SELinux keeps an unprivileged container from reading CRI-O's cgroups and socket.
+            privileged: true
+            {{- else }}
+            allowPrivilegeEscalation: false
+            {{- end }}
+          volumeMounts:
+            - name: rootfs
+              mountPath: /rootfs
+              readOnly: true
+            - name: var-run
+              mountPath: /var/run
+              readOnly: true
+            - name: sys
+              mountPath: /sys
+              readOnly: true
+            - name: disk
+              mountPath: /dev/disk
+              readOnly: true
+      volumes:
+        - name: rootfs
+          hostPath:
+            path: /
+        - name: var-run
+          hostPath:
+            path: /var/run
+        - name: sys
+          hostPath:
+            path: /sys
+        - name: disk
+          hostPath:
+            path: /dev/disk
+{{- end }}
+{{- end }}

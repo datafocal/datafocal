@@ -1,0 +1,58 @@
+{{- $fullname := include "datafocal.fullname" . -}}
+# The settings every component reads from its environment.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $fullname }}
+  labels: {{- include "datafocal.labels" . | nindent 4 }}
+data:
+  DATAFOCAL_STORE: s3
+  DATAFOCAL_S3_BUCKET: {{ .Values.store.bucket | quote }}
+  DATAFOCAL_S3_ENDPOINT: {{ include "datafocal.s3Endpoint" . | quote }}
+  DATAFOCAL_S3_SECURE: {{ .Values.store.secure | quote }}
+  {{- with .Values.store.region }}
+  DATAFOCAL_S3_REGION: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.tenant }}
+  DATAFOCAL_TENANT: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.retention }}
+  DATAFOCAL_RETENTION: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.summary.binWidth }}
+  DATAFOCAL_SUMMARY_BIN_WIDTH: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.summary.sketchColumns }}
+  DATAFOCAL_SUMMARY_SKETCH_COLUMNS: {{ join "," . | quote }}
+  {{- end }}
+  {{- range $name, $value := .Values.env }}
+  {{ $name }}: {{ $value | quote }}
+  {{- end }}
+---
+# Each component's config file, as its config block states it.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $fullname }}-files
+  labels: {{- include "datafocal.labels" . | nindent 4 }}
+data:
+  collector.json: {{ mustMergeOverwrite (dict "ingest" (dict "state_dir" "/var/lib/datafocal/state")) (deepCopy .Values.collector.config) | toJson | quote }}
+  cluster-events.json: {{ mustMergeOverwrite (dict "ingest" (dict "state_dir" "/var/lib/datafocal/state" "sources" (list (dict "kind" "kube")))) (deepCopy .Values.clusterEvents.config) | toJson | quote }}
+  querier.json: {{ .Values.querier.config | toJson | quote }}
+  compactor.json: {{ .Values.compactor.config | toJson | quote }}
+{{- $creds := .Values.store.credentials }}
+{{- if and (not $creds.existingSecret) (or $creds.accessKeyId .Values.minio.enabled) }}
+{{- $secretName := include "datafocal.s3Secret" . }}
+{{- $existing := (lookup "v1" "Secret" .Release.Namespace $secretName).data | default dict }}
+---
+# The bucket's keys; generated once for the bundled MinIO, and kept across upgrades, when none are given.
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ $secretName }}
+  labels: {{- include "datafocal.labels" . | nindent 4 }}
+type: Opaque
+data:
+  AWS_ACCESS_KEY_ID: {{ if $creds.accessKeyId }}{{ $creds.accessKeyId | b64enc }}{{ else }}{{ $existing.AWS_ACCESS_KEY_ID | default ("datafocal" | b64enc) }}{{ end }}
+  AWS_SECRET_ACCESS_KEY: {{ if $creds.secretAccessKey }}{{ $creds.secretAccessKey | b64enc }}{{ else }}{{ $existing.AWS_SECRET_ACCESS_KEY | default (randAlphaNum 32 | b64enc) }}{{ end }}
+{{- end }}
