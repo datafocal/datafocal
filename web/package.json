@@ -9,7 +9,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.6.6",
-    "@playwright/test": "1.65.0",
+    "@playwright/test": "1.65.1",
     "@size-limit/file": "14.3.0",
     "@swc/core": "1.16.22",
     "@types/node": "26.6.6",
@@ -21,7 +21,7 @@
     "knip": "6.45.1",
     "oxlint": "1.93.0",
     "oxlint-tsgolint": "7.0.2006",
-    "playwright-core": "1.65.0",
+    "playwright-core": "1.65.1",
     "size-limit": "14.3.0",
     "typescript": "7.0.2",
     "vite": "8.3.8",
