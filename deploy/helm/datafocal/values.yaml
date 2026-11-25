@@ -77,6 +77,11 @@ collector:
     - {key: node-role.kubernetes.io/master, effect: NoSchedule}
   nodeSelector: {}
   priorityClassName: ""
+  # Containers started before the collector, such as a native sidecar (restartPolicy: Always),
+  # and the volumes and mounts they share with it, each rendered through tpl.
+  initContainers: []
+  extraVolumes: []
+  extraVolumeMounts: []
 
 # One collector following the API server's Events and container states.
 clusterEvents:
