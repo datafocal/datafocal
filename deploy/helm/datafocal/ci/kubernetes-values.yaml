@@ -12,3 +12,14 @@ querier:
   ingress:
     enabled: true
     host: datafocal.example.com
+collector:
+  initContainers:
+    - name: sidecar
+      image: "busybox:{{ .Chart.AppVersion }}"
+      restartPolicy: Always
+      command: [sh, -c, "echo ready >/run/shared/token && sleep infinity"]
+      volumeMounts: [{name: shared, mountPath: /run/shared}]
+  extraVolumes:
+    - {name: shared, emptyDir: {medium: Memory}}
+  extraVolumeMounts:
+    - {name: shared, mountPath: /run/shared, readOnly: true}
