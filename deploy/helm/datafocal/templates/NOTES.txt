@@ -1,9 +1,11 @@
 {{- $fullname := include "datafocal.fullname" . -}}
 DataFocal {{ .Chart.AppVersion }} is installed{{ if include "datafocal.openshift" . }} with the OpenShift profile{{ end }}, writing to bucket {{ .Values.store.bucket }} at {{ include "datafocal.s3Endpoint" . }}.
+{{- if .Values.querier.enabled }}
 
 The UI, at http://localhost:8080/ui/:
 
   kubectl -n {{ .Release.Namespace }} port-forward svc/{{ $fullname }}-querier 8080:{{ .Values.querier.service.port }}
+{{- end }}
 {{- if .Values.minio.enabled }}
 
 The bundled MinIO is for trying DataFocal out; set store.endpoint to an S3 bucket to keep data.

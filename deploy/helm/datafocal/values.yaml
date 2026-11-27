@@ -130,6 +130,7 @@ cadvisor:
   nodeSelector: {}
 
 querier:
+  enabled: true
   replicas: 2
   serviceAccount:
     # false uses an existing account, name, or the namespace's default when name is empty.
@@ -185,6 +186,7 @@ querier:
 
 # The bucket's one rewriter, so always one replica.
 compactor:
+  enabled: true
   serviceAccount:
     # false uses an existing account, name, or the namespace's default when name is empty.
     create: true
