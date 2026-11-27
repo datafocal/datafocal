@@ -1,3 +1,4 @@
+{{- if .Values.compactor.enabled }}
 {{- $fullname := include "datafocal.fullname" . -}}
 {{- with .Values.compactor }}
 {{- include "datafocal.serviceAccount" (list $ "compactor" .serviceAccount) }}
@@ -58,4 +59,5 @@ spec:
           configMap:
             name: {{ $fullname }}-files
             items: [{key: compactor.json, path: compactor.json}]
+{{- end }}
 {{- end }}
